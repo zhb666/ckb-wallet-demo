@@ -21,8 +21,6 @@ const { ScriptValue } = values;
 
 // According to this, switch the main network and test network
 export const { AGGRON4,LINA } = config.predefined;
-console.log(AGGRON4,"AGGRON4____")
-console.log(LINA, "LINA")
 
 const RPC_NETWORK = AGGRON4
 
@@ -98,7 +96,6 @@ interface Options {
 
 // amount, from: fromAddr, to: toAddr, privKey
 export const transfer = async (options: Options) => {
-  console.log(options,"options___")
   const privateKey = options.privKey // example private key
 
   const ckb = new CKB("https://testnet.ckb.dev") // instantiate the JS SDK with provided node url
@@ -126,7 +123,6 @@ export const transfer = async (options: Options) => {
     })
   }
 
-  console.log(ckb.config,"ckb.config______")
 
   /**
    * to see the addresses
@@ -153,7 +149,6 @@ export const transfer = async (options: Options) => {
   //   args: fromScript.args
   // }
 
-  console.log(lock,"lock_____")
 
   // console.log(lock,"lock_____")
   /**
