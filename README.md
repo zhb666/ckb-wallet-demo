@@ -14,7 +14,7 @@
 
 - uses @ckb-lumos transfer
 
-### Transfer-demo2
+### transfer-demo2
 
 - uses @nervosnetwork/ckb-sdk-core transfer
 

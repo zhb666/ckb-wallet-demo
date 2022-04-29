@@ -1,0 +1,72 @@
+{
+  "name": "ckb-wallet-demo",
+  "version": "0.8.13",
+  "private": true,
+  "dependencies": {
+    "@ckb-lumos/lumos": "^0.17.0-rc10",
+    "@ckb-lumos/rpc": "0.18.0-rc1",
+    "@lay2/pw-core": "^0.4.0-alpha.12",
+    "@material-ui/core": "4.12.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/styles": "4.11.4",
+    "@material-ui/types": "5.1.0",
+    "@metamask/detect-provider": "^1.2.0",
+    "@nervosnetwork/ckb-sdk-core": "^0.102.3",
+    "@nervosnetwork/ckb-sdk-utils": "^0.101.0",
+    "@types/hookrouter": "^2.2.5",
+    "@types/lodash": "^4.14.178",
+    "@types/node": "^17.0.8",
+    "@types/qrcode.react": "^1.0.2",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "arraybuffer-to-buffer": "^0.0.7",
+    "ckb-js-toolkit": "^0.10.2",
+    "clipboard": "^2.0.8",
+    "ethereumjs-wallet": "^1.0.2",
+    "hookrouter": "^1.2.5",
+    "include-media": "^1.4.10",
+    "lodash": "^4.17.21",
+    "nervos-godwoken-integration": "0.4.1",
+    "node-sass": "^7.0.1",
+    "primer-tooltips": "^2.0.0",
+    "qrcode.react": "^1.0.1",
+    "react": "^17.0.2",
+    "react-async": "^10.0.1",
+    "react-dom": "^17.0.2",
+    "react-github-btn": "^1.2.1",
+    "react-scripts": "4.0.3",
+    "react-toastify": "^8.1.0",
+    "reoverlay": "^1.0.0",
+    "sanitize.css": "^13.0.0",
+    "segmented-control": "^0.1.17",
+    "typescript": "^4.5.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "bump": "npm --no-git-tag-version version patch"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">1%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "sass": "^1.51.0"
+  }
+}
