@@ -2,21 +2,37 @@
 
 ## Developing
 
+## Technology stack
+
+- JavaScript
+- React + Rewired + TypeScript + AntDesign
+
+## Install, run, build, format code
+
+- `npm i`
+- `npm run start`
+- `npm build`
+- `npm format`
+
 ### Prerequisites
 
 - [Node.js 14+](https://nodejs.org/en/)
 
-### Install Dependencies
+### light-client RPC
+
+- [githup](https://github.com/yangby-cryptape/ckb-light-client/tree/develop#how-to-connect-testnet)
 
 ### Create wallet mnemonics and private keys on the home page
 
 ### transfer-demo1
 
-- uses @ckb-lumos transfer
+- uses @nervosnetwork/ckb-lumos transfer
 
 ### transfer-demo2
 
 - uses @nervosnetwork/ckb-sdk-core transfer
+
+### Install Dependencies
 
 ```sh
 npm i --force
@@ -46,4 +62,5 @@ Build the project, then copy the complete contents of the `build` directory to t
 
 ## Plans
 
-- [] An error will be reported in the main network transfer
+- [x] An error will be reported in the main network transfer
+- [] Integrated test environment
