@@ -1,18 +1,41 @@
+import {
+  Cell,
+  CellCollector,
+  HexString,
+  Indexer,
+  Script,
+  Tip,
+  Output,
+  utils,
+  Block
+} from "@ckb-lumos/base";
 import { request, requestBatch } from "../service/index";
-import { GetLiveCellsResult } from "../service/type";
+import {
+  GetLiveCellsResult,
+  IndexerTransaction,
+  SearchKey,
+  SearchKeyFilter,
+  Terminator
+} from "../service/type";
 
 const ckbLightClientRPC = "http://localhost:9000/";
 const ckbIndexer = "http://localhost:8116/";
 
+const DefaultTerminator: Terminator = () => {
+  return { stop: false, push: true };
+};
+
+const script = {
+  code_hash:
+    "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+  hash_type: "type",
+  args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
+};
+
 const set_scripts_params = [
   [
     {
-      script: {
-        code_hash:
-          "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-        hash_type: "type",
-        args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
-      },
+      script,
       block_number: "0x0"
     }
   ]
@@ -48,12 +71,7 @@ export async function getScripts() {
 
 const get_cells_params = [
   {
-    script: {
-      code_hash:
-        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-      hash_type: "type",
-      args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
-    },
+    script,
     script_type: "lock"
   },
   "asc",
@@ -64,6 +82,8 @@ const get_cells_params = [
  * @description: get_cells
  */
 export async function get_cells() {
+  const infos: Cell[] = [];
+  let cursor: string | undefined;
   const res = await request(
     2,
     ckbLightClientRPC,
@@ -71,18 +91,48 @@ export async function get_cells() {
     get_cells_params
   );
   console.log(res, "get_cells");
-  return res;
+
+  // 处理数据
+  while (true) {
+    const liveCells = res.objects;
+    cursor = res.last_cursor;
+    const index = 0;
+    const sizeLimit = 100;
+    for (const liveCell of liveCells) {
+      const cell: Cell = {
+        cell_output: liveCell.output,
+        data: liveCell.output_data,
+        out_point: liveCell.out_point,
+        block_number: liveCell.block_number
+      };
+      const { stop, push } = DefaultTerminator(index, cell);
+      if (push) {
+        infos.push(cell);
+      }
+      if (stop) {
+        return {
+          objects: infos,
+          lastCursor: cursor
+        };
+      }
+    }
+    if (liveCells.length <= sizeLimit) {
+      break;
+    }
+  }
+
+  return {
+    objects: infos,
+    lastCursor: cursor
+  };
+  //   return res;
 }
 
 const get_transactions_params = [
   {
-    script: {
-      code_hash:
-        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-      hash_type: "type",
-      args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
-    },
-    script_type: "lock"
+    script,
+    script_type: "lock",
+    order: "asc"
   },
   "asc",
   "0x64"
@@ -92,6 +142,10 @@ const get_transactions_params = [
  * @description: get_transactions
  */
 export async function get_transactions() {
+  let infos: IndexerTransaction[] = [];
+  let cursor: string | undefined;
+  const sizeLimit = 100;
+  const order = "asc";
   const res = await request(
     2,
     ckbLightClientRPC,
@@ -99,17 +153,24 @@ export async function get_transactions() {
     get_transactions_params
   );
   console.log(res, "get_transactions");
-  return res;
+  while (true) {
+    const txs = res.objects;
+    cursor = res.last_cursor as string;
+    infos = infos.concat(txs);
+    if (txs.length <= sizeLimit) {
+      break;
+    }
+  }
+  console.log(infos, cursor);
+  return {
+    objects: infos,
+    lastCursor: cursor
+  };
 }
 
 const get_cells_capacity_params = [
   {
-    script: {
-      code_hash:
-        "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-      hash_type: "type",
-      args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
-    },
+    script,
     script_type: "lock"
   }
 ];
