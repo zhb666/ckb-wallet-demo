@@ -1,11 +1,11 @@
 @import '../../common/scss/variables.scss';
 @import 'include-media/dist/_include-media.scss';
 
-main.home
+main.rpc
 {
 	width: 90%;
 	margin: 0 auto;
-	p{
+	div{
 		margin: 10px 0;
 	}
 }

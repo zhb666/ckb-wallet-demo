@@ -70,6 +70,7 @@
     ]
   },
   "devDependencies": {
+    "jest": "^24.8.0",
     "sass": "^1.51.0"
   }
 }
