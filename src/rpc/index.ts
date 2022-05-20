@@ -1,14 +1,4 @@
-import {
-  Cell,
-  CellCollector,
-  HexString,
-  Indexer,
-  Script,
-  Tip,
-  Output,
-  utils,
-  Block
-} from "@ckb-lumos/base";
+import { Cell } from "@ckb-lumos/base";
 import { request, requestBatch } from "../service/index";
 import {
   GetLiveCellsResult,

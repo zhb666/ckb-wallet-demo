@@ -1,4 +1,3 @@
-
 import {
   mnemonic,
   ExtendedPrivateKey,
@@ -10,7 +9,6 @@ import CKB from "@nervosnetwork/ckb-sdk-core";
 const nodeUrl = "https://testnet.ckb.dev/rpc";
 
 const ckb = new CKB(nodeUrl);
-
 
 // 生成助记词;
 export async function Mnemonic() {
@@ -29,11 +27,14 @@ export async function Mnemonic() {
   return {
     m,
     extendedPrivateKey
-  }
-
+  };
 }
-// Mnemonic();
 
+export function Test() {
+  return 2;
+}
+
+// Mnemonic();
 
 const address = ckb.utils.pubkeyToAddress(
   "0x4b63e58669d29857d6c5c22d1e74518a0c43b4673882936b9fc684cf8f00a05a",
@@ -51,4 +52,3 @@ const address = ckb.utils.pubkeyToAddress(
 // );
 
 console.log(address, "address____");
-

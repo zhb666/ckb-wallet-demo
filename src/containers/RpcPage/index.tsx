@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { A } from "hookrouter";
 import ReactJson from "react-json-view";
 import {
 	setScripts,
