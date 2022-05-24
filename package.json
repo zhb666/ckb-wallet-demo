@@ -51,6 +51,7 @@
     "build": "react-scripts build",
     "test": "jest",
     "test:ava": "ava **/*.test.ts --timeout=2m",
+    "e2e": "cypress open",
     "eject": "react-scripts eject",
     "bump": "npm --no-git-tag-version version patch"
   },
@@ -80,6 +81,7 @@
     "@types/jest": "^27.5.1",
     "ava": "^3.8.2",
     "babel-jest": "^28.1.0",
+    "cypress": "^9.7.0",
     "jest": "^28.1.0",
     "sass": "^1.51.0",
     "ts-jest": "^28.0.2",
