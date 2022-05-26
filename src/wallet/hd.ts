@@ -30,8 +30,8 @@ export async function Mnemonic() {
   };
 }
 
-export function Test() {
-  return 2;
+export function Test(a: number, b: number) {
+  return a + b;
 }
 
 // Mnemonic();
