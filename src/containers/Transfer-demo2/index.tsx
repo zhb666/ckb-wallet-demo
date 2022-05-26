@@ -3,9 +3,12 @@ import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
 import "./index.scss"
 
+//TODO e2e test
+const windowPrivKey = window.sessionStorage.getItem("privKey")
+
 
 export default function Secp256k1Transfer() {
-  const [privKey, setPrivKey] = useState("");
+  const [privKey, setPrivKey] = useState(windowPrivKey || "");
   const [fromAddr, setFromAddr] = useState("");
   const [fromLock, setFromLock] = useState<Script>();
   const [balance, setBalance] = useState("0");

@@ -49,7 +49,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest **/*.test.ts --timeout=2m",
     "test:ava": "ava **/*.test.ts --timeout=2m",
     "e2e": "cypress open",
     "eject": "react-scripts eject",
