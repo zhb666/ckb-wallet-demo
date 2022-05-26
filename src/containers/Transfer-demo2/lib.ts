@@ -101,7 +101,7 @@ export const transfer = async (options: Options) => {
 
   await ckb.loadDeps(); // load the dependencies of secp256k1 algorithm which is used to verify the signature in transaction's witnesses.
 
-  const publicKey = ckb.utils.privateKeyToPublicKey(privateKey);
+  const publicKey = await ckb.utils.privateKeyToPublicKey(privateKey);
   /**
    * to see the public key
    */
