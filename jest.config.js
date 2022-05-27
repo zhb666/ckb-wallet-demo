@@ -1,8 +1,9 @@
 // /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-// module.exports = {
-//   preset: "ts-jest",
-//   testEnvironment: "node",
-//   jest: {
-//     transformIgnorePatterns: ["/!node_modules\\/lodash-es/"]
-//   }
-// };
+module.exports = {
+  // preset: "ts-jest",
+  // testEnvironment: "node",
+  testTimeout: 20000
+  // jest: {
+  //   transformIgnorePatterns: ["/!node_modules\\/lodash-es/"]
+  // }
+};

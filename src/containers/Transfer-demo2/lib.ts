@@ -193,8 +193,13 @@ export const transfer = async (options: Options) => {
   console.log(JSON.stringify(signedTx, null, 2));
 
   const realTxHash = await ckb.rpc.sendTransaction(signedTx);
+
   /**
    * to see the real transaction hash
    */
   console.log(`The real transaction hash is: ${realTxHash}`);
+
+  return realTxHash;
+
+  // if (realTxHash) return true;
 };

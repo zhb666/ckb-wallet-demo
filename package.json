@@ -53,7 +53,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest **/*.test.ts --timeout=20m",
     "test:ava": "ava **/*.test.ts --timeout=2m",
     "eject": "react-scripts eject",
     "bump": "npm --no-git-tag-version version patch"

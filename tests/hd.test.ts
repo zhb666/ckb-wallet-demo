@@ -1,4 +1,3 @@
-import { add } from "./hd";
 // const hd = require("../src/wallet/hd");
 // const { Test } = hd;
 import { Mnemonic } from "../src/wallet/hd";
