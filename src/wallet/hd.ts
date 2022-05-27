@@ -30,10 +30,6 @@ export async function Mnemonic() {
   };
 }
 
-export function Test(a: number, b: number) {
-  return a + b;
-}
-
 // Mnemonic();
 
 const address = ckb.utils.pubkeyToAddress(
