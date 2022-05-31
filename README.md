@@ -63,4 +63,4 @@ Build the project, then copy the complete contents of the `build` directory to t
 ## Plans
 
 - [x] An error will be reported in the main network transfer
-- [] Integrated test environment
+- [x] Integrated test environment
