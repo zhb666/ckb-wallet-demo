@@ -11,6 +11,8 @@
 
 - `npm i`
 - `npm run start`
+- `npm run e2e`
+- `npm run test`
 - `npm build`
 - `npm format`
 

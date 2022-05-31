@@ -88,7 +88,8 @@
     "cypress": "^9.7.0",
     "sass": "^1.51.0",
     "ts-jest": "^28.0.3",
-    "ts-node": "^10.7.0"
+    "ts-node": "^10.7.0",
+    "jest": "^28.1.0"
   },
   "ava": {
     "typescript": {
