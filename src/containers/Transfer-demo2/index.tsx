@@ -3,15 +3,18 @@ import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
 import "./index.scss"
 
+//TODO e2e test
+const windowPrivKey = window.sessionStorage.getItem("privKey")
+
 
 export default function Secp256k1Transfer() {
-  const [privKey, setPrivKey] = useState("");
+  const [privKey, setPrivKey] = useState("0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40");
   const [fromAddr, setFromAddr] = useState("");
   const [fromLock, setFromLock] = useState<Script>();
-  const [balance, setBalance] = useState("0");
+  const [balance, setBalance] = useState("");
 
-  const [toAddr, setToAddr] = useState("");
-  const [amount, setAmount] = useState("");
+  const [toAddr, setToAddr] = useState("ckt1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fys07ens3");
+  const [amount, setAmount] = useState("8800000000");
 
   useEffect(() => {
     const updateFromInfo = async () => {
@@ -58,12 +61,16 @@ export default function Secp256k1Transfer() {
       <input
         id="amount"
         type="text"
+        value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
       <br />
       <button
         onClick={() =>
-          transfer({ amount, from: fromAddr, to: toAddr, privKey })
+          // TODO e2e Test
+          setTimeout(() => {
+            transfer({ amount, from: fromAddr, to: toAddr, privKey })
+          }, 2000)
         }
       >
         Transfer

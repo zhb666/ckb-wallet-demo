@@ -64,3 +64,4 @@ Build the project, then copy the complete contents of the `build` directory to t
 
 - [x] An error will be reported in the main network transfer
 - [x] Integrated test environment
+- [x] Integrated e2e cypress environment
