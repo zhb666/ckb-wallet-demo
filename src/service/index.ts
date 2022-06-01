@@ -75,7 +75,26 @@ const requestBatch = async (rpcUrl: string, data: unknown): Promise<any> => {
     method: "POST",
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/vnd.api+json"
+    }
+  });
+  if (res.status !== 200) {
+    throw new Error(`indexer request failed with HTTP code ${res.status}`);
+  }
+  const result = await res.json();
+  if (result.error !== undefined) {
+    throw new Error(
+      `indexer request rpc failed with error: ${JSON.stringify(result.error)}`
+    );
+  }
+  return result;
+};
+
+const requestGet = async (rpcUrl: string): Promise<any> => {
+  const res: Response = await fetch(rpcUrl, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json"
     }
   });
   if (res.status !== 200) {
@@ -127,5 +146,6 @@ export {
   getHexStringBytes,
   instanceOfScriptWrapper,
   requestBatch,
-  request
+  request,
+  requestGet
 };

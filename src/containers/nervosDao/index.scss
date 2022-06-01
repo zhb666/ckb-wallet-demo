@@ -1,0 +1,11 @@
+@import '../../common/scss/variables.scss';
+@import 'include-media/dist/_include-media.scss';
+
+main.dao
+{
+	width: 90%;
+	margin: 0 auto;
+	div{
+		margin: 10px 0;
+	}
+}

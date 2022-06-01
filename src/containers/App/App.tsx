@@ -8,6 +8,7 @@ import Home from '../Home/Home';
 import Secp256k1Transfer from '../Secp256k1Transfer/index';
 import TransferDemo2 from '../Transfer-demo2/index';
 import RPCPAGE from '../RpcPage/index';
+import Dao from '../nervosDao/index';
 
 const routes =
 {
@@ -16,6 +17,7 @@ const routes =
 	'/transfer-demo1': () => <Secp256k1Transfer />,
 	'/transfer-demo2': () => <TransferDemo2 />,
 	'/rpc-page': () => <RPCPAGE />,
+	'/dao': () => <Dao />,
 };
 
 function App() {

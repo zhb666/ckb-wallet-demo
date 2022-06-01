@@ -27,6 +27,7 @@ function Component() {
 					<li><A href="/transfer-demo1" className={(currentPath === '/transfer-demo1') ? 'active' : ''} title="transfer">Tsransfer-Demo1</A></li>
 					<li><A href="/transfer-demo2" className={(currentPath === '/transfer-demo2') ? 'active' : ''} title="transfer">Tsransfer-Demo2</A></li>
 					<li><A href="/rpc-page" className={(currentPath === '/rpc-page') ? 'active' : ''} title="rpc-page">Rpc-Page</A></li>
+					<li><A href="/dao" className={(currentPath === '/dao') ? 'active' : ''} title="rpc-page">Nervos-Dao</A></li>
 				</ul>
 				<ul className="menu2">
 					<li><A href="/about" className={(currentPath === '/about') ? 'active' : ''} title="About"><i className="fas fa-info-circle"></i></A></li>
@@ -41,6 +42,7 @@ function Component() {
 					<li><A href="/transfer-demo2" className={(currentPath === '/transfer-demo2') ? 'active' : ''} title="transfer">Tsransfer-Demo2</A></li>
 					<li><A href="/rpc-page" className={(currentPath === '/rpc-page') ? 'active' : ''} title="rpc-page">Rpc-Page</A></li>
 					<li><a href="https://github.com/zhb666/ckb-wallet-demo" target="_blank" rel="noreferrer" title="GitHub" onClick={toggleMenu}>GitHub</a></li>
+					<li><A href="/dao" className={(currentPath === '/dao') ? 'active' : ''} title="rpc-page">Nervos-Dao</A></li>
 				</ul>
 			</nav>
 		);

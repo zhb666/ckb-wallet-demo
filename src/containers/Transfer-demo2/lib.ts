@@ -6,11 +6,6 @@ import {
   RPC,
   hd,
   config,
-  Cell,
-  commons,
-  core,
-  WitnessArgs,
-  toolkit,
   BI,
   CellCollector
 } from "@ckb-lumos/lumos";
