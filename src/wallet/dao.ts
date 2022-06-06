@@ -24,7 +24,7 @@ indexer.startForever();
  */
 const ckb = new CKB(CKB_RPC_URL);
 
-const sk = "0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40";
+const sk = "0x1234567812345678123456781234567812345678123456781234567812345678";
 const pk = ckb.utils.privateKeyToPublicKey(sk);
 
 const pkh = `0x${ckb.utils.blake160(pk, "hex")}`;
@@ -64,13 +64,14 @@ const deposit = async () => {
 
 // 第一笔交易测试
 const depositOutPoint = {
-  txHash: "0x5f0d804d925056f07de492aa030a0b68bbc17f28da6033d90403e49bf0a5fec1",
+  txHash: "0x201b4e60ee79934170cadc8e296e9d685c49f2b497e964417d754b88e051e2b1",
   index: "0x0"
 };
 
 const logDepositEpoch = async () => {
   await ckb.loadDeps();
   const tx = await ckb.rpc.getTransaction(depositOutPoint.txHash);
+  console.log(tx, "tx_________________");
   if (tx.txStatus.blockHash) {
     const b = await ckb.rpc.getBlock(tx.txStatus.blockHash);
     const epoch = b.header.epoch;
@@ -86,10 +87,11 @@ const logDepositEpoch = async () => {
   }
 };
 
+// 第2笔交易测试118ckb
 const depositEpoch = {
   length: "0x708",
-  index: "0x54f",
-  number: "0x114b"
+  index: "0x510",
+  number: "0x1155"
 };
 
 const starWithdrawing = async () => {
@@ -97,7 +99,7 @@ const starWithdrawing = async () => {
   await ckb.loadDeps();
   const tx = await ckb.generateDaoWithdrawStartTransaction({
     outPoint: depositOutPoint,
-    fee: BigInt(100000000)
+    fee: BigInt(10000000)
   });
   const signed = ckb.signTransaction(sk)(tx);
   const txHash = await ckb.rpc.sendTransaction(signed);
@@ -133,10 +135,11 @@ const logStartWithdrawingEpoch = async () => {
   }
 };
 
+// 第一笔交易测试
 const startWithdrawingEpoch = {
   length: "0x708",
-  index: "0x546",
-  number: "0x114f"
+  index: "0x5bb",
+  number: "0x1155"
 };
 
 const logCurrentEpoch = async () => {
@@ -149,10 +152,14 @@ const withdraw = async () => {
   const tx = await ckb.generateDaoWithdrawTransaction({
     depositOutPoint,
     withdrawOutPoint: startWithDrawOutPoint,
-    fee: BigInt(100000)
+    fee: BigInt(1000000)
   });
+  console.log(tx, "tx_________");
   const signed = ckb.signTransaction(sk)(tx);
+  console.log(signed, "signed______");
+
   const txHash = await ckb.rpc.sendTransaction(signed);
+  console.log(txHash, "txHash______");
   const outPoint = {
     txHash,
     index: "0x0"

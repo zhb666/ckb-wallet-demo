@@ -23,7 +23,7 @@ indexer.startForever();
  */
 const ckb = new CKB(CKB_RPC_URL);
 
-const sk = "0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40";
+const sk = "0x1234567812345678123456781234567812345678123456781234567812345678";
 const pk = ckb.utils.privateKeyToPublicKey(sk);
 
 const pkh = `0x${ckb.utils.blake160(pk, "hex")}`;
