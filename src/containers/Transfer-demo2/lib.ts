@@ -84,7 +84,7 @@ export async function capacityOf(address: string): Promise<BI> {
 interface Options {
   from: string;
   to: string;
-  amount: string;
+  amount: number;
   privKey: string;
 }
 
@@ -172,7 +172,7 @@ export const transfer = async (options: Options) => {
   const rawTransaction = await ckb.generateRawTransaction({
     fromAddress: options.from,
     toAddress: options.to,
-    capacity: BigInt(Number(options.amount) * 100000000),
+    capacity: BigInt(options.amount),
     fee: BigInt(100000000),
     safeMode: true,
     cells: unspentCells,

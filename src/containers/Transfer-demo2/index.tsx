@@ -19,7 +19,7 @@ export default function Secp256k1Transfer() {
   const [loading, setLoading] = useState(false);
 
   const [toAddr, setToAddr] = useState("ckt1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fys07ens3");
-  const [amount, setAmount] = useState("88");
+  const [amount, setAmount] = useState(88);
 
   useEffect(() => {
     const updateFromInfo = async () => {
@@ -46,7 +46,7 @@ export default function Secp256k1Transfer() {
   // send
   const send = (async () => {
     setLoading(true)
-    const res = await transfer({ amount, from: fromAddr, to: toAddr, privKey });
+    const res = await transfer({ amount: amount * 100000000, from: fromAddr, to: toAddr, privKey });
     if (res) {
       setTxHash(res)
       openNotificationWithIcon("success")
@@ -87,7 +87,7 @@ export default function Secp256k1Transfer() {
           id="amount"
           type="text"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => setAmount(Number(e.target.value))}
         />
         <br />
         {txHash ? <p>txHash : {txHash}</p> : null}
