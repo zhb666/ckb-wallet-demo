@@ -172,7 +172,7 @@ export const transfer = async (options: Options) => {
   const rawTransaction = await ckb.generateRawTransaction({
     fromAddress: options.from,
     toAddress: options.to,
-    capacity: BigInt(options.amount),
+    capacity: BigInt(Number(options.amount) * 100000000),
     fee: BigInt(100000000),
     safeMode: true,
     cells: unspentCells,

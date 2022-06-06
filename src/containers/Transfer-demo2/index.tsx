@@ -19,7 +19,7 @@ export default function Secp256k1Transfer() {
   const [loading, setLoading] = useState(false);
 
   const [toAddr, setToAddr] = useState("ckt1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fys07ens3");
-  const [amount, setAmount] = useState("8800000000");
+  const [amount, setAmount] = useState("88");
 
   useEffect(() => {
     const updateFromInfo = async () => {
@@ -71,7 +71,7 @@ export default function Secp256k1Transfer() {
             <pre>{JSON.stringify(fromLock, null, 2)}</pre>
           </li>
 
-          <li>Total capacity: {balance}</li>
+          <li>Total ckb: {Number(balance) / 100000000} </li>
         </ul>
         <label htmlFor="to-address">Transfer to Address: </label>&nbsp;
         <input
