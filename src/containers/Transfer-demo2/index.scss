@@ -1,7 +1,13 @@
-@import '../../common/scss/variables.scss';
-@import 'include-media/dist/_include-media.scss';
+// @import '../../common/scss/variables.scss';
+// @import 'include-media/dist/_include-media.scss';
 
 .mian{
-	width: 90%;
+	width: 100%;
+	height: 1000px;
+	padding: 20px;
+	box-sizing: border-box;
 	margin: auto;
+	input{
+		margin: 0px 0 10px 0;
+	}
 }

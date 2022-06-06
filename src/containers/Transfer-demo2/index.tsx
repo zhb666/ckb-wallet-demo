@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
+import { notification, Spin } from 'antd';
+import { NotificationType } from "../../common/ts/Types"
+
 import "./index.scss"
 
 //TODO e2e test
@@ -12,6 +15,8 @@ export default function Secp256k1Transfer() {
   const [fromAddr, setFromAddr] = useState("");
   const [fromLock, setFromLock] = useState<Script>();
   const [balance, setBalance] = useState("");
+  const [txHash, setTxHash] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [toAddr, setToAddr] = useState("ckt1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fys07ens3");
   const [amount, setAmount] = useState("8800000000");
@@ -30,51 +35,73 @@ export default function Secp256k1Transfer() {
     }
   }, [privKey]);
 
-  return (
-    <div className='mian'>
-      <label htmlFor="private-key">Private Key: </label>&nbsp;
-      <input
-        id="private-key"
-        type="text"
-        value={privKey}
-        onChange={(e) => setPrivKey(e.target.value)}
-      />
-      <ul>
-        <li>CKB Address: {fromAddr}</li>
-        <li>
-          Current lock script:
-          <pre>{JSON.stringify(fromLock, null, 2)}</pre>
-        </li>
+  const openNotificationWithIcon = (type: NotificationType) => {
+    notification[type]({
+      message: 'success',
+      description:
+        "successful transaction",
+    });
+  };
 
-        <li>Total capacity: {balance}</li>
-      </ul>
-      <label htmlFor="to-address">Transfer to Address: </label>&nbsp;
-      <input
-        id="to-address"
-        type="text"
-        value={toAddr}
-        onChange={(e) => setToAddr(e.target.value)}
-      />
-      <br />
-      <label htmlFor="amount">Amount</label>
-      &nbsp;
-      <input
-        id="amount"
-        type="text"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <br />
-      <button
-        onClick={() =>
-          // TODO e2e Test
-          setTimeout(() => {
-            transfer({ amount, from: fromAddr, to: toAddr, privKey })
-          }, 2000)
-        }
-      >
-        Transfer
-      </button>
-    </div>
+  // send
+  const send = (async () => {
+    setLoading(true)
+    const res = await transfer({ amount, from: fromAddr, to: toAddr, privKey });
+    if (res) {
+      setTxHash(res)
+      openNotificationWithIcon("success")
+      setLoading(false)
+    }
+  })
+
+  return (
+    <Spin spinning={loading}>
+      <div className='mian'>
+        <label htmlFor="private-key">Private Key: </label>&nbsp;
+        <input
+          id="private-key"
+          type="text"
+          value={privKey}
+          onChange={(e) => setPrivKey(e.target.value)}
+        />
+        <ul>
+          <li>CKB Address: {fromAddr}</li>
+          <li>
+            Current lock script:
+            <pre>{JSON.stringify(fromLock, null, 2)}</pre>
+          </li>
+
+          <li>Total capacity: {balance}</li>
+        </ul>
+        <label htmlFor="to-address">Transfer to Address: </label>&nbsp;
+        <input
+          id="to-address"
+          type="text"
+          value={toAddr}
+          onChange={(e) => setToAddr(e.target.value)}
+        />
+        <br />
+        <label htmlFor="amount">Amount</label>
+        &nbsp;
+        <input
+          id="amount"
+          type="text"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <br />
+        {txHash ? <p>txHash : {txHash}</p> : null}
+
+
+        <button
+          onClick={send}
+        >
+          Transfer
+        </button>
+
+
+
+      </div>
+    </Spin>
   );
 }

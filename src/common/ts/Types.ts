@@ -1,10 +1,11 @@
-enum ChainTypes
-{
-	mainnet,
-	testnet,
+enum ChainTypes {
+  mainnet,
+  testnet
 }
 
-type ChainTypeString = 'mainnet'|'testnet';
+type ChainTypeString = "mainnet" | "testnet";
 
-export {ChainTypes};
-export type {ChainTypeString};
+export type NotificationType = "success" | "info" | "warning" | "error";
+
+export { ChainTypes };
+export type { ChainTypeString };

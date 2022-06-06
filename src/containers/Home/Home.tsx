@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { A } from "hookrouter";
+import { notification } from 'antd';
 import { Mnemonic } from "../../wallet/hd";
+import { NotificationType } from "../../common/ts/Types"
 import "./Home.scss";
 
 interface hd {
@@ -13,6 +15,8 @@ interface item {
 	chainCode: string,
 }
 
+// type NotificationType = 'success' | 'info' | 'warning' | 'error';
+
 const Component: React.FC = () => {
 	const [hd, setHd] = useState<hd>({
 		m: '',
@@ -22,6 +26,14 @@ const Component: React.FC = () => {
 		}
 	});
 
+	const openNotificationWithIcon = (type: NotificationType) => {
+		notification[type]({
+			message: 'success',
+			description:
+				"Created successfully",
+		});
+	};
+
 	/**
 	 * @description: 获取钱包
 	 * @param {*}
@@ -29,6 +41,7 @@ const Component: React.FC = () => {
 	 */
 	async function getHD() {
 		const hd = await Mnemonic()
+		openNotificationWithIcon("success")
 		setHd(hd)
 	}
 

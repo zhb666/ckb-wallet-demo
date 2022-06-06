@@ -1,6 +1,5 @@
 import { useRoutes } from 'hookrouter';
 
-import './App.scss';
 import About from '../About/About';
 import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
@@ -9,6 +8,9 @@ import Secp256k1Transfer from '../Secp256k1Transfer/index';
 import TransferDemo2 from '../Transfer-demo2/index';
 import RPCPAGE from '../RpcPage/index';
 import Dao from '../nervosDao/index';
+
+import './App.scss';
+import 'antd/dist/antd.css';
 
 const routes =
 {
