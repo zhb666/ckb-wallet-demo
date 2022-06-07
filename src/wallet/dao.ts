@@ -24,7 +24,7 @@ indexer.startForever();
  */
 const ckb = new CKB(CKB_RPC_URL);
 
-const sk = "0x1234567812345678123456781234567812345678123456781234567812345678";
+const sk = "0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40";
 const pk = ckb.utils.privateKeyToPublicKey(sk);
 
 const pkh = `0x${ckb.utils.blake160(pk, "hex")}`;
@@ -49,7 +49,7 @@ const deposit = async () => {
   await ckb.loadDeps();
   const depositTx = ckb.generateDaoDepositTransaction({
     fromAddress: addr,
-    capacity: BigInt(10200000000),
+    capacity: BigInt(10600000000),
     fee: BigInt(100000)
   });
   const signed = ckb.signTransaction(sk)(depositTx);
@@ -64,7 +64,7 @@ const deposit = async () => {
 
 // 第一笔交易测试
 const depositOutPoint = {
-  txHash: "0x201b4e60ee79934170cadc8e296e9d685c49f2b497e964417d754b88e051e2b1",
+  txHash: "0x525e4f3f1a38aef2fdb903886a007361af441c5308f96a223fbf871741ca8359",
   index: "0x0"
 };
 
@@ -74,6 +74,7 @@ const logDepositEpoch = async () => {
   console.log(tx, "tx_________________");
   if (tx.txStatus.blockHash) {
     const b = await ckb.rpc.getBlock(tx.txStatus.blockHash);
+    console.log(b, "b_____");
     const epoch = b.header.epoch;
     console.log(
       `const depositEpoch = ${JSON.stringify(

@@ -17,7 +17,7 @@ const Component: React.FC = () => {
 	return (
 		<main className="dao">
 			<div>
-				<button onClick={deposit}>deposit</button>
+				<button onClick={deposit}>deposit:106 ckb</button>
 			</div>
 			<div>
 				<button onClick={logDepositEpoch}>logDepositEpoch</button>

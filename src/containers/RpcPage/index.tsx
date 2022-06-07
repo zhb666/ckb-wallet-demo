@@ -52,6 +52,12 @@ const Component: React.FC = () => {
 			<div>
 				<button onClick={getBalance}>get_cells_capacity</button> : {balance} ckb
 			</div>
+			<div>
+				<button onClick={async () => {
+					const num = await (await getCapacity("0x18127bd4e37")).toString();
+					console.log(num)
+				}}>BI.from</button>
+			</div>
 		</main>
 	);
 };
