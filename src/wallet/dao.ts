@@ -1,13 +1,6 @@
-/* eslint-disable */
-// const path = require('path')
-// const os = require('os')
 import { Indexer, CellCollector } from "@ckb-lumos/lumos";
 import CKB from "@nervosnetwork/ckb-sdk-core";
 import { ajaxGet } from "../service/http";
-// const { Indexer, CellCollector } = require('@ckb-lumos/indexer')
-
-// const CKB_URL = process.env.CKB_URL || 'http://localhost:8114' // example node url
-// const LUMOS_DB = path.join(os.tmpdir(), 'lumos_db')
 
 const CKB_RPC_URL = "https://testnet.ckb.dev";
 
@@ -190,12 +183,3 @@ export {
   withdraw,
   getTest
 };
-
-// deposit()
-// logDepositEpoch()
-// starWithdrawing()
-// logStartWithdrawingEpoch()
-// logCurrentEpoch()
-// withdraw()
-
-// setInterval(logCurrentEpoch, 1000)
