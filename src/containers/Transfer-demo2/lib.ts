@@ -145,6 +145,7 @@ export const transfer = async (options: Options) => {
   /**
    * load cells from lumos as `examples/sendTransactionWithLumosCollector.js` shows
    */
+  console.log(CellCollector, "CellCollector");
   const unspentCells = await ckb.loadCells({ indexer, CellCollector, lock });
 
   /**
@@ -180,6 +181,7 @@ export const transfer = async (options: Options) => {
   });
 
   console.log(rawTransaction, "rawTransaction____");
+  return;
 
   const signedTx = ckb.signTransaction(privateKey)(rawTransaction);
   /**
