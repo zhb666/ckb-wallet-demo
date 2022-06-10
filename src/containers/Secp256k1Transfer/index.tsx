@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import ReactDOM from "react-dom";
 import { Script } from "@ckb-lumos/lumos";
-import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
+import { capacityOf, generateAccountFromPrivateKey, transfer } from "./libCommon";
 import "./index.scss"
 
 

@@ -1,128 +1,90 @@
 import {
-  Indexer,
-  helpers,
-  Address,
-  Script,
-  RPC,
-  hd,
-  config,
-  Cell,
-  commons,
-  core,
-  WitnessArgs,
-  toolkit,
   BI,
-  CellCollector
+  Cell,
+  config,
+  core,
+  helpers,
+  Indexer,
+  RPC,
+  toolkit,
+  commons
 } from "@ckb-lumos/lumos";
-import CKB from "@nervosnetwork/ckb-sdk-core";
+import { default as createKeccak } from "keccak";
 
-import { values } from "@ckb-lumos/base";
-const { ScriptValue } = values;
+export const CONFIG = config.createConfig({
+  PREFIX: "ckt",
+  SCRIPTS: {
+    ...config.predefined.AGGRON4.SCRIPTS,
+    // https://github.com/lay2dev/pw-core/blob/861310b3dd8638f668db1a08d4c627db4c34d815/src/constants.ts#L156-L169
+    PW_LOCK: {
+      CODE_HASH:
+        "0x58c5f491aba6d61678b7cf7edf4910b1f5e00ec0cde2f42e0abb4fd9aff25a63",
+      HASH_TYPE: "type",
+      TX_HASH:
+        "0x57a62003daeab9d54aa29b944fc3b451213a5ebdf2e232216a3cfed0dde61b38",
+      INDEX: "0x0",
+      DEP_TYPE: "code"
+    }
+  }
+});
 
-// According to this, switch the main network and test network
-export const { AGGRON4, LINA } = config.predefined;
-console.log(AGGRON4, "AGGRON4____");
-console.log(LINA, "LINA");
-
-const RPC_NETWORK = AGGRON4;
-
-//  https://mainnet.ckb.dev
-//  https://testnet.ckb.dev
+config.initializeConfig(CONFIG);
 
 const CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
-
 const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
 const rpc = new RPC(CKB_RPC_URL);
 const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
 
-type Account = {
-  lockScript: Script;
-  address: Address;
-  pubKey: string;
-};
-export const generateAccountFromPrivateKey = (privKey: string): Account => {
-  // Convert to public key
-  const pubKey = hd.key.privateToPublic(privKey);
-  console.log(pubKey, "pubKey___");
-  const args = hd.key.publicKeyToBlake160(pubKey);
-  console.log(args, "args___");
+// prettier-ignore
+interface EthereumRpc {
+    (payload: { method: 'personal_sign'; params: [string /*from*/, string /*message*/] }): Promise<string>;
+}
 
-  const template = RPC_NETWORK.SCRIPTS["SECP256K1_BLAKE160"]!;
-  console.log(template, "template_____");
-  const lockScript = {
-    code_hash: template.CODE_HASH,
-    hash_type: template.HASH_TYPE,
-    args: args
-  };
-  // get address
-  const address = helpers.generateAddress(lockScript, { config: RPC_NETWORK });
-  console.log(address, "address____");
-  return {
-    lockScript,
-    address,
-    pubKey
-  };
-};
+// prettier-ignore
+export interface EthereumProvider {
+    selectedAddress: string;
+    isMetaMask?: boolean;
+    enable: () => Promise<string[]>;
+    addListener: (event: 'accountsChanged', listener: (addresses: string[]) => void) => void;
+    removeEventListener: (event: 'accountsChanged', listener: (addresses: string[]) => void) => void;
+    request: EthereumRpc;
+}
 
-export async function capacityOf(address: string): Promise<BI> {
-  // You need to check the RPC corresponding to the balance and transfer it to the corresponding aggron4 Lina
-  const collector = indexer.collector({
-    lock: helpers.parseAddress(address, { config: RPC_NETWORK })
-  });
+// @ts-ignore
+export const ethereum = window.ethereum as EthereumProvider;
 
-  console.log(collector, "collector___");
-
-  // Convert to bi object
-  let balance = BI.from(0);
-  console.log(balance, "balance___");
-
-  // Get balance
-  for await (const cell of collector.collect()) {
-    // balance++
-    balance = balance.add(cell.cell_output.capacity);
-    console.log(cell.cell_output.capacity, "cell.cell_output.capacity_____");
-  }
-
-  // sum
-  return balance;
+export function asyncSleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 interface Options {
   from: string;
   to: string;
   amount: string;
-  privKey: string;
 }
 
-// amount, from: fromAddr, to: toAddr, privKey
 export async function transfer(options: Options): Promise<string> {
-  let txSkeleton = helpers.TransactionSkeleton({ cellProvider: indexer });
-  const fromScript = helpers.parseAddress(options.from, {
-    config: RPC_NETWORK
-  });
-  const toScript = helpers.parseAddress(options.to, { config: RPC_NETWORK });
-  console.log(txSkeleton, "txSkeleton____");
-  console.log(fromScript, "fromScript___");
-  console.log(toScript, "toScript___");
+  let tx = helpers.TransactionSkeleton({});
+  const fromScript = helpers.parseAddress(options.from);
+  const toScript = helpers.parseAddress(options.to);
 
   // additional 0.001 ckb for tx fee
   // the tx fee could calculated by tx size
   // this is just a simple example
-
-  // gas
   const neededCapacity = BI.from(options.amount).add(100000);
-  console.log(neededCapacity, "neededCapacity_____");
   let collectedSum = BI.from(0);
-  const collected: Cell[] = [];
+  const collectedCells: Cell[] = [];
   const collector = indexer.collector({ lock: fromScript, type: "empty" });
   for await (const cell of collector.collect()) {
     collectedSum = collectedSum.add(cell.cell_output.capacity);
-    collected.push(cell);
-    if (collectedSum >= neededCapacity) break;
+    collectedCells.push(cell);
+    if (BI.from(collectedSum).gte(neededCapacity)) break;
   }
 
-  if (collectedSum < neededCapacity) {
-    throw new Error("Not enough CKB");
+  if (collectedSum.lt(neededCapacity)) {
+    throw new Error(
+      `Not enough CKB, expected: ${neededCapacity}, actual: ${collectedSum} `
+    );
   }
 
   const transferOutput: Cell = {
@@ -141,89 +103,95 @@ export async function transfer(options: Options): Promise<string> {
     data: "0x"
   };
 
-  txSkeleton = txSkeleton.update("inputs", inputs => inputs.push(...collected));
-  txSkeleton = txSkeleton.update("outputs", outputs =>
+  tx = tx.update("inputs", inputs => inputs.push(...collectedCells));
+  tx = tx.update("outputs", outputs =>
     outputs.push(transferOutput, changeOutput)
   );
-  // You also need to change the configuration here
-  txSkeleton = txSkeleton.update("cellDeps", cellDeps =>
-    cellDeps.push({
-      out_point: {
-        tx_hash: RPC_NETWORK.SCRIPTS.SECP256K1_BLAKE160.TX_HASH,
-        index: RPC_NETWORK.SCRIPTS.SECP256K1_BLAKE160.INDEX
+  tx = tx.update("cellDeps", cellDeps =>
+    cellDeps.push(
+      // pw-lock dep
+      {
+        out_point: {
+          tx_hash: CONFIG.SCRIPTS.PW_LOCK.TX_HASH,
+          index: CONFIG.SCRIPTS.PW_LOCK.INDEX
+        },
+        dep_type: CONFIG.SCRIPTS.PW_LOCK.DEP_TYPE
       },
-      dep_type: RPC_NETWORK.SCRIPTS.SECP256K1_BLAKE160.DEP_TYPE
-    })
+      // pw-lock is dependent on secp256k1
+      {
+        out_point: {
+          tx_hash: CONFIG.SCRIPTS.SECP256K1_BLAKE160.TX_HASH,
+          index: CONFIG.SCRIPTS.SECP256K1_BLAKE160.INDEX
+        },
+        dep_type: CONFIG.SCRIPTS.SECP256K1_BLAKE160.DEP_TYPE
+      }
+    )
   );
 
-  const firstIndex = txSkeleton
-    .get("inputs")
-    .findIndex(input =>
-      new ScriptValue(input.cell_output.lock, { validate: false }).equals(
-        new ScriptValue(fromScript, { validate: false })
-      )
-    );
-  if (firstIndex !== -1) {
-    while (firstIndex >= txSkeleton.get("witnesses").size) {
-      txSkeleton = txSkeleton.update("witnesses", witnesses =>
-        witnesses.push("0x")
-      );
-    }
-    let witness: string = txSkeleton.get("witnesses").get(firstIndex)!;
-    const newWitnessArgs: WitnessArgs = {
-      /* 65-byte zeros in hex */
-      lock: "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    };
-    if (witness !== "0x") {
-      const witnessArgs = new core.WitnessArgs(new toolkit.Reader(witness));
-      const lock = witnessArgs.getLock();
-      if (
-        lock.hasValue() &&
-        new toolkit.Reader(lock.value().raw()).serializeJson() !==
-          newWitnessArgs.lock
-      ) {
-        throw new Error(
-          "Lock field in first witness is set aside for signature!"
-        );
-      }
-      const inputType = witnessArgs.getInputType();
-      if (inputType.hasValue()) {
-        newWitnessArgs.input_type = new toolkit.Reader(
-          inputType.value().raw()
-        ).serializeJson();
-      }
-      const outputType = witnessArgs.getOutputType();
-      if (outputType.hasValue()) {
-        newWitnessArgs.output_type = new toolkit.Reader(
-          outputType.value().raw()
-        ).serializeJson();
-      }
-    }
-    witness = new toolkit.Reader(
+  const messageForSigning = (() => {
+    const SECP_SIGNATURE_PLACEHOLDER = "0x" + "00".repeat(65);
+    const newWitnessArgs = { lock: SECP_SIGNATURE_PLACEHOLDER };
+    const witness = new toolkit.Reader(
       core.SerializeWitnessArgs(
         toolkit.normalizers.NormalizeWitnessArgs(newWitnessArgs)
       )
     ).serializeJson();
-    txSkeleton = txSkeleton.update("witnesses", witnesses =>
-      witnesses.set(firstIndex, witness)
-    );
+
+    // fill txSkeleton's witness with 0
+    for (let i = 0; i < tx.inputs.toArray().length; i++) {
+      tx = tx.update("witnesses", witnesses => witnesses.push(witness));
+    }
+
+    // locks you want to sign
+    const signLock = tx.inputs.get(0)?.cell_output.lock!;
+
+    // just like P2PKH
+    // https://github.com/nervosnetwork/ckb-system-scripts/wiki/How-to-sign-transaction
+    const keccak = createKeccak("keccak256");
+
+    const messageGroup = commons.createP2PKHMessageGroup(tx, [signLock], {
+      hasher: {
+        update: message => keccak.update(Buffer.from(new Uint8Array(message))),
+        digest: () => keccak.digest()
+      }
+    });
+
+    return messageGroup[0];
+  })();
+
+  let signedMessage = await ethereum.request({
+    method: "personal_sign",
+    params: [ethereum.selectedAddress, messageForSigning.message]
+  });
+
+  let v = Number.parseInt(signedMessage.slice(-2), 16);
+  if (v >= 27) v -= 27;
+  signedMessage =
+    "0x" + signedMessage.slice(2, -2) + v.toString(16).padStart(2, "0");
+
+  const signedWitness = new toolkit.Reader(
+    core.SerializeWitnessArgs({
+      lock: new toolkit.Reader(signedMessage)
+    })
+  ).serializeJson();
+
+  tx = tx.update("witnesses", witnesses => witnesses.set(0, signedWitness));
+
+  const signedTx = helpers.createTransactionFromSkeleton(tx);
+  const txHash = await rpc.send_transaction(signedTx, "passthrough");
+
+  return txHash;
+}
+
+export async function capacityOf(address: string): Promise<BI> {
+  const collector = indexer.collector({
+    lock: helpers.parseAddress(address)
+  });
+
+  let balance = BI.from(0);
+  for await (const cell of collector.collect()) {
+    balance = balance.add(cell.cell_output.capacity);
   }
 
-  console.log(
-    await commons.common.prepareSigningEntries(txSkeleton),
-    "commons.common.prepareSigningEntries____"
-  );
-
-  // sign
-  txSkeleton = await commons.common.prepareSigningEntries(txSkeleton);
-  const message = txSkeleton.get("signingEntries").get(0)?.message;
-  const Sig = hd.key.signRecoverable(message!, options.privKey);
-  const tx = helpers.sealTransaction(txSkeleton, [Sig]);
-
-  console.log(tx, "tx______");
-  // return ""
-  const hash = await rpc.send_transaction(tx, "passthrough");
-  console.log("The transaction hash is", hash);
-
-  return hash;
+  return balance;
 }

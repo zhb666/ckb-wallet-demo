@@ -22,9 +22,9 @@ const RPC_NETWORK = AGGRON4;
 //  https://mainnet.ckb.dev
 //  https://testnet.ckb.dev
 
-const CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
+const CKB_RPC_URL = "http://localhost:9000";
 
-const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
+const CKB_INDEXER_URL = "http://localhost:9000";
 const rpc = new RPC(CKB_RPC_URL);
 const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
 
@@ -92,7 +92,8 @@ interface Options {
 export const transfer = async (options: Options) => {
   const privateKey = options.privKey; // example private key
 
-  const ckb = new CKB("https://testnet.ckb.dev"); // instantiate the JS SDK with provided node url
+  // const ckb = new CKB("https://testnet.ckb.dev"); // instantiate the JS SDK with provided node url
+  const ckb = new CKB("http://localhost:9000"); // instantiate the JS SDK with provided node url
 
   await ckb.loadDeps(); // load the dependencies of secp256k1 algorithm which is used to verify the signature in transaction's witnesses.
 
@@ -181,7 +182,6 @@ export const transfer = async (options: Options) => {
   });
 
   console.log(rawTransaction, "rawTransaction____");
-  return;
 
   const signedTx = ckb.signTransaction(privateKey)(rawTransaction);
   /**
