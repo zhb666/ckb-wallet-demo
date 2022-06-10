@@ -177,7 +177,10 @@ export async function transfer(options: Options): Promise<string> {
   console.log(txSkeleton.get("signingEntries").get(0)?.message, "message___");
 
   const message = txSkeleton.get("signingEntries").get(0)?.message;
-  const Sig = hd.key.signRecoverable(message!, options.privKey);
+  const Sig = hd.key.signRecoverable(
+    message!,
+    "0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40"
+  );
   console.log(Sig, "Sig_____");
 
   const tx = helpers.sealTransaction(txSkeleton, [Sig]);

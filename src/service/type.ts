@@ -7,7 +7,7 @@ import {
   OutPoint,
   HexNumber,
   Output,
-  TransactionWithStatus,
+  TransactionWithStatus
 } from "@ckb-lumos/base";
 import { EventEmitter } from "events";
 import { BIish } from "@ckb-lumos/bi";

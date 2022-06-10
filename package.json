@@ -3,10 +3,7 @@
   "version": "0.8.13",
   "private": true,
   "dependencies": {
-    "@ckb-lumos/base": "0.17.0-rc9",
-    "@ckb-lumos/hd": "^0.17.0-rc10",
     "@ckb-lumos/lumos": "^0.17.0-rc10",
-    "@ckb-lumos/rpc": "0.18.0-rc1",
     "@lay2/pw-core": "^0.4.0-alpha.12",
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
