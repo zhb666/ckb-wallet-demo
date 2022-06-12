@@ -163,10 +163,10 @@ export async function transfer(options: Options): Promise<string> {
     txSkeleton,
     fromInfos,
     "ckt1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fys07ens3",
-    // "ckb1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fysjm8vud",
-    BigInt(10000000000)
+    BigInt(10000000000),
     // @ts-ignore
-    // tipHeader
+    // tipHeader,
+    { config: CONFIG }
   );
   console.log(txSkeleton, "txSkeleton______1");
 
