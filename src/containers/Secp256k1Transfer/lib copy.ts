@@ -202,74 +202,74 @@ export async function transfer(options: Options): Promise<string> {
 
   txSkeleton = await commons.common.prepareSigningEntries(txSkeleton);
 
-  // const firstIndex = txSkeleton
-  //   .get("inputs")
-  //   .findIndex(input =>
-  //     new ScriptValue(input.cell_output.lock, { validate: false }).equals(
-  //       new ScriptValue(fromScript, { validate: false })
-  //     )
-  //   );
-  // if (firstIndex !== -1) {
-  //   while (firstIndex >= txSkeleton.get("witnesses").size) {
-  //     txSkeleton = txSkeleton.update("witnesses", witnesses =>
-  //       witnesses.push("0x")
-  //     );
-  //   }
-  //   let witness: string = txSkeleton.get("witnesses").get(firstIndex)!;
-  //   const newWitnessArgs: WitnessArgs = {
-  //     /* 65-byte zeros in hex */
-  //     lock: "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-  //   };
-  //   if (witness !== "0x") {
-  //     const witnessArgs = new core.WitnessArgs(new toolkit.Reader(witness));
-  //     const lock = witnessArgs.getLock();
-  //     if (
-  //       lock.hasValue() &&
-  //       new toolkit.Reader(lock.value().raw()).serializeJson() !==
-  //         newWitnessArgs.lock
-  //     ) {
-  //       throw new Error(
-  //         "Lock field in first witness is set aside for signature!"
-  //       );
-  //     }
-  //     const inputType = witnessArgs.getInputType();
-  //     if (inputType.hasValue()) {
-  //       newWitnessArgs.input_type = new toolkit.Reader(
-  //         inputType.value().raw()
-  //       ).serializeJson();
-  //     }
-  //     const outputType = witnessArgs.getOutputType();
-  //     if (outputType.hasValue()) {
-  //       newWitnessArgs.output_type = new toolkit.Reader(
-  //         outputType.value().raw()
-  //       ).serializeJson();
-  //     }
-  //   }
-  //   witness = new toolkit.Reader(
-  //     core.SerializeWitnessArgs(
-  //       toolkit.normalizers.NormalizeWitnessArgs(newWitnessArgs)
-  //     )
-  //   ).serializeJson();
-  //   txSkeleton = txSkeleton.update("witnesses", witnesses =>
-  //     witnesses.set(firstIndex, witness)
-  //   );
-  // }
+  const firstIndex = txSkeleton
+    .get("inputs")
+    .findIndex(input =>
+      new ScriptValue(input.cell_output.lock, { validate: false }).equals(
+        new ScriptValue(fromScript, { validate: false })
+      )
+    );
+  if (firstIndex !== -1) {
+    while (firstIndex >= txSkeleton.get("witnesses").size) {
+      txSkeleton = txSkeleton.update("witnesses", witnesses =>
+        witnesses.push("0x")
+      );
+    }
+    let witness: string = txSkeleton.get("witnesses").get(firstIndex)!;
+    const newWitnessArgs: WitnessArgs = {
+      /* 65-byte zeros in hex */
+      lock: "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    };
+    if (witness !== "0x") {
+      const witnessArgs = new core.WitnessArgs(new toolkit.Reader(witness));
+      const lock = witnessArgs.getLock();
+      if (
+        lock.hasValue() &&
+        new toolkit.Reader(lock.value().raw()).serializeJson() !==
+          newWitnessArgs.lock
+      ) {
+        throw new Error(
+          "Lock field in first witness is set aside for signature!"
+        );
+      }
+      const inputType = witnessArgs.getInputType();
+      if (inputType.hasValue()) {
+        newWitnessArgs.input_type = new toolkit.Reader(
+          inputType.value().raw()
+        ).serializeJson();
+      }
+      const outputType = witnessArgs.getOutputType();
+      if (outputType.hasValue()) {
+        newWitnessArgs.output_type = new toolkit.Reader(
+          outputType.value().raw()
+        ).serializeJson();
+      }
+    }
+    witness = new toolkit.Reader(
+      core.SerializeWitnessArgs(
+        toolkit.normalizers.NormalizeWitnessArgs(newWitnessArgs)
+      )
+    ).serializeJson();
+    txSkeleton = txSkeleton.update("witnesses", witnesses =>
+      witnesses.set(firstIndex, witness)
+    );
+  }
 
-  // console.log(
-  //   await commons.common.prepareSigningEntries(txSkeleton),
-  //   "commons.common.prepareSigningEntries____"
-  // );
+  console.log(
+    await commons.common.prepareSigningEntries(txSkeleton),
+    "commons.common.prepareSigningEntries____"
+  );
 
   // sign
-  // txSkeleton = await commons.common.prepareSigningEntries(txSkeleton);
-  // const message = txSkeleton.get("signingEntries").get(0)?.message;
-  // const Sig = hd.key.signRecoverable(message!, options.privKey);
-  // const tx = helpers.sealTransaction(txSkeleton, [Sig]);
+  txSkeleton = await commons.common.prepareSigningEntries(txSkeleton);
+  const message = txSkeleton.get("signingEntries").get(0)?.message;
+  const Sig = hd.key.signRecoverable(message!, options.privKey);
+  const tx = helpers.sealTransaction(txSkeleton, [Sig]);
 
-  // console.log(tx, "tx______");
-  // return ""
-  // const hash = await rpc.send_transaction(tx, "passthrough");
-  // console.log("The transaction hash is", hash);
+  console.log(tx, "tx______");
+  return "";
+  const hash = await rpc.send_transaction(tx, "passthrough");
+  console.log("The transaction hash is", hash);
 
   return "";
 }

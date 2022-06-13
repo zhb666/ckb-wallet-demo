@@ -7,7 +7,10 @@ import {
   Indexer,
   RPC,
   toolkit,
-  commons
+  commons,
+  hd,
+  Address,
+  Script
 } from "@ckb-lumos/lumos";
 import { default as createKeccak } from "keccak";
 
@@ -30,28 +33,34 @@ export const CONFIG = config.createConfig({
 
 config.initializeConfig(CONFIG);
 
+export const { AGGRON4, LINA } = config.predefined;
+console.log(AGGRON4, "AGGRON4____");
+console.log(LINA, "LINA");
+
+const RPC_NETWORK = AGGRON4;
+
 const CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
 const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
 const rpc = new RPC(CKB_RPC_URL);
 const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
 
-// prettier-ignore
-interface EthereumRpc {
-    (payload: { method: 'personal_sign'; params: [string /*from*/, string /*message*/] }): Promise<string>;
-}
+// // prettier-ignore
+// interface EthereumRpc {
+//     (payload: { method: 'personal_sign'; params: [string /*from*/, string /*message*/] }): Promise<string>;
+// }
 
-// prettier-ignore
-export interface EthereumProvider {
-    selectedAddress: string;
-    isMetaMask?: boolean;
-    enable: () => Promise<string[]>;
-    addListener: (event: 'accountsChanged', listener: (addresses: string[]) => void) => void;
-    removeEventListener: (event: 'accountsChanged', listener: (addresses: string[]) => void) => void;
-    request: EthereumRpc;
-}
+// // prettier-ignore
+// export interface EthereumProvider {
+//     selectedAddress: string;
+//     isMetaMask?: boolean;
+//     enable: () => Promise<string[]>;
+//     addListener: (event: 'accountsChanged', listener: (addresses: string[]) => void) => void;
+//     removeEventListener: (event: 'accountsChanged', listener: (addresses: string[]) => void) => void;
+//     request: EthereumRpc;
+// }
 
-// @ts-ignore
-export const ethereum = window.ethereum as EthereumProvider;
+// // @ts-ignore
+// export const ethereum = window.ethereum as EthereumProvider;
 
 export function asyncSleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -61,7 +70,38 @@ interface Options {
   from: string;
   to: string;
   amount: string;
+  privKey: string;
 }
+
+type Account = {
+  lockScript: Script;
+  address: Address;
+  pubKey: string;
+};
+
+export const generateAccountFromPrivateKey = (privKey: string): Account => {
+  // Convert to public key
+  const pubKey = hd.key.privateToPublic(privKey);
+  console.log(pubKey, "pubKey___");
+  const args = hd.key.publicKeyToBlake160(pubKey);
+  console.log(args, "args___");
+
+  const template = RPC_NETWORK.SCRIPTS["SECP256K1_BLAKE160"]!;
+  console.log(template, "template_____");
+  const lockScript = {
+    code_hash: template.CODE_HASH,
+    hash_type: template.HASH_TYPE,
+    args: args
+  };
+  // get address
+  const address = helpers.generateAddress(lockScript, { config: RPC_NETWORK });
+  console.log(address, "address____");
+  return {
+    lockScript,
+    address,
+    pubKey
+  };
+};
 
 export async function transfer(options: Options): Promise<string> {
   let tx = helpers.TransactionSkeleton({});
@@ -128,6 +168,8 @@ export async function transfer(options: Options): Promise<string> {
     )
   );
 
+  console.log(tx, "tx____1");
+
   const messageForSigning = (() => {
     const SECP_SIGNATURE_PLACEHOLDER = "0x" + "00".repeat(65);
     const newWitnessArgs = { lock: SECP_SIGNATURE_PLACEHOLDER };
@@ -159,25 +201,37 @@ export async function transfer(options: Options): Promise<string> {
     return messageGroup[0];
   })();
 
-  let signedMessage = await ethereum.request({
-    method: "personal_sign",
-    params: [ethereum.selectedAddress, messageForSigning.message]
-  });
+  console.log(messageForSigning, "messageForSigning___");
 
-  let v = Number.parseInt(signedMessage.slice(-2), 16);
-  if (v >= 27) v -= 27;
-  signedMessage =
-    "0x" + signedMessage.slice(2, -2) + v.toString(16).padStart(2, "0");
+  // let signedMessage = await ethereum.request({
+  //   method: "personal_sign",
+  //   params: [ethereum.selectedAddress, messageForSigning.message]
+  // });
+
+  let signedMessage = hd.key.signRecoverable(
+    messageForSigning.message!,
+    options.privKey
+  );
+
+  console.log(signedMessage, "signedMessage");
+
+  // let v = Number.parseInt(signedMessage.slice(-2), 16);
+  // if (v >= 27) v -= 27;
+  // signedMessage =
+  //   "0x" + signedMessage.slice(2, -2) + v.toString(16).padStart(2, "0");
 
   const signedWitness = new toolkit.Reader(
     core.SerializeWitnessArgs({
       lock: new toolkit.Reader(signedMessage)
     })
   ).serializeJson();
+  console.log(signedWitness, "signedWitness");
 
   tx = tx.update("witnesses", witnesses => witnesses.set(0, signedWitness));
+  // console.log(tx, "tx");
 
   const signedTx = helpers.createTransactionFromSkeleton(tx);
+  console.log(signedTx, "signedTx_______");
   const txHash = await rpc.send_transaction(signedTx, "passthrough");
 
   return txHash;

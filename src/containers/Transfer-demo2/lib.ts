@@ -21,10 +21,10 @@ const RPC_NETWORK = AGGRON4;
 
 //  https://mainnet.ckb.dev
 //  https://testnet.ckb.dev
+// http://localhost:9000
 
-const CKB_RPC_URL = "http://localhost:9000";
-
-const CKB_INDEXER_URL = "http://localhost:9000";
+const CKB_RPC_URL = "http://localhost:9000/rpc";
+const CKB_INDEXER_URL = "http://localhost:9000/indexer";
 const rpc = new RPC(CKB_RPC_URL);
 const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
 
@@ -93,9 +93,9 @@ export const transfer = async (options: Options) => {
   const privateKey = options.privKey; // example private key
 
   // const ckb = new CKB("https://testnet.ckb.dev"); // instantiate the JS SDK with provided node url
-  const ckb = new CKB("http://localhost:9000"); // instantiate the JS SDK with provided node url
+  const ckb = new CKB("http://localhost:8114"); // instantiate the JS SDK with provided node url
 
-  await ckb.loadDeps(); // load the dependencies of secp256k1 algorithm which is used to verify the signature in transaction's witnesses.
+  // await ckb.loadDeps(); // load the dependencies of secp256k1 algorithm which is used to verify the signature in transaction's witnesses.
 
   const publicKey = await ckb.utils.privateKeyToPublicKey(privateKey);
   /**
@@ -125,16 +125,27 @@ export const transfer = async (options: Options) => {
 
   // return
 
-  if (!ckb.config.secp256k1Dep) return;
+  // if (!ckb.config.secp256k1Dep) return;
 
   // hash
   // const fromScript = helpers.parseAddress(options.from, { config: RPC_NETWORK });
 
+  // const lock = {
+  //   // @ts-ignore
+  //   codeHash: ckb.config.secp256k1Dep.codeHash,
+  //   // @ts-ignore
+  //   hashType: ckb.config.secp256k1Dep.hashType,
+  //   args: publicKeyHash
+  // };
+
   const lock = {
-    codeHash: ckb.config.secp256k1Dep.codeHash,
-    hashType: ckb.config.secp256k1Dep.hashType,
+    codeHash:
+      "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+    hashType: "type",
     args: publicKeyHash
   };
+  console.log(ckb.config.secp256k1Dep, "ckb.config.secp256k1Dep");
+  // return;
 
   // const lock = {
   //   codeHash: fromScript.code_hash,
@@ -147,6 +158,7 @@ export const transfer = async (options: Options) => {
    * load cells from lumos as `examples/sendTransactionWithLumosCollector.js` shows
    */
   console.log(CellCollector, "CellCollector");
+  // @ts-ignore
   const unspentCells = await ckb.loadCells({ indexer, CellCollector, lock });
 
   /**
@@ -171,14 +183,28 @@ export const transfer = async (options: Options) => {
    *
    * @external https://docs.nervos.org/docs/essays/faq#how-do-you-calculate-transaction-fee
    */
+
+  const deps = {
+    hashType: "type",
+    codeHash:
+      "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+    outPoint: {
+      txHash:
+        "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37",
+      index: "0x0"
+    },
+    depType: "depGroup"
+  };
+
   const rawTransaction = await ckb.generateRawTransaction({
     fromAddress: options.from,
     toAddress: options.to,
     capacity: BigInt(options.amount),
-    fee: BigInt(100000000),
+    fee: BigInt(100000),
     safeMode: true,
     cells: unspentCells,
-    deps: ckb.config.secp256k1Dep
+    // @ts-ignore
+    deps: deps
   });
 
   console.log(rawTransaction, "rawTransaction____");
@@ -200,3 +226,56 @@ export const transfer = async (options: Options) => {
 
   // if (realTxHash) return true;
 };
+
+const txs = [
+  {
+    cell_deps: [
+      {
+        dep_type: "dep_group",
+        out_point: {
+          index: "0x0",
+          tx_hash:
+            "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37"
+        }
+      }
+    ],
+    header_deps: [],
+    inputs: [
+      {
+        previous_output: {
+          index: "0x7",
+          tx_hash:
+            "0x8f8c79eb6671709633fe6a46de93c0fedc9c1b8a6527a18d3983879542635c9f"
+        },
+        since: "0x0"
+      }
+    ],
+    outputs: [
+      {
+        capacity: "0x470de4df820000",
+        lock: {
+          args: "0xff5094c2c5f476fc38510018609a3fd921dd28ad",
+          code_hash:
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+          hash_type: "type"
+        },
+        type: null
+      },
+      {
+        capacity: "0xb61134e5a35e800",
+        lock: {
+          args: "0x64257f00b6b63e987609fa9be2d0c86d351020fb",
+          code_hash:
+            "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+          hash_type: "type"
+        },
+        type: null
+      }
+    ],
+    outputs_data: ["0x", "0x"],
+    version: "0x0",
+    witnesses: [
+      "0x5500000010000000550000005500000041000000af34b54bebf8c5971da6a880f2df5a186c3f8d0b5c9a1fe1a90c95b8a4fb89ef3bab1ccec13797dcb3fee80400f953227dd7741227e08032e3598e16ccdaa49c00"
+    ]
+  }
+];

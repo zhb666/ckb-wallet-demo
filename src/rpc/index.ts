@@ -15,6 +15,18 @@ const DefaultTerminator: Terminator = () => {
   return { stop: false, push: true };
 };
 
+// const a = [
+//   {
+//     script: {
+//       code_hash:
+//         "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+//       hash_type: "type",
+//       args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
+//     },
+//     script_type: "lock"
+//   }
+// ];
+
 const script = {
   code_hash:
     "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
@@ -118,6 +130,7 @@ export async function get_cells() {
   //   return res;
 }
 
+// 0x1e0 480
 const get_transactions_params = [
   {
     script,
@@ -125,7 +138,7 @@ const get_transactions_params = [
     order: "asc"
   },
   "asc",
-  "0x64"
+  "0x1e0"
 ];
 
 /**
@@ -134,7 +147,7 @@ const get_transactions_params = [
 export async function get_transactions() {
   let infos: IndexerTransaction[] = [];
   let cursor: string | undefined;
-  const sizeLimit = 100;
+  const sizeLimit = 500;
   const order = "asc";
   const res = await request(
     2,

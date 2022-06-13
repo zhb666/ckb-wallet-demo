@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 // import ReactDOM from "react-dom";
 import { Script } from "@ckb-lumos/lumos";
-import { capacityOf, generateAccountFromPrivateKey, transfer } from "./libCommon";
+import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
+import main from "./liblibSecp256k1MultisigTransfer";
 import "./index.scss"
 
 
@@ -68,6 +69,13 @@ export default function Secp256k1Transfer() {
         }
       >
         Transfer
+      </button>
+      <button
+        onClick={() =>
+          main()
+        }
+      >
+        Transfer2
       </button>
     </div>
   );
