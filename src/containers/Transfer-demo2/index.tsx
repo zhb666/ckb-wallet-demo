@@ -4,10 +4,9 @@ import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
 import { notification, Spin } from 'antd';
 import { NotificationType } from "../../common/ts/Types"
 
-import "./index.scss"
+import Table from '../../components/TransactionsTable'
 
-//TODO e2e test
-const windowPrivKey = window.sessionStorage.getItem("privKey")
+import "./index.scss"
 
 
 export default function Secp256k1Transfer() {
@@ -99,9 +98,13 @@ export default function Secp256k1Transfer() {
           Transfer
         </button>
 
-
-
+        <div className="Table">
+          <Table/>
+        </div>
       </div>
+
+      
+
     </Spin>
   );
 }

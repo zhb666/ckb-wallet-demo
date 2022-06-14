@@ -2,12 +2,15 @@
 // @import 'include-media/dist/_include-media.scss';
 
 .mian{
-	width: 100%;
+	width: 70%;
 	height: 1000px;
 	padding: 20px;
 	box-sizing: border-box;
 	margin: auto;
 	input{
 		margin: 0px 0 10px 0;
+	}
+	.Table{
+		margin: 20px auto;
 	}
 }

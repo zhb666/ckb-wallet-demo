@@ -44,6 +44,7 @@ function Progress() {
 					'0%': '#108ee9',
 					'100%': '#87d068',
 				}}
+				width={80}
 				percent={blockHeight}
 
 			/>
