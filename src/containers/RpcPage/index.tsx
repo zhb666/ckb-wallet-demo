@@ -54,7 +54,7 @@ const Component: React.FC = () => {
 			</div>
 			<div>
 				<button onClick={async () => {
-					const num = await (await getCapacity("0x1e0")).toString();
+					const num = await (await getCapacity("0x56c25b")).toString();
 					console.log(num)
 				}}>BI.from</button>
 			</div>
