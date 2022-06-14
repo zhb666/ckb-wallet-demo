@@ -24,8 +24,8 @@ function Component() {
 				<div className="logo"><A href="/">ckb-wallet-demo<small></small></A></div>
 				<ul className="menu1">
 					<li><A href="/" className={(currentPath === '/') ? 'active' : ''} title="Create Wallet">Create—Wallet</A></li>
-					<li><A href="/transfer-demo1" className={(currentPath === '/transfer-demo1') ? 'active' : ''} title="transfer">Tsransfer-Demo1</A></li>
-					<li><A href="/transfer-demo2" className={(currentPath === '/transfer-demo2') ? 'active' : ''} title="transfer">Tsransfer-Demo2</A></li>
+					{/* <li><A href="/transfer-demo1" className={(currentPath === '/transfer-demo1') ? 'active' : ''} title="transfer">Tsransfer-Demo1</A></li> */}
+					<li><A href="/transfer-demo2" className={(currentPath === '/transfer-demo2') ? 'active' : ''} title="transfer">Tsransfer</A></li>
 					<li><A href="/rpc-page" className={(currentPath === '/rpc-page') ? 'active' : ''} title="rpc-page">Rpc-Page</A></li>
 					<li><A href="/dao" className={(currentPath === '/dao') ? 'active' : ''} title="rpc-page">Nervos-Dao</A></li>
 				</ul>
@@ -38,8 +38,8 @@ function Component() {
 				<ul className={"menu3" + ((isMenuActive) ? ' active' : '')}>
 					<li><A href="/" className={(currentPath === '/') ? 'active' : ''} title="Create Wallet" onClick={toggleMenu}>Create—Wallet</A></li>
 					<li><A href="/about" className={(currentPath === '/about') ? 'active' : ''} title="About" onClick={toggleMenu}>About</A></li>
-					<li><A href="/transfer-demo1" className={(currentPath === '/secp256k1Transfer') ? 'active' : ''} title="transfer">Tsransfer-Demo1</A></li>
-					<li><A href="/transfer-demo2" className={(currentPath === '/transfer-demo2') ? 'active' : ''} title="transfer">Tsransfer-Demo2</A></li>
+					{/* <li><A href="/transfer-demo1" className={(currentPath === '/secp256k1Transfer') ? 'active' : ''} title="transfer">Tsransfer-Demo1</A></li> */}
+					<li><A href="/transfer-demo2" className={(currentPath === '/transfer-demo2') ? 'active' : ''} title="transfer">Tsransfer</A></li>
 					<li><A href="/rpc-page" className={(currentPath === '/rpc-page') ? 'active' : ''} title="rpc-page">Rpc-Page</A></li>
 					<li><a href="https://github.com/zhb666/ckb-wallet-demo" target="_blank" rel="noreferrer" title="GitHub" onClick={toggleMenu}>GitHub</a></li>
 					<li><A href="/dao" className={(currentPath === '/dao') ? 'active' : ''} title="rpc-page">Nervos-Dao</A></li>

@@ -3,36 +3,35 @@ import ReactDOM from 'react-dom';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ModalContainer } from 'reoverlay';
-import { Progress } from 'antd';
-import 'reoverlay/lib/ModalWrapper.css';
-
 import App from './containers/App/App';
+import Progress from "./components/Progress";
+
+
+import 'reoverlay/lib/ModalWrapper.css';
 import "./index.scss";
 
-async function main() {
+
+async function Main() {
+
+
+
+
 	const html =
 		(
-			<>
+			<div className='main'>
 				{/* <React.StrictMode> */}
 				<App />
 				<ToastContainer />
 				<ModalContainer />
-				<div>
-					<Progress
-						type="circle"
-						strokeColor={{
-							'0%': '#108ee9',
-							'100%': '#87d068',
-						}}
-						percent={90}
-					/>
+				<div className='progress'>
+					<Progress />
 				</div>
 				{/* </React.StrictMode> */}
-			</>
+			</div>
 		);
 	ReactDOM.render(html, document.getElementById('root'));
 }
-main();
+Main();
 
 // import reportWebVitals from './reportWebVitals';
 // If you want to start measuring performance in your app, pass a function

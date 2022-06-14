@@ -150,13 +150,13 @@ export async function transfer(options: Options): Promise<string> {
     })
   );
 
-  const firstIndex = txSkeleton
-    .get("inputs")
-    .findIndex(input =>
-      new ScriptValue(input.cell_output.lock, { validate: false }).equals(
-        new ScriptValue(fromScript, { validate: false })
-      )
-    );
+  const firstIndex = txSkeleton.get("inputs").findIndex(input =>
+    // @ts-ignore
+    new ScriptValue(input.cell_output.lock, { validate: false }).equals(
+      // @ts-ignore
+      new ScriptValue(fromScript, { validate: false })
+    )
+  );
   if (firstIndex !== -1) {
     while (firstIndex >= txSkeleton.get("witnesses").size) {
       txSkeleton = txSkeleton.update("witnesses", witnesses =>

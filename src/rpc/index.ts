@@ -61,6 +61,17 @@ export async function setScripts() {
 }
 
 /**
+ * @description: get_tip_header
+ * @param {[]}
+ * @return {header}
+ */
+export async function getTipHeader() {
+  const res = await request(1, ckbLightClientRPC, "get_tip_header", []);
+  console.log(res, "get_tip_header");
+  return res;
+}
+
+/**
  * @description: get_scripts
  * @param {[]}
  * @return {any}
