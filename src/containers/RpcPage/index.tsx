@@ -5,7 +5,8 @@ import {
 	getScripts,
 	get_cells,
 	get_transactions,
-	get_cells_capacity
+	get_cells_capacity,
+	getTipHeader
 } from "../../rpc";
 import { getCapacity } from "../../utils";
 import { div } from "../../utils/bigNumber";
@@ -42,6 +43,9 @@ const Component: React.FC = () => {
 				<button onClick={getScripts}>getScripts</button>
 			</div>
 			<div>
+				<button onClick={getTipHeader}>getTipHeader</button>
+			</div>
+			<div>
 				<button onClick={getCells}>get_cells </button>
 				<ReactJson theme={"tomorrow"} src={cells} />
 			</div>
@@ -54,7 +58,13 @@ const Component: React.FC = () => {
 			</div>
 			<div>
 				<button onClick={async () => {
-					const num = await (await getCapacity("0x56c25b")).toString();
+					const num = await (await getCapacity("0x66e8b")).toString();
+					console.log(num)
+				}}>BI.from</button>
+			</div>
+			<div>
+				<button onClick={async () => {
+					const num = await (await getCapacity("0x1d44029b")).toString();
 					console.log(num)
 				}}>BI.from</button>
 			</div>

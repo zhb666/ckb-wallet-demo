@@ -14,24 +14,20 @@ function Progress() {
 	useEffect(() => {
 
 		setInterval(async () => {
-			// const scriptsRes = await getScripts()
-			// const tipHeaderRes = await getTipHeader()
-			// let scriptsNum = await getCapacity(scriptsRes).toString()
-			// let tipHeaderNum = await getCapacity(tipHeaderRes).toString()
-			// let height = scriptsNum / tipHeaderNum * 100
+			const scriptsRes = await getScripts()
+			const tipHeaderRes = await getTipHeader()
+			let scriptsNum = await getCapacity(scriptsRes[0].block_number)
+			let tipHeaderNum = await getCapacity(tipHeaderRes.number)
+			console.log(Number(scriptsNum.toString()), Number(tipHeaderNum.toString()));
 
-
-			let TipHeader = 100000;
-			let ScriptsRes = 10;
-			let height = ScriptsRes / TipHeader * 100
+			let height = Number(scriptsNum.toString()) / Number(tipHeaderNum.toString()) * 100
 
 			setBlockHeight(height)
 
-			ScriptsRes++
 
-			console.log(ScriptsRes, height)
+			console.log(height)
 
-		}, 2000)
+		}, 5000)
 
 
 	}, [])
@@ -48,7 +44,10 @@ function Progress() {
 				percent={blockHeight}
 
 			/>
-			<p>区块数据同步中...</p>
+			{
+				blockHeight > 100 ? <p>区块数据同步完成...</p> : <p>区块数据同步中...</p>
+			}
+
 		</>
 	)
 }
