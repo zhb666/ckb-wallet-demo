@@ -67,14 +67,18 @@ const data: DataType[] = [
 
 const TransactionsTable: React.FC = () => {
 
-	const [blockHeight, setBlockHeight] = useState(0)
+	const [tableData, setTableData] = useState<any>()
+
+	// get table data
+	const getTableData = async () => {
+		const res = await get_transactions();
+		if (res) setTableData(res);
+	};
 
 	useEffect(() => {
-
-
-
-
+		getTableData()
 	}, [])
+
 
 	return (
 		<>
