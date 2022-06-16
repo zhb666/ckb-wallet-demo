@@ -3,10 +3,11 @@
 
 .mian{
 	width: 70%;
-	height: 1000px;
+	height: auto;
 	padding: 20px;
 	box-sizing: border-box;
 	margin: auto;
+	overflow: hidden;
 	input{
 		margin: 0px 0 10px 0;
 	}

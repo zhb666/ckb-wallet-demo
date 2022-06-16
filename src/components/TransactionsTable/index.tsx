@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
 import { Space, Table, Button } from 'antd';
+import { IndexerTransaction } from "../../service/type"
 
 import {
 	get_transactions
@@ -8,71 +9,51 @@ import {
 import './index.scss';
 
 
-interface DataType {
-	key: string;
-	id: string | number;
-	type: string;
-	hash: string | number;
-}
 
-const columns: ColumnsType<DataType> = [
+// interface DataType {
+// 	key: string;
+// 	id: string | number;
+// 	type: string;
+// 	hash: string | number;
+// }
+
+const columns: ColumnsType<IndexerTransaction> = [
 	{
 		title: 'ID',
-		dataIndex: 'id',
-		key: 'id'
+		render: (text, record, index) => `${index + 1}`,
 	},
 	{
 		title: 'Type',
-		dataIndex: 'type',
-		key: 'type',
-	},
-	{
-		title: 'Hash',
-		dataIndex: 'hash',
-		key: 'hash',
-
+		dataIndex: 'io_type',
+		key: 'io_type',
 	},
 	{
 		title: 'View Transactions',
-		key: 'hash',
+		key: 'tx_index',
 		render: (_, record) => (
 			<Space size="middle">
-				<a>{record.hash}</a>
+				<a>{record.transaction.hash}</a>
 			</Space>
 		),
 	},
 ];
 
-const data: DataType[] = [
-	{
-		id: 1,
-		key: '1',
-		hash: "11111111",
-		type: "pending"
-	},
-	{
-		id: 2,
-		key: '2',
-		hash: "11111111",
-		type: "pending"
-	},
-	{
-		id: 3,
-		key: '3',
-		hash: "11111111",
-		type: "pending"
-	},
+const data: IndexerTransaction[] = [
+
 ];
 
 
 const TransactionsTable: React.FC = () => {
 
-	const [tableData, setTableData] = useState<any>()
+	const [tableData, setTableData] = useState<IndexerTransaction[]>(data)
+	const [lastCursor, setLastCursor] = useState<string>('')
 
 	// get table data
 	const getTableData = async () => {
-		const res = await get_transactions();
-		if (res) setTableData(res);
+		const res = await get_transactions(lastCursor);
+		console.log(res, "res____")
+		if (res && res.objects) setTableData(res.objects);
+		setLastCursor(res.lastCursor)
 	};
 
 	useEffect(() => {
@@ -81,8 +62,9 @@ const TransactionsTable: React.FC = () => {
 
 
 	return (
+		// rowKey={columns => columns.io_type
 		<div className='transactionsTable'>
-			<Table columns={columns} pagination={false} dataSource={data} />
+			<Table columns={columns} pagination={false} dataSource={tableData} />
 			<Button className='button' type="primary">next</Button>
 		</div>
 	)

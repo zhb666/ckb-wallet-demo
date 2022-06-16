@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
-import { notification, Spin } from 'antd';
+import { notification, Spin, Button } from 'antd';
 import { NotificationType } from "../../common/ts/Types"
 
 import Table from '../../components/TransactionsTable'
@@ -91,19 +91,16 @@ export default function Secp256k1Transfer() {
         <br />
         {txHash ? <p>txHash : {txHash}</p> : null}
 
-
-        <button
-          onClick={send}
-        >
+        <Button className='sendButton' type="primary" block onClick={send}>
           Transfer
-        </button>
+        </Button>
 
         <div className="Table">
-          <Table/>
+          <Table />
         </div>
       </div>
 
-      
+
 
     </Spin>
   );

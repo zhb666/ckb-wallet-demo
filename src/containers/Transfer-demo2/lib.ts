@@ -93,7 +93,8 @@ export const transfer = async (options: Options) => {
   const privateKey = options.privKey; // example private key
 
   // const ckb = new CKB("https://testnet.ckb.dev"); // instantiate the JS SDK with provided node url
-  const ckb = new CKB("http://localhost:8114"); // instantiate the JS SDK with provided node url
+  // const ckb = new CKB("http://localhost:8114"); // instantiate the JS SDK with provided node url
+  const ckb = new CKB("http://localhost:9000"); // instantiate the JS SDK with provided node url
 
   // await ckb.loadDeps(); // load the dependencies of secp256k1 algorithm which is used to verify the signature in transaction's witnesses.
 

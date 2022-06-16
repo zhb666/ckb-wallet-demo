@@ -9,7 +9,7 @@ import './index.scss';
 
 function Progress() {
 
-	const [blockHeight, setBlockHeight] = useState(0)
+	const [blockHeight, setBlockHeight] = useState<any>(0)
 
 	useEffect(() => {
 
@@ -21,7 +21,7 @@ function Progress() {
 
 			let height = Number(scriptsNum.toString()) / Number(tipHeaderNum.toString()) * 100
 
-			setBlockHeight(height)
+			setBlockHeight(height.toFixed(2))
 		}, 5000)
 
 

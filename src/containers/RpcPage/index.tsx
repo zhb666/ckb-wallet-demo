@@ -58,13 +58,13 @@ const Component: React.FC = () => {
 			</div>
 			<div>
 				<button onClick={async () => {
-					const num = await (await getCapacity("0x494c0c")).toString();
+					const num = await (await getCapacity("0x57381b")).toString();
 					console.log(num)
 				}}>BI.from</button>
 			</div>
 			<div>
 				<button onClick={async () => {
-					const num = await (await getCapacity("0x609bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce80158700e3b7fb4e4a24dc39e871920471dee5d347700000000004f206c000000010000000100")).toString();
+					const num = await (await getCapacity("0x1b454")).toString();
 					console.log(num)
 				}}>BI.from</button>
 			</div>
@@ -72,4 +72,6 @@ const Component: React.FC = () => {
 	);
 };
 
+
 export default Component;
+
