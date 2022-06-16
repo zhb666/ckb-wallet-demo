@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
-import { Space, Table } from 'antd';
+import { Space, Table, Button } from 'antd';
 
 import {
 	get_transactions
@@ -52,13 +52,13 @@ const data: DataType[] = [
 	},
 	{
 		id: 2,
-		key: '1',
+		key: '2',
 		hash: "11111111",
 		type: "pending"
 	},
 	{
 		id: 3,
-		key: '1',
+		key: '3',
 		hash: "11111111",
 		type: "pending"
 	},
@@ -81,9 +81,10 @@ const TransactionsTable: React.FC = () => {
 
 
 	return (
-		<>
-			<Table columns={columns} dataSource={data} />
-		</>
+		<div className='transactionsTable'>
+			<Table columns={columns} pagination={false} dataSource={data} />
+			<Button className='button' type="primary">next</Button>
+		</div>
 	)
 }
 

@@ -56,7 +56,6 @@ export async function setScripts() {
     "set_scripts",
     set_scripts_params
   );
-  console.log(res, "set_scripts");
   return res;
 }
 
@@ -67,7 +66,6 @@ export async function setScripts() {
  */
 export async function getTipHeader() {
   const res = await request(1, ckbLightClientRPC, "get_tip_header", []);
-  console.log(res, "get_tip_header");
   return res;
 }
 
@@ -78,7 +76,6 @@ export async function getTipHeader() {
  */
 export async function getScripts() {
   const res = await request(1, ckbLightClientRPC, "get_scripts", []);
-  console.log(res, "get_scripts");
   return res;
 }
 
@@ -149,17 +146,20 @@ const get_transactions_params = [
     order: "asc"
   },
   "asc",
-  "0x1e0"
+  "0x16"
 ];
 
 /**
  * @description: get_transactions
  */
-export async function get_transactions() {
+export async function get_transactions(lastCursor?: string) {
   let infos: IndexerTransaction[] = [];
   let cursor: string | undefined;
   const sizeLimit = 500;
   const order = "asc";
+  if (lastCursor) {
+    get_transactions_params.push(lastCursor);
+  }
   const res = await request(
     2,
     ckbLightClientRPC,

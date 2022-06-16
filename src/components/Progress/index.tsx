@@ -18,15 +18,10 @@ function Progress() {
 			const tipHeaderRes = await getTipHeader()
 			let scriptsNum = await getCapacity(scriptsRes[0].block_number)
 			let tipHeaderNum = await getCapacity(tipHeaderRes.number)
-			console.log(Number(scriptsNum.toString()), Number(tipHeaderNum.toString()));
 
 			let height = Number(scriptsNum.toString()) / Number(tipHeaderNum.toString()) * 100
 
 			setBlockHeight(height)
-
-
-			console.log(height)
-
 		}, 5000)
 
 
