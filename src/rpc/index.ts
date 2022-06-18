@@ -26,12 +26,12 @@ const DefaultTerminator: Terminator = () => {
 //     script_type: "lock"
 //   }
 // ];
-
+// 0xf498b54dde9043354a2efe68c65ef8365f255a4a
 const script = {
   code_hash:
     "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
   hash_type: "type",
-  args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
+  args: "0xf498b54dde9043354a2efe68c65ef8365f255a4a"
 };
 
 const set_scripts_params = [
@@ -143,7 +143,7 @@ const get_transactions_params = [
   {
     script,
     script_type: "lock",
-    order: "asc"
+    filter: script
   },
   "asc",
   "0x16"
@@ -200,5 +200,20 @@ export async function get_cells_capacity() {
     get_cells_capacity_params
   );
   console.log(res, "get_cells_capacity");
+  return res;
+}
+
+const get_transaction_params = [
+  {
+    script,
+    script_type: "lock"
+  }
+];
+
+/**
+ * @description: get_transaction
+ */
+export async function get_transaction(hash: string) {
+  const res = await request(1, ckbLightClientRPC, "get_transaction", [hash]);
   return res;
 }

@@ -10,7 +10,7 @@ import "./index.scss"
 
 
 export default function Secp256k1Transfer() {
-  const [privKey, setPrivKey] = useState("0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40");
+  const [privKey, setPrivKey] = useState("0x9acbab8217e1692799b85e3d784b9132603d816944a17d39b101daf4ff89efd1");
   const [fromAddr, setFromAddr] = useState("");
   const [fromLock, setFromLock] = useState<Script>();
   const [balance, setBalance] = useState("");

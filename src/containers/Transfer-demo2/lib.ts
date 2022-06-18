@@ -36,12 +36,9 @@ type Account = {
 export const generateAccountFromPrivateKey = (privKey: string): Account => {
   // Convert to public key
   const pubKey = hd.key.privateToPublic(privKey);
-  console.log(pubKey, "pubKey___");
   const args = hd.key.publicKeyToBlake160(pubKey);
-  console.log(args, "args___");
 
   const template = RPC_NETWORK.SCRIPTS["SECP256K1_BLAKE160"]!;
-  console.log(template, "template_____");
   const lockScript = {
     code_hash: template.CODE_HASH,
     hash_type: template.HASH_TYPE,
@@ -49,7 +46,6 @@ export const generateAccountFromPrivateKey = (privKey: string): Account => {
   };
   // get address
   const address = helpers.generateAddress(lockScript, { config: RPC_NETWORK });
-  console.log(address, "address____");
   return {
     lockScript,
     address,
@@ -67,16 +63,13 @@ export async function capacityOf(address: string): Promise<BI> {
 
   // Convert to bi object
   let balance = BI.from(0);
-  console.log(balance, "balance___");
 
   // Get balance
   for await (const cell of collector.collect()) {
     // balance++
     balance = balance.add(cell.cell_output.capacity);
-    console.log(cell.cell_output.capacity, "cell.cell_output.capacity_____");
   }
 
-  console.log(balance, "balance___");
   // sum
   return balance;
 }
