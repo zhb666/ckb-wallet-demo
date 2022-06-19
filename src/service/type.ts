@@ -78,7 +78,7 @@ export type IndexerTransaction = {
   block_number: HexNum;
   io_index: HexNum;
   io_type: IOType;
-  // tx_hash: Bytes32;
+  hash: string;
   tx_index: HexNum;
   transaction: any;
 };

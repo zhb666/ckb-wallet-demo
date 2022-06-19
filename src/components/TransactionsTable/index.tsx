@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
-import { Space, Table, Button } from 'antd';
+import { Space, Table, Button, message } from 'antd';
 import { IndexerTransaction } from "../../service/type"
-import { cutValue, getCapacity } from "../../utils/index"
+import { cutValue, getCapacity, formatDate } from "../../utils/index"
+import { div } from "../../utils/bigNumber"
 import { tableData as transactionsData } from "../../service/data"
 
 import {
@@ -10,6 +11,10 @@ import {
 	get_transaction
 } from "../../rpc";
 import './index.scss';
+
+// interface Transaction {
+// 	title
+// }
 
 
 const columns: ColumnsType<IndexerTransaction> = [
@@ -19,15 +24,30 @@ const columns: ColumnsType<IndexerTransaction> = [
 	},
 	{
 		title: 'Type',
-		dataIndex: 'io_type',
-		key: 'io_type',
+		dataIndex: 'type',
+		key: 'type',
+	},
+	{
+		title: 'Date',
+		dataIndex: 'timestamp',
+		key: 'timestamp',
+	},
+	{
+		title: 'BlockHeighr',
+		dataIndex: 'blockHeight',
+		key: 'blockHeight',
+	},
+	{
+		title: 'coinQuantity',
+		dataIndex: 'coinQuantity',
+		key: 'coinQuantity',
 	},
 	{
 		title: 'View Transaction',
 		key: 'tx_index',
 		render: (_, record) => (
 			<Space size="middle">
-				<a>{cutValue(record.transaction.hash, 10, 10)}</a>
+				<a>{cutValue(record.hash, 10, 10)}</a>
 			</Space>
 		),
 	},
@@ -39,9 +59,6 @@ const data: IndexerTransaction[] = [
 
 
 const TransactionsTable: React.FC = () => {
-
-
-
 
 	const getBlockHeight = async (val: string) => {
 		const num = await getCapacity(val).toString();
@@ -58,8 +75,13 @@ const TransactionsTable: React.FC = () => {
 		const finalData = []
 		// const res = await get_transactions(lastCursor);
 		// console.log(res, "res____")
-		// if (res && res.objects) setTableData(res.objects);
-		// setLastCursor(res.lastCursor)
+		// if (res && res.objects.length == 0) {
+		// 	message.warning('The data is in the end');
+		// 	return
+		// } else {
+
+		// 	setLastCursor(res.lastCursor)
+		// }
 
 		console.log(transactionsData, "transactionsData___");
 
@@ -82,6 +104,7 @@ const TransactionsTable: React.FC = () => {
 			}
 		}
 		console.log(finalData, "finalData____");
+		setTableData(finalData);
 
 	};
 
@@ -90,12 +113,12 @@ const TransactionsTable: React.FC = () => {
 		// TODO 做下类型检查
 		const obj: any = {}
 		const res = await get_transaction(output[0].transaction.hash);
-		obj.timestamp = parseInt(res.header.timestamp)
+		obj.timestamp = formatDate(parseInt(res.header.timestamp))
 		obj.hash = res.transaction.hash
 		obj.type = "add"
 		obj.blockHeight = parseInt(res.header.number)
 		// obj.money = (await getCapacity(res.transaction.outputs[0].capacity)).toString()
-		obj.money = parseInt(res.transaction.outputs[0].capacity)
+		obj.coinQuantity = parseInt(res.transaction.outputs[0].capacity) / 100000000
 
 		return obj
 	}
@@ -105,12 +128,12 @@ const TransactionsTable: React.FC = () => {
 		console.log(output, "output____")
 		// TODO 做下类型检查
 		const obj: any = {
-			money: 0
+			coinQuantity: 0
 		}
 
 		// 单独请求一次，拿头部的信息
 		const res = await get_transaction(inputs[0].transaction.hash);
-		obj.timestamp = parseInt(res.header.timestamp)
+		obj.timestamp = formatDate(parseInt(res.header.timestamp))
 		obj.hash = res.transaction.hash
 		obj.type = "reduce"
 		obj.blockHeight = parseInt(res.header.number)
@@ -120,10 +143,10 @@ const TransactionsTable: React.FC = () => {
 			let since = parseInt(inputs[i].transaction.inputs[i].previous_output.index)
 			const res = await get_transaction(inputs[i].transaction.inputs[i].previous_output.tx_hash);
 
-			obj.money += parseInt(res.transaction.outputs[since].capacity)
+			obj.coinQuantity += parseInt(res.transaction.outputs[since].capacity)
 		}
 
-		obj.money = obj.money - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)
+		obj.coinQuantity = (obj.coinQuantity - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)) / 100000000
 
 		return obj
 
@@ -149,7 +172,7 @@ const TransactionsTable: React.FC = () => {
 					onClick: event => { getHash(record) },
 				};
 			}} columns={columns} pagination={false} dataSource={tableData} />
-			<Button className='button' type="primary">next</Button>
+			<Button onClick={getTableData} className='button' type="primary">next</Button>
 		</div>
 	)
 }

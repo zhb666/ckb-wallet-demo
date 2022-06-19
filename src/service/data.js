@@ -303,7 +303,7 @@ export const tableData = [
   ],
   [
     {
-      block_number: "0x4f1ea9",
+      block_number: "0x576852",
       io_index: "0x0",
       io_type: "input",
       transaction: {
@@ -317,21 +317,21 @@ export const tableData = [
             }
           }
         ],
-        hash: "0x8bb30fefcca30becf1baad8be18b8c54991c715585348471d5f915004603d3e4",
+        hash: "0xfc1625d7fb033930c7615669c11c1ca1afab442683b3f94dd9f4891e67c911a8",
         header_deps: [],
         inputs: [
           {
             previous_output: {
-              index: "0x1",
+              index: "0x0",
               tx_hash:
-                "0x5b728b70ba9924d0bf0646b17753b4a89caccf43ec1cc99a33ec6b118911d19b"
+                "0x40353df3099510d4103086db369a8e87560d4db224ad88dffc22ea32b2317809"
             },
             since: "0x0"
           }
         ],
         outputs: [
           {
-            capacity: "0x1c2c235f80",
+            capacity: "0x20c855800",
             lock: {
               args: "0xe3e0a82b199dceadb55e223c6e4b8e511d57d249",
               code_hash:
@@ -341,9 +341,9 @@ export const tableData = [
             type: null
           },
           {
-            capacity: "0x1dcd4c960",
+            capacity: "0x12a05d9960",
             lock: {
-              args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477",
+              args: "0xf498b54dde9043354a2efe68c65ef8365f255a4a",
               code_hash:
                 "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
               hash_type: "type"
@@ -354,13 +354,13 @@ export const tableData = [
         outputs_data: ["0x", "0x"],
         version: "0x0",
         witnesses: [
-          "0x5500000010000000550000005500000041000000ef6353e3c5d98613828e65b7c0e43f082b9043bad22db76cbf12715fe4cdf63f73eaa7f9ed9d8336054b26c9d5751db80bf03812242a82032eaa949165404ef700"
+          "0x5500000010000000550000005500000041000000cbea80b9ca8e6cfc4f5960866cfa6b35f7a1977a4d63614d90f8178f108fcf1f74608485d542780fbbb44f0295c75dd80a2c4c71b8d34fc197fbe8497670699000"
         ]
       },
       tx_index: "0x1"
     },
     {
-      block_number: "0x4f1ea9",
+      block_number: "0x576852",
       io_index: "0x1",
       io_type: "output",
       transaction: {
@@ -374,21 +374,21 @@ export const tableData = [
             }
           }
         ],
-        hash: "0x8bb30fefcca30becf1baad8be18b8c54991c715585348471d5f915004603d3e4",
+        hash: "0xfc1625d7fb033930c7615669c11c1ca1afab442683b3f94dd9f4891e67c911a8",
         header_deps: [],
         inputs: [
           {
             previous_output: {
-              index: "0x1",
+              index: "0x0",
               tx_hash:
-                "0x5b728b70ba9924d0bf0646b17753b4a89caccf43ec1cc99a33ec6b118911d19b"
+                "0x40353df3099510d4103086db369a8e87560d4db224ad88dffc22ea32b2317809"
             },
             since: "0x0"
           }
         ],
         outputs: [
           {
-            capacity: "0x1c2c235f80",
+            capacity: "0x20c855800",
             lock: {
               args: "0xe3e0a82b199dceadb55e223c6e4b8e511d57d249",
               code_hash:
@@ -398,9 +398,9 @@ export const tableData = [
             type: null
           },
           {
-            capacity: "0x1dcd4c960",
+            capacity: "0x12a05d9960",
             lock: {
-              args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477",
+              args: "0xf498b54dde9043354a2efe68c65ef8365f255a4a",
               code_hash:
                 "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
               hash_type: "type"
@@ -411,7 +411,7 @@ export const tableData = [
         outputs_data: ["0x", "0x"],
         version: "0x0",
         witnesses: [
-          "0x5500000010000000550000005500000041000000ef6353e3c5d98613828e65b7c0e43f082b9043bad22db76cbf12715fe4cdf63f73eaa7f9ed9d8336054b26c9d5751db80bf03812242a82032eaa949165404ef700"
+          "0x5500000010000000550000005500000041000000cbea80b9ca8e6cfc4f5960866cfa6b35f7a1977a4d63614d90f8178f108fcf1f74608485d542780fbbb44f0295c75dd80a2c4c71b8d34fc197fbe8497670699000"
         ]
       },
       tx_index: "0x1"
