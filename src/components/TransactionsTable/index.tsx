@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
 import { Space, Table, Button, message } from 'antd';
 import { IndexerTransaction } from "../../service/type"
-import { FinalDataObject } from "../../type"
+import { FinalDataObject, TransactionObject } from "../../type"
 import { cutValue, getCapacity, formatDate } from "../../utils/index"
 import { browserUrl } from "../../config/url"
 import { tableData as transactionsData } from "../../service/data"
@@ -102,7 +102,7 @@ const TransactionsTable: React.FC = () => {
 	};
 
 	// income related
-	const incomeFun = async (output: any) => {
+	const incomeFun = async (output: TransactionObject[]) => {
 		const obj: FinalDataObject = {
 			timestamp: "",
 			coinQuantity: 0,
@@ -122,7 +122,7 @@ const TransactionsTable: React.FC = () => {
 	}
 
 	// Transfer related
-	const transferFun = async (inputs: any, output: any) => {
+	const transferFun = async (inputs: TransactionObject[], output: TransactionObject[]) => {
 		const obj: FinalDataObject = {
 			timestamp: "",
 			coinQuantity: 0,

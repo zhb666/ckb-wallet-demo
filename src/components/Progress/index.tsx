@@ -9,7 +9,9 @@ import './index.scss';
 
 function Progress() {
 
-	const [blockHeight, setBlockHeight] = useState<any>(0)
+	const [blockHeight, setBlockHeight] = useState<any>(0);
+	const [scriptsHeight, setScriptsHeight] = useState<any>(0);
+	const [tipHeader, setTipHeader] = useState<any>(0);
 
 	useEffect(() => {
 
@@ -21,7 +23,10 @@ function Progress() {
 
 			let height = Number(scriptsNum.toString()) / Number(tipHeaderNum.toString()) * 100
 
-			setBlockHeight(height.toFixed(2))
+			setBlockHeight(Number(height.toFixed(2)))
+			setScriptsHeight(parseInt(scriptsNum.toString()))
+			setTipHeader(parseInt(tipHeaderNum.toString()))
+
 		}, 5000)
 
 
@@ -29,6 +34,7 @@ function Progress() {
 
 	return (
 		<>
+
 			<ProgressAnd
 				type="circle"
 				strokeColor={{
@@ -39,8 +45,9 @@ function Progress() {
 				percent={blockHeight}
 
 			/>
+			<p className='height'>  {scriptsHeight.toLocaleString()} / {tipHeader.toLocaleString()}</p>
 			{
-				blockHeight > 100 ? <p>区块数据同步完成...</p> : <p>区块数据同步中...</p>
+				blockHeight >= 100 ? <p>区块数据同步完成...</p> : <p>区块数据同步中...</p>
 			}
 
 		</>
