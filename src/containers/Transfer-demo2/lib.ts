@@ -85,11 +85,11 @@ interface Options {
 export const transfer = async (options: Options) => {
   const privateKey = options.privKey; // example private key
 
-  // const ckb = new CKB("https://testnet.ckb.dev"); // instantiate the JS SDK with provided node url
-  // const ckb = new CKB("http://localhost:8114"); // instantiate the JS SDK with provided node url
-  const ckb = new CKB("http://localhost:9000"); // instantiate the JS SDK with provided node url
+  // const ckb = new CKB("https://testnet.ckb.dev");
+  // const ckb = new CKB("http://localhost:8114");
+  const ckb = new CKB("http://localhost:9000");
 
-  // await ckb.loadDeps(); // load the dependencies of secp256k1 algorithm which is used to verify the signature in transaction's witnesses.
+  // await ckb.loadDeps();
 
   const publicKey = await ckb.utils.privateKeyToPublicKey(privateKey);
   /**
@@ -139,6 +139,19 @@ export const transfer = async (options: Options) => {
     args: publicKeyHash
   };
   console.log(ckb.config.secp256k1Dep, "ckb.config.secp256k1Dep");
+
+  const deps = {
+    hashType: "type",
+    codeHash:
+      "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+    outPoint: {
+      txHash:
+        "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37",
+      index: "0x0"
+    },
+    depType: "depGroup"
+  };
+
   // return;
 
   // const lock = {
@@ -169,26 +182,6 @@ export const transfer = async (options: Options) => {
       prefix: ckb.utils.AddressPrefix.Testnet
     }
   );
-
-  /**
-   * @param fee - transaction fee, can be set in number directly, or use an reconciler to set by SDK
-   *                               say, fee: BigInt(100000) means transaction fee is 100000 shannons
-   *                                or, fee: { feeRate: '0x7d0', reconciler: ckb.utils.reconcilers.extraInputs } to set transaction fee by reconcilers.extraInputs with feeRate = 2000 shannons/Byte
-   *
-   * @external https://docs.nervos.org/docs/essays/faq#how-do-you-calculate-transaction-fee
-   */
-
-  const deps = {
-    hashType: "type",
-    codeHash:
-      "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-    outPoint: {
-      txHash:
-        "0xf8de3bb47d055cdf460d93a2a6e1b05f7432f9777c8c474abf4eec1d4aee5d37",
-      index: "0x0"
-    },
-    depType: "depGroup"
-  };
 
   const rawTransaction = await ckb.generateRawTransaction({
     fromAddress: options.from,

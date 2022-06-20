@@ -4,7 +4,7 @@ import { Space, Table, Button, message } from 'antd';
 import { IndexerTransaction } from "../../service/type"
 import { FinalDataObject } from "../../type"
 import { cutValue, getCapacity, formatDate } from "../../utils/index"
-import { div } from "../../utils/bigNumber"
+import { browserUrl } from "../../config/url"
 import { tableData as transactionsData } from "../../service/data"
 
 import {
@@ -12,11 +12,6 @@ import {
 	get_transaction
 } from "../../rpc";
 import './index.scss';
-
-// interface Transaction {
-// 	title
-// }
-
 
 const columns: ColumnsType<FinalDataObject> = [
 	{
@@ -157,9 +152,11 @@ const TransactionsTable: React.FC = () => {
 
 	}
 
-	// get row
+	// get row open url
 	const getHash = async (transactionsInfo: FinalDataObject) => {
-		console.log(transactionsInfo)
+		console.log(transactionsInfo);
+
+		window.open(`${browserUrl.test}/transaction/${transactionsInfo.hash}`)
 	}
 
 
