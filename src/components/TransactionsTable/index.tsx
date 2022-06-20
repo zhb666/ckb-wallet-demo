@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
 import { Space, Table, Button, message } from 'antd';
 import { IndexerTransaction } from "../../service/type"
+import { FinalDataObject } from "../../type"
 import { cutValue, getCapacity, formatDate } from "../../utils/index"
 import { div } from "../../utils/bigNumber"
 import { tableData as transactionsData } from "../../service/data"
@@ -17,28 +18,28 @@ import './index.scss';
 // }
 
 
-const columns: ColumnsType<IndexerTransaction> = [
+const columns: ColumnsType<FinalDataObject> = [
 	{
 		title: 'ID',
 		render: (text, record, index) => `${index + 1}`,
 	},
-	{
-		title: 'Type',
-		dataIndex: 'type',
-		key: 'type',
-	},
+	// {
+	// 	title: 'Type',
+	// 	dataIndex: 'type',
+	// 	key: 'type',
+	// },
 	{
 		title: 'Date',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
 	},
 	{
-		title: 'BlockHeighr',
+		title: 'Block Height',
 		dataIndex: 'blockHeight',
 		key: 'blockHeight',
 	},
 	{
-		title: 'coinQuantity',
+		title: 'Amount',
 		dataIndex: 'coinQuantity',
 		key: 'coinQuantity',
 	},
@@ -53,9 +54,6 @@ const columns: ColumnsType<IndexerTransaction> = [
 	},
 ];
 
-const data: IndexerTransaction[] = [
-
-];
 
 
 const TransactionsTable: React.FC = () => {
@@ -66,13 +64,13 @@ const TransactionsTable: React.FC = () => {
 	}
 
 
-	const [tableData, setTableData] = useState<IndexerTransaction[]>(data)
+	const [tableData, setTableData] = useState<FinalDataObject[]>([])
 	const [lastCursor, setLastCursor] = useState<string>('')
 
 	// get table data
 	const getTableData = async () => {
-		// 结果
-		const finalData = []
+		// Result data
+		const finalData: FinalDataObject[] = []
 		// const res = await get_transactions(lastCursor);
 		// console.log(res, "res____")
 		// if (res && res.objects.length == 0) {
@@ -86,18 +84,18 @@ const TransactionsTable: React.FC = () => {
 		console.log(transactionsData, "transactionsData___");
 
 
-		//TODO 数据改成接口拿到的数据
+		//TODO Change the data to the data obtained by the interface
 		for (let tabs of transactionsData) {
 			// output
 			let outputs = tabs.filter(item => item.io_type != "input");
 			// input
 			let inputs = tabs.filter(item => item.io_type != "output");
-			// 收入
+			// income
 			if (inputs.length == 0) {
 				const res = await incomeFun(outputs);
 				finalData.push(res)
 			}
-			// 转账
+			// transfer accounts
 			else {
 				const res = await transferFun(inputs, outputs);
 				finalData.push(res)
@@ -108,37 +106,44 @@ const TransactionsTable: React.FC = () => {
 
 	};
 
-	// 到账相关
+	// income related
 	const incomeFun = async (output: any) => {
-		// TODO 做下类型检查
-		const obj: any = {}
+		const obj: FinalDataObject = {
+			timestamp: "",
+			coinQuantity: 0,
+			hash: "",
+			type: "",
+			blockHeight: 0
+		}
 		const res = await get_transaction(output[0].transaction.hash);
 		obj.timestamp = formatDate(parseInt(res.header.timestamp))
 		obj.hash = res.transaction.hash
 		obj.type = "add"
 		obj.blockHeight = parseInt(res.header.number)
 		// obj.money = (await getCapacity(res.transaction.outputs[0].capacity)).toString()
-		obj.coinQuantity = parseInt(res.transaction.outputs[0].capacity) / 100000000
+		obj.coinQuantity = '+' + parseInt(res.transaction.outputs[0].capacity) / 100000000
 
 		return obj
 	}
 
-	// 转账相关
+	// Transfer related
 	const transferFun = async (inputs: any, output: any) => {
-		console.log(output, "output____")
-		// TODO 做下类型检查
-		const obj: any = {
-			coinQuantity: 0
+		const obj: FinalDataObject = {
+			timestamp: "",
+			coinQuantity: 0,
+			hash: "",
+			type: "",
+			blockHeight: 0
 		}
 
-		// 单独请求一次，拿头部的信息
+		// Make a separate request and get the header information
 		const res = await get_transaction(inputs[0].transaction.hash);
 		obj.timestamp = formatDate(parseInt(res.header.timestamp))
 		obj.hash = res.transaction.hash
-		obj.type = "reduce"
+		obj.type = "subtract"
 		obj.blockHeight = parseInt(res.header.number)
 
-		// 请求相关的previous_output
+		// previous_output
 		for (let i = 0; i < inputs.length; i++) {
 			let since = parseInt(inputs[i].transaction.inputs[i].previous_output.index)
 			const res = await get_transaction(inputs[i].transaction.inputs[i].previous_output.tx_hash);
@@ -146,14 +151,14 @@ const TransactionsTable: React.FC = () => {
 			obj.coinQuantity += parseInt(res.transaction.outputs[since].capacity)
 		}
 
-		obj.coinQuantity = (obj.coinQuantity - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)) / 100000000
+		obj.coinQuantity = '-' + (obj.coinQuantity - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)) / 100000000
 
 		return obj
 
 	}
 
-	// 获取每行详情
-	const getHash = async (transactionsInfo: IndexerTransaction) => {
+	// get row
+	const getHash = async (transactionsInfo: FinalDataObject) => {
 		console.log(transactionsInfo)
 	}
 
@@ -165,9 +170,8 @@ const TransactionsTable: React.FC = () => {
 
 
 	return (
-		// rowKey={columns => columns.io_type
 		<div className='transactionsTable'>
-			<Table onRow={record => {
+			<Table rowKey={record => record.hash} onRow={record => {
 				return {
 					onClick: event => { getHash(record) },
 				};
