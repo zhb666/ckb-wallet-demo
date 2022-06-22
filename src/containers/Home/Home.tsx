@@ -47,15 +47,13 @@ const Component: React.FC = () => {
 
 	return (
 		<main className="home">
-			<button onClick={getHD}>Create Wallet</button>
 			<p>
 				mnemonic:<input readOnly value={hd.m} type="text" placeholder='' />
 			</p>
-			<p>
+			{/* <p>
 				Private key:<input readOnly value={hd.extendedPrivateKey.privateKey} type="text" placeholder='' />
-			</p>
-
-
+			</p> */}
+			<button onClick={getHD}>Create Wallet</button>
 		</main>
 	);
 };

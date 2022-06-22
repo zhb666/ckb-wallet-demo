@@ -65,10 +65,10 @@ export default function Secp256k1Transfer() {
         />
         <ul>
           <li>CKB Address: {fromAddr}</li>
-          <li>
+          {/* <li>
             Current lock script:
             <pre>{JSON.stringify(fromLock, null, 2)}</pre>
-          </li>
+          </li> */}
 
           <li>Total ckb: {Number(balance) / 100000000} </li>
         </ul>

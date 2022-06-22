@@ -53,12 +53,6 @@ const columns: ColumnsType<FinalDataObject> = [
 
 const TransactionsTable: React.FC = () => {
 
-	const getBlockHeight = async (val: string) => {
-		const num = await getCapacity(val).toString();
-		return num
-	}
-
-
 	const [tableData, setTableData] = useState<FinalDataObject[]>([])
 	const [lastCursor, setLastCursor] = useState<string>('')
 
