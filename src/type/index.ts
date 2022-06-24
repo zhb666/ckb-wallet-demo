@@ -15,6 +15,12 @@ export interface TransactionObject {
   tx_index: string;
 }
 
+export interface ScriptObject {
+  code_hash: string;
+  hash_type: string;
+  args: string;
+}
+
 interface Transaction {
   cell_deps: Celldep[];
   hash: string;

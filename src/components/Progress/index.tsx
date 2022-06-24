@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Progress as ProgressAnd } from 'antd';
 import { getCapacity } from "../../utils";
+import { UserStore } from "../../stores";
 import {
 	getScripts,
 	getTipHeader
@@ -12,20 +13,26 @@ function Progress() {
 	const [blockHeight, setBlockHeight] = useState<any>(0);
 	const [scriptsHeight, setScriptsHeight] = useState<any>(0);
 	const [tipHeader, setTipHeader] = useState<any>(0);
+	const UserStoreHox = UserStore();
 
 	useEffect(() => {
 
 		setInterval(async () => {
 			const scriptsRes = await getScripts()
 			const tipHeaderRes = await getTipHeader()
-			let scriptsNum = await getCapacity(scriptsRes[0].block_number)
-			let tipHeaderNum = await getCapacity(tipHeaderRes.number)
 
-			let height = Number(scriptsNum.toString()) / Number(tipHeaderNum.toString()) * 100
+			let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == UserStoreHox.script.args);
+
+			let scriptsNum = parseInt(scriptsFilter[0].block_number)
+			let tipHeaderNum = parseInt(tipHeaderRes.number)
+
+			let height = scriptsNum / tipHeaderNum * 100
+
 
 			setBlockHeight(Number(height.toFixed(2)))
-			setScriptsHeight(parseInt(scriptsNum.toString()))
-			setTipHeader(parseInt(tipHeaderNum.toString()))
+			setScriptsHeight(scriptsNum)
+			setTipHeader(tipHeaderNum)
+
 
 		}, 5000)
 

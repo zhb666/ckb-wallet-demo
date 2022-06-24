@@ -46,7 +46,8 @@
     "reoverlay": "^1.0.0",
     "sanitize.css": "^13.0.0",
     "segmented-control": "^0.1.17",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "hox": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
