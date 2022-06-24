@@ -1,9 +1,10 @@
 export interface FinalDataObject {
-  coinQuantity: any;
+  amount: any;
   timestamp: string;
   hash: string;
   type: string;
-  blockHeight: number;
+  state: string;
+  blockHeight: number | string;
 }
 
 export interface TransactionObject {

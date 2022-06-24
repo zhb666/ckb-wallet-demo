@@ -54,7 +54,7 @@ const Component: React.FC = () => {
 			</div>
 			<div>
 				<button onClick={async () => {
-					const res = await get_transaction("0x0ba1cee6c26b5e54bf8c6c22da445135cf13ee95420a8faf883f6686e3c68a8f")
+					const res = await get_transaction("0x5303c55839f4ad0564334d046b77afc468338e9629d5ceadcd96f95ae0a66f71")
 					console.log(res);
 
 				}}>get_transaction</button>

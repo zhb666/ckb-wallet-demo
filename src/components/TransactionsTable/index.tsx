@@ -13,11 +13,19 @@ import {
 } from "../../rpc";
 import './index.scss';
 
+declare const window: {
+	localStorage: {
+		getItem: Function;
+		setItem: Function;
+	};
+	open: Function
+};
+
 const columns: ColumnsType<FinalDataObject> = [
-	{
-		title: 'ID',
-		render: (text, record, index) => `${index + 1}`,
-	},
+	// {
+	// 	title: 'ID',
+	// 	render: (text, record, index) => `${index + 1}`,
+	// },
 	// {
 	// 	title: 'Type',
 	// 	dataIndex: 'type',
@@ -35,8 +43,8 @@ const columns: ColumnsType<FinalDataObject> = [
 	},
 	{
 		title: 'Amount',
-		dataIndex: 'coinQuantity',
-		key: 'coinQuantity',
+		dataIndex: 'amount',
+		key: 'amount',
 	},
 	{
 		title: 'View Transaction',
@@ -47,14 +55,50 @@ const columns: ColumnsType<FinalDataObject> = [
 			</Space>
 		),
 	},
+	{
+		title: 'State',
+		dataIndex: 'state',
+		key: 'state',
+	},
 ];
 
+interface Props {
+	item: FinalDataObject;
+	off: boolean
+}
 
-
-const TransactionsTable: React.FC = () => {
+const TransactionsTable: React.FC<Props> = ({
+	item,
+	off
+}) => {
 
 	const [tableData, setTableData] = useState<FinalDataObject[]>([])
 	const [lastCursor, setLastCursor] = useState<string>('')
+
+
+	// Confirm status
+	useEffect(() => {
+		if (item.hash) {
+			if (off) {
+				// 取缓存
+				let finalData = JSON.parse(window.localStorage.getItem('finalData'))
+				setTableData(finalData);
+			} else {
+				setTableData([item, ...tableData]);
+			}
+		}
+	}, [item, off])
+
+
+	// 如果tableData有变化就需要重新设置缓存
+	useEffect(() => {
+		if (tableData) {
+			window.localStorage.setItem("finalData", JSON.stringify(tableData))
+		}
+
+	}, [tableData])
+
+
 
 	// get table data
 	const getTableData = async () => {
@@ -90,7 +134,7 @@ const TransactionsTable: React.FC = () => {
 				finalData.push(res)
 			}
 		}
-		console.log(finalData, "finalData____");
+		window.localStorage.setItem("finalData", JSON.stringify(finalData))
 		setTableData(finalData);
 
 	};
@@ -99,18 +143,20 @@ const TransactionsTable: React.FC = () => {
 	const incomeFun = async (output: TransactionObject[]) => {
 		const obj: FinalDataObject = {
 			timestamp: "",
-			coinQuantity: 0,
+			amount: 0,
 			hash: "",
 			type: "",
-			blockHeight: 0
+			blockHeight: 0,
+			state: ""
 		}
 		const res = await get_transaction(output[0].transaction.hash);
 		obj.timestamp = formatDate(parseInt(res.header.timestamp))
 		obj.hash = res.transaction.hash
 		obj.type = "add"
+		obj.state = "success"
 		obj.blockHeight = parseInt(res.header.number)
 		// obj.money = (await getCapacity(res.transaction.outputs[0].capacity)).toString()
-		obj.coinQuantity = '+' + parseInt(res.transaction.outputs[0].capacity) / 100000000
+		obj.amount = '+' + parseInt(res.transaction.outputs[0].capacity) / 100000000
 
 		return obj
 	}
@@ -119,10 +165,11 @@ const TransactionsTable: React.FC = () => {
 	const transferFun = async (inputs: TransactionObject[], output: TransactionObject[]) => {
 		const obj: FinalDataObject = {
 			timestamp: "",
-			coinQuantity: 0,
+			amount: 0,
 			hash: "",
 			type: "",
-			blockHeight: 0
+			blockHeight: 0,
+			state: ""
 		}
 
 		// Make a separate request and get the header information
@@ -130,6 +177,7 @@ const TransactionsTable: React.FC = () => {
 		obj.timestamp = formatDate(parseInt(res.header.timestamp))
 		obj.hash = res.transaction.hash
 		obj.type = "subtract"
+		obj.state = "success"
 		obj.blockHeight = parseInt(res.header.number)
 
 		// previous_output
@@ -137,10 +185,10 @@ const TransactionsTable: React.FC = () => {
 			let since = parseInt(inputs[i].transaction.inputs[i].previous_output.index)
 			const res = await get_transaction(inputs[i].transaction.inputs[i].previous_output.tx_hash);
 
-			obj.coinQuantity += parseInt(res.transaction.outputs[since].capacity)
+			obj.amount += parseInt(res.transaction.outputs[since].capacity)
 		}
 
-		obj.coinQuantity = '-' + (obj.coinQuantity - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)) / 100000000
+		obj.amount = '-' + (obj.amount - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)) / 100000000
 
 		return obj
 
