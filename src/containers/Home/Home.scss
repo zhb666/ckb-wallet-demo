@@ -3,20 +3,28 @@
 
 main.home
 {
-	width: 80%;
+	width: 70%;
 	margin: 0 auto;
-	height: auto;
-	display: flex;
+	height: 80%;
+	overflow: hidden;
 	p{
 		margin: 10px 0;
 	}
 	.walletlist{
-		flex: 0.6;
-		height: 200px;
-		border-right: 1px solid rgba(234, 233, 233,0.5);
+		width: 100%;
+		height: 600px;
+		// border-bottom: 1px solid rgba(234, 233, 233,0.5);
+		overflow: auto;
+		.walletlistTitle{
+			font-size: 20px;
+			font-weight: bold;
+		}
 	}
 	.walletType{
-		flex: 0.38;
+		width: 100%;
 		height: 200px;
+		button{
+			margin: 10px 0;
+		}
 	}
 }

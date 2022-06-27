@@ -4,33 +4,43 @@ import {
   Keystore,
   XPubStore
 } from "@ckb-lumos/hd";
+import { generateAccountFromPrivateKey } from "../containers/Transfer-demo2/lib";
 import CKB from "@nervosnetwork/ckb-sdk-core";
 
 const nodeUrl = "https://testnet.ckb.dev/rpc";
 
 const ckb = new CKB(nodeUrl);
 
-// 生成助记词;
+// Mnemonic
 export async function Mnemonic() {
   const m = await mnemonic.generateMnemonic();
-  console.log(m, "m====");
-
   const seed = mnemonic.mnemonicToSeedSync(m);
-  console.log(seed, "seed====");
-
   const extendedPrivateKey = ExtendedPrivateKey.fromSeed(seed);
-  console.log(extendedPrivateKey, "extendedPrivateKey====");
-
   // const keystore = Keystore.create(extendedPrivateKey, "123456");
   // console.log(keystore, "keystore====");
-
   return {
     m,
     extendedPrivateKey
   };
 }
 
-// Mnemonic();
+// PrivateKey ags
+export async function getPrivateKeyAgs(m: string) {
+  const seed = mnemonic.mnemonicToSeedSync(m);
+
+  const extendedPrivateKey = ExtendedPrivateKey.fromSeed(seed);
+  console.log(extendedPrivateKey, "extendedPrivateKey====");
+
+  const privateKeyAgs = generateAccountFromPrivateKey(
+    extendedPrivateKey.privateKey
+  );
+
+  return {
+    m,
+    privateKey: extendedPrivateKey.privateKey,
+    privateKeyAgs
+  };
+}
 
 const address = ckb.utils.pubkeyToAddress(
   "0x4b63e58669d29857d6c5c22d1e74518a0c43b4673882936b9fc684cf8f00a05a",

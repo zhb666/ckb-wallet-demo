@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Progress as ProgressAnd } from 'antd';
-import { getCapacity } from "../../utils";
 import { UserStore } from "../../stores";
 import {
 	getScripts,
@@ -8,36 +7,47 @@ import {
 } from "../../rpc";
 import './index.scss';
 
+let timer: any = null
 function Progress() {
-
+	const UserStoreHox = UserStore();
 	const [blockHeight, setBlockHeight] = useState<any>(0);
 	const [scriptsHeight, setScriptsHeight] = useState<any>(0);
 	const [tipHeader, setTipHeader] = useState<any>(0);
-	const UserStoreHox = UserStore();
 
 	useEffect(() => {
 
-		setInterval(async () => {
+		clearInterval(timer)
+
+		timer = setInterval(async () => {
 			const scriptsRes = await getScripts()
 			const tipHeaderRes = await getTipHeader()
 
-			let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == UserStoreHox.script.args);
+			let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == UserStoreHox.script?.privateKeyAgs.lockScript.args);
 
-			let scriptsNum = parseInt(scriptsFilter[0].block_number)
 			let tipHeaderNum = parseInt(tipHeaderRes.number)
 
-			let height = scriptsNum / tipHeaderNum * 100
+			// 没有匹配上钱包需要处理
+			if (scriptsFilter && scriptsFilter[0]?.block_number) {
+				let scriptsNum = parseInt(scriptsFilter[0].block_number || 0)
 
+				let height = scriptsNum / tipHeaderNum * 100
+				setBlockHeight(Number(height.toFixed(2)))
+				setScriptsHeight(scriptsNum)
+				setTipHeader(tipHeaderNum)
+			} else {
+				setBlockHeight(100)
+				setScriptsHeight(0)
+				setTipHeader(tipHeaderNum)
+			}
 
-			setBlockHeight(Number(height.toFixed(2)))
-			setScriptsHeight(scriptsNum)
-			setTipHeader(tipHeaderNum)
-
+			// return () => {
+			// 	clearInterval(timer)
+			// }
 
 		}, 5000)
 
 
-	}, [])
+	}, [UserStoreHox.script])
 
 	return (
 		<>

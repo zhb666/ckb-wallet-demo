@@ -58,3 +58,21 @@ interface Outpoint {
   index: string;
   tx_hash: string;
 }
+
+export interface WalletListObject {
+  m: string;
+  privateKey: string;
+  privateKeyAgs: PrivateKeyAgs;
+}
+
+interface PrivateKeyAgs {
+  lockScript: LockScript;
+  address: string;
+  pubKey: string;
+}
+
+interface LockScript {
+  code_hash: string;
+  hash_type: string;
+  args: string;
+}
