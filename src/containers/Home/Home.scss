@@ -3,9 +3,20 @@
 
 main.home
 {
-	width: 90%;
+	width: 80%;
 	margin: 0 auto;
+	height: auto;
+	display: flex;
 	p{
 		margin: 10px 0;
+	}
+	.walletlist{
+		flex: 0.6;
+		height: 200px;
+		border-right: 1px solid rgba(234, 233, 233,0.5);
+	}
+	.walletType{
+		flex: 0.38;
+		height: 200px;
 	}
 }

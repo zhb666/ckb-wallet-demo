@@ -35,7 +35,7 @@ const Component: React.FC = () => {
 	};
 
 	/**
-	 * @description: 获取钱包
+	 * @description: 
 	 * @param {*}
 	 * @return {hd}
 	 */
@@ -47,13 +47,15 @@ const Component: React.FC = () => {
 
 	return (
 		<main className="home">
-			<p>
+			<div className='walletlist'></div>
+			<div className='walletType'></div>
+			{/* <p>
 				mnemonic:<input readOnly value={hd.m} type="text" placeholder='' />
-			</p>
+			</p> */}
 			{/* <p>
 				Private key:<input readOnly value={hd.extendedPrivateKey.privateKey} type="text" placeholder='' />
 			</p> */}
-			<button onClick={getHD}>Create Wallet</button>
+			{/* <button onClick={getHD}>Create Wallet</button> */}
 		</main>
 	);
 };
