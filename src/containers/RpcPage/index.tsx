@@ -38,7 +38,7 @@ const Component: React.FC = () => {
 	return (
 		<main className="rpc">
 			<div>
-				<button onClick={setScripts}>setScripts</button>
+				{/* <button onClick={setScripts}>setScripts</button> */}
 			</div>
 
 			<div>

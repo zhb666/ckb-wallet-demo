@@ -5,8 +5,12 @@ import { Mnemonic, getPrivateKeyAgs } from "../../wallet/hd";
 import { NotificationType } from "../../common/ts/Types"
 import { WalletListObject } from "../../type"
 import { UserStore } from "../../stores";
+import {
+	setScripts,
+	getScripts
+} from "../../rpc";
+
 import "./Home.scss";
-import Item from 'antd/lib/list/Item';
 
 const { TextArea } = Input;
 
@@ -32,7 +36,7 @@ const Component: React.FC = () => {
 	const [wallet, setWallet] = useState<any>();
 	const [mnemonic, setMnemonic] = useState('');
 
-	const onChangeWallet = (e: RadioChangeEvent) => {
+	const onChangeWallet = async (e: RadioChangeEvent) => {
 		setWallet(e.target.value);
 
 		if (!walletList) return
@@ -43,6 +47,20 @@ const Component: React.FC = () => {
 
 		UserStoreHox.userScript(res[0])
 		window.localStorage.setItem("myScript", JSON.stringify(res[0]))
+
+		// 先获取之前同步高度，如果没有从零开始，有的话取出来传值
+		const getScript = await getScripts();
+		const getScriptRes = getScript.filter((item: { script: { args: any; }; }) =>
+			item.script.args == e.target.value
+		)
+
+		// call setScript
+		if (getScriptRes.length !== 0) {
+			console.log(getScriptRes);
+			await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
+		} else {
+			await setScripts(res[0].privateKeyAgs.lockScript, "0x0")
+		}
 	};
 
 	const openNotificationWithIcon = (type: NotificationType) => {
@@ -102,7 +120,8 @@ const Component: React.FC = () => {
 	}
 
 	useEffect(() => {
-		// if (!walletList) return
+		// Set the initially selected account
+		if (!walletList) return
 		let res = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == script.privateKeyAgs.lockScript.args
 		)
@@ -152,13 +171,6 @@ const Component: React.FC = () => {
 					导入助记词
 				</Button>
 			</div>
-			{/* <p>
-				mnemonic:<input readOnly value={hd.m} type="text" placeholder='' />
-			</p> */}
-			{/* <p>
-				Private key:<input readOnly value={hd.extendedPrivateKey.privateKey} type="text" placeholder='' />
-			</p> */}
-			{/* <button onClick={getHD}>Create Wallet</button> */}
 		</main>
 	);
 };

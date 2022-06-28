@@ -26,7 +26,6 @@ if (storageWalletList.length == 0) {
   }
 }
 
-console.log(myScript, "myScript_______");
 
 
 

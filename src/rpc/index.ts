@@ -31,8 +31,14 @@ const script = {
   code_hash:
     "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
   hash_type: "type",
-  args: "0x128c2645d45c201ee01c67945557815b58c291c5"
+  args: "0xf498b54dde9043354a2efe68c65ef8365f255a4a"
 };
+
+interface ScriptObject {
+  code_hash: string;
+  hash_type: string;
+  args: string;
+}
 
 const set_scripts_params = [
   [
@@ -49,13 +55,15 @@ const set_scripts_params = [
  * @return {any}
  */
 
-export async function setScripts() {
-  const res = await request(
-    1,
-    ckbLightClientRPC,
-    "set_scripts",
-    set_scripts_params
-  );
+export async function setScripts(script: ScriptObject, block_number: string) {
+  const res = await request(1, ckbLightClientRPC, "set_scripts", [
+    [
+      {
+        script,
+        block_number
+      }
+    ]
+  ]);
   return res;
 }
 
