@@ -25,7 +25,7 @@ export async function Mnemonic() {
 }
 
 // PrivateKey ags
-export async function getPrivateKeyAgs(m: string) {
+export async function getPrivateKeyAgs(m: string, type: boolean) {
   const seed = mnemonic.mnemonicToSeedSync(m);
 
   const extendedPrivateKey = ExtendedPrivateKey.fromSeed(seed);
@@ -38,7 +38,8 @@ export async function getPrivateKeyAgs(m: string) {
   return {
     m,
     privateKey: extendedPrivateKey.privateKey,
-    privateKeyAgs
+    privateKeyAgs,
+    type: type ? "create" : "import"
   };
 }
 

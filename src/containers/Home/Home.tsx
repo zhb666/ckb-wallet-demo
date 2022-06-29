@@ -7,7 +7,8 @@ import { WalletListObject } from "../../type"
 import { UserStore } from "../../stores";
 import {
 	setScripts,
-	getScripts
+	getScripts,
+	getTipHeader
 } from "../../rpc";
 
 import "./Home.scss";
@@ -41,7 +42,7 @@ const Component: React.FC = () => {
 
 		if (!walletList) return
 		// 判断当前选中的钱包
-		let res = walletList.filter(item =>
+		let res: WalletListObject[] = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == e.target.value
 		)
 
@@ -59,7 +60,15 @@ const Component: React.FC = () => {
 			console.log(getScriptRes);
 			await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
 		} else {
-			await setScripts(res[0].privateKeyAgs.lockScript, "0x0")
+			// 如果是导入的钱包，没有匹配到有同步的高度需要从0开始同步，如果是新建的钱包同步最高的区块即可
+			if (res[0].type === "create") {
+				// create
+				const tipHeaderRes = await getTipHeader()
+				await setScripts(res[0].privateKeyAgs.lockScript, tipHeaderRes.number)
+			} else {
+				// import
+				await setScripts(res[0].privateKeyAgs.lockScript, "0x0")
+			}
 		}
 	};
 
@@ -90,8 +99,9 @@ const Component: React.FC = () => {
 			});
 			return
 		}
-		const res: WalletListObject = await getPrivateKeyAgs(mnemonic);
+		const res: WalletListObject = await getPrivateKeyAgs(mnemonic, walletType);
 		console.log(res);
+		// set add Wallet
 		UserStoreHox.addWalletList(res)
 
 		setIsModalVisible(false);
@@ -121,7 +131,7 @@ const Component: React.FC = () => {
 
 	useEffect(() => {
 		// Set the initially selected account
-		if (!walletList) return
+		if (walletList && walletList.length == 0) return
 		let res = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == script.privateKeyAgs.lockScript.args
 		)

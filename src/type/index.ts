@@ -63,6 +63,7 @@ export interface WalletListObject {
   m: string;
   privateKey: string;
   privateKeyAgs: PrivateKeyAgs;
+  type: string;
 }
 
 interface PrivateKeyAgs {

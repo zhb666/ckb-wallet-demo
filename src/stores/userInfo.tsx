@@ -19,7 +19,7 @@ const storageWalletList = JSON.parse(window.localStorage.getItem('walletList')) 
 let myScript = JSON.parse(window.localStorage.getItem('myScript')) || {}
 
 if (storageWalletList.length == 0) {
-  myScript = []
+  myScript = {}
 } else {
   if (!myScript) {
     myScript = storageWalletList[0]

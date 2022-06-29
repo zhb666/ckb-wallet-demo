@@ -10,11 +10,14 @@ import './index.scss';
 let timer: any = null
 function Progress() {
 	const UserStoreHox = UserStore();
+	const { script } = UserStoreHox
 	const [blockHeight, setBlockHeight] = useState<any>(0);
 	const [scriptsHeight, setScriptsHeight] = useState<any>(0);
 	const [tipHeader, setTipHeader] = useState<any>(0);
 
 	useEffect(() => {
+
+		if (!script.privateKey) return
 
 		clearInterval(timer)
 
@@ -22,7 +25,7 @@ function Progress() {
 			const scriptsRes = await getScripts()
 			const tipHeaderRes = await getTipHeader()
 
-			let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == UserStoreHox.script?.privateKeyAgs.lockScript.args);
+			let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == script?.privateKeyAgs.lockScript.args);
 
 			let tipHeaderNum = parseInt(tipHeaderRes.number)
 
