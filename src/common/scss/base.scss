@@ -51,7 +51,7 @@ p
 {
 	margin: 0 0 1em 0;
 }
-
+ul,li{list-style-type: none;}
 a
 {
 	// color: $color-font-light;
@@ -87,6 +87,13 @@ body{
 input{
 	color: #000;
 }
+
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
 
 .ant-progress-circle .ant-progress-text{
 	color: #fff!important;

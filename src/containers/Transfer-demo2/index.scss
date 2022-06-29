@@ -8,10 +8,16 @@
 	box-sizing: border-box;
 	margin: auto;
 	overflow: hidden;
+	.address{
+		font-size: 15px;
+	}
 	input{
 		margin: 0px 0 10px 0;
 	}
 	.Table{
 		margin: 20px auto;
+	}
+	h3{
+		font-size: 18px;
 	}
 }

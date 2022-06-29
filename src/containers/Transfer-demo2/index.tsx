@@ -5,11 +5,13 @@ import { notification, Spin, Button } from 'antd';
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate } from "../../utils/index"
 import { FinalDataObject } from "../../type"
+import { UserStore } from "../../stores";
+import Table from '../../components/TransactionsTable'
+
 import {
   get_transaction
 } from "../../rpc";
 
-import Table from '../../components/TransactionsTable'
 
 import "./index.scss"
 
@@ -21,9 +23,11 @@ declare const window: {
 };
 let timer: any = null
 export default function Secp256k1Transfer() {
+  const UserStoreHox = UserStore();
+
   // 0x9acbab8217e1692799b85e3d784b9132603d816944a17d39b101daf4ff89efd1
   // 0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40
-  const [privKey, setPrivKey] = useState("0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40");
+  const [privKey, setPrivKey] = useState(UserStoreHox.script.privateKey);
   const [fromAddr, setFromAddr] = useState("");
   const [fromLock, setFromLock] = useState<Script>();
   const [balance, setBalance] = useState("");
@@ -90,7 +94,8 @@ export default function Secp256k1Transfer() {
           finalData[0].state = "success"
           window.localStorage.setItem("finalData", JSON.stringify(finalData))
           setOff(true)
-          console.log("关闭了");
+          updateFromInfo()
+          console.log("close");
 
         }
       }, 3000)
@@ -99,15 +104,15 @@ export default function Secp256k1Transfer() {
   }, [txHash.hash])
 
 
-  useEffect(() => {
-    const updateFromInfo = async () => {
-      const { lockScript, address } = generateAccountFromPrivateKey(privKey);
-      const capacity = await capacityOf(address);
-      setFromAddr(address);
-      setFromLock(lockScript);
-      setBalance(capacity.toString());
-    };
+  const updateFromInfo = async () => {
+    const { lockScript, address } = generateAccountFromPrivateKey(privKey);
+    const capacity = await capacityOf(address);
+    setFromAddr(address);
+    setFromLock(lockScript);
+    setBalance(capacity.toString());
+  };
 
+  useEffect(() => {
     if (privKey) {
       updateFromInfo();
     }
@@ -116,23 +121,12 @@ export default function Secp256k1Transfer() {
   return (
     <Spin spinning={loading}>
       <div className='mian'>
-        <label htmlFor="private-key">Private Key: </label>&nbsp;
-        <input
-          id="private-key"
-          type="text"
-          value={privKey}
-          onChange={(e) => setPrivKey(e.target.value)}
-        />
-        <ul>
-          <li>CKB Address: {fromAddr}</li>
-          {/* <li>
-            Current lock script:
-            <pre>{JSON.stringify(fromLock, null, 2)}</pre>
-          </li> */}
-
-          <li>Total ckb: {Number(balance) / 100000000} </li>
+        <h3>Account</h3>
+        <ul className='address'>
+          <li>CKB Address : {fromAddr}</li>
+          <li>Total CKB : {Number(balance) / 100000000} </li>
         </ul>
-        <label htmlFor="to-address">Transfer to Address: </label>&nbsp;
+        <h3>Transfer to Address: </h3>
         <input
           id="to-address"
           type="text"
@@ -140,8 +134,7 @@ export default function Secp256k1Transfer() {
           onChange={(e) => setToAddr(e.target.value)}
         />
         <br />
-        <label htmlFor="amount">Amount</label>
-        &nbsp;
+        <h3>Amount</h3>
         <input
           id="amount"
           type="text"
