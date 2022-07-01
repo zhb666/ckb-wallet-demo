@@ -16,6 +16,7 @@ import "./Home.scss";
 const { TextArea } = Input;
 
 declare const window: {
+	location: any;
 	localStorage: {
 		getItem: Function;
 		setItem: Function;
@@ -47,7 +48,6 @@ const Component: React.FC = () => {
 		)
 
 		UserStoreHox.userScript(res[0])
-		window.localStorage.setItem("myScript", JSON.stringify(res[0]))
 
 		// 先获取之前同步高度，如果没有从零开始，有的话取出来传值
 		const getScript = await getScripts();
@@ -103,7 +103,21 @@ const Component: React.FC = () => {
 		console.log(res);
 		// set add Wallet
 		UserStoreHox.addWalletList(res)
+		// Set up your first account
+		if (walletList && walletList.length == 0) {
+			UserStoreHox.userScript(res)
+			setWallet(res.privateKeyAgs.lockScript.args)
 
+			if (res.type === "create") {
+				// create
+				const tipHeaderRes = await getTipHeader()
+				await setScripts(res.privateKeyAgs.lockScript, tipHeaderRes.number)
+			} else {
+				// import
+				await setScripts(res.privateKeyAgs.lockScript, "0x0")
+			}
+
+		}
 		setIsModalVisible(false);
 		openNotificationWithIcon("success")
 
@@ -131,7 +145,9 @@ const Component: React.FC = () => {
 
 	useEffect(() => {
 		// Set the initially selected account
+
 		if (walletList && walletList.length == 0) return
+
 		let res = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == script.privateKeyAgs.lockScript.args
 		)

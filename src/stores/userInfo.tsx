@@ -15,7 +15,7 @@ declare const window: {
 
 
 const storageWalletList = JSON.parse(window.localStorage.getItem('walletList')) || []
-// 当前钱包
+// myWallet
 let myScript = JSON.parse(window.localStorage.getItem('myScript')) || {}
 
 if (storageWalletList.length == 0) {
@@ -27,15 +27,16 @@ if (storageWalletList.length == 0) {
 }
 
 
-
-
 function useCounter() {
 
   const [walletList, setWalletList] = useState<WalletListObject[]>(storageWalletList);
 
   const [script, setScript] = useState<WalletListObject>(myScript);
 
-  const userScript = (script: WalletListObject) => setScript(script);
+  const userScript = (script: WalletListObject) => {
+    setScript(script);
+    window.localStorage.setItem("myScript", JSON.stringify(script))
+  }
   const addWalletList = (obj: WalletListObject) => {
 
     const storageWalletList = JSON.parse(window.localStorage.getItem('walletList')) || [];

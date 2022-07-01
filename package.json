@@ -2,6 +2,7 @@
   "name": "ckb-wallet-demo",
   "version": "0.8.13",
   "private": true,
+  "main": "main.js",
   "dependencies": {
     "@ckb-lumos/lumos": "^0.17.0-rc10",
     "@lay2/pw-core": "^0.4.0-alpha.12",
@@ -26,8 +27,11 @@
     "ckb-js-toolkit": "^0.10.2",
     "clipboard": "^2.0.8",
     "cross-fetch": "^3.1.5",
+    "electron": "^19.0.6",
+    "electron-store": "^8.0.2",
     "ethereumjs-wallet": "^1.0.2",
     "hookrouter": "^1.2.5",
+    "hox": "^1.1.2",
     "include-media": "^1.4.10",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
@@ -46,17 +50,18 @@
     "reoverlay": "^1.0.0",
     "sanitize.css": "^13.0.0",
     "segmented-control": "^0.1.17",
-    "typescript": "^4.5.4",
-    "hox": "^1.1.2"
+    "typescript": "^4.5.4"
   },
   "scripts": {
+    "dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"cross-env BROWSER=none npm run start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest **/*.test.ts --timeout=20m",
     "test:ava": "ava **/*.test.ts --timeout=2m",
     "e2e": "cypress open",
     "eject": "react-scripts eject",
-    "bump": "npm --no-git-tag-version version patch"
+    "bump": "npm --no-git-tag-version version patch",
+    "electron": "electron ."
   },
   "eslintConfig": {
     "extends": [

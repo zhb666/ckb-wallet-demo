@@ -6,15 +6,10 @@ import { ModalContainer } from 'reoverlay';
 import App from './containers/App/App';
 import Progress from "./components/Progress";
 
-
 import 'reoverlay/lib/ModalWrapper.css';
 import "./index.scss";
 
-
 async function Main() {
-
-
-
 
 	const html =
 		(
