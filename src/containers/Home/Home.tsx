@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { RadioChangeEvent } from 'antd';
-import { notification, Radio, Space, Button, Modal, Input } from 'antd';
+import { notification, Radio, Space, Button, Modal, Input, Empty } from 'antd';
 import { Mnemonic, getPrivateKeyAgs } from "../../wallet/hd";
 import { NotificationType } from "../../common/ts/Types"
 import { WalletListObject } from "../../type"
@@ -171,17 +171,20 @@ const Component: React.FC = () => {
 
 			<div className='walletlist'>
 				<p className='walletlistTitle'>我的账户</p>
-				<Radio.Group onChange={onChangeWallet} value={wallet}>
-					<Space direction="vertical">
-						{
-							UserStoreHox.walletList.map((item, index) => {
-								return (
-									<Radio key={index} value={item.privateKeyAgs.lockScript.args}>{item.privateKeyAgs.address}</Radio>
-								)
-							})
-						}
-					</Space>
-				</Radio.Group>
+				{
+					UserStoreHox.walletList ? <Radio.Group onChange={onChangeWallet} value={wallet}>
+						<Space direction="vertical">
+							{
+								UserStoreHox.walletList.map((item, index) => {
+									return (
+										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>{item.privateKeyAgs.address}</Radio>
+									)
+								})
+							}
+						</Space>
+					</Radio.Group> : <Empty />
+				}
+
 
 			</div>
 			<div className='walletType'>
