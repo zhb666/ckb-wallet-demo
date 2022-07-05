@@ -21,7 +21,13 @@ const sk = "0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40";
 const pk = ckb.utils.privateKeyToPublicKey(sk);
 
 const pkh = `0x${ckb.utils.blake160(pk, "hex")}`;
-const addr = ckb.utils.privateKeyToAddress(sk, {});
+const addr = ckb.utils.privateKeyToAddress(sk, {
+  prefix: ckb.utils.AddressPrefix.Testnet,
+  type: ckb.utils.AddressType.HashIdx,
+  codeHashOrCodeHashIndex: "0x00"
+});
+
+console.log(addr, "addr____");
 
 const loadCells = async () => {
   await ckb.loadDeps();
@@ -42,9 +48,13 @@ const deposit = async () => {
   await ckb.loadDeps();
   const depositTx = ckb.generateDaoDepositTransaction({
     fromAddress: addr,
-    capacity: BigInt(10600000000),
+    capacity: BigInt(16600000000),
     fee: BigInt(100000)
   });
+
+  console.log(depositTx, "depositTx____");
+  return;
+
   const signed = ckb.signTransaction(sk)(depositTx);
 
   const txHash = await ckb.rpc.sendTransaction(signed);
@@ -57,7 +67,7 @@ const deposit = async () => {
 
 // 第一笔交易测试
 const depositOutPoint = {
-  txHash: "0x525e4f3f1a38aef2fdb903886a007361af441c5308f96a223fbf871741ca8359",
+  txHash: "0x6588051bcff797e8d614b16215fe9d755879adf256af88f6d271fdff28b2df5c",
   index: "0x0"
 };
 

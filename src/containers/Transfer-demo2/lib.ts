@@ -112,6 +112,8 @@ export const transfer = async (options: Options) => {
     })
   };
 
+  console.log(addresses, "addresses_____");
+
   /**
    * to see the addresses
    */

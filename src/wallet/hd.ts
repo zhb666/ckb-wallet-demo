@@ -44,7 +44,7 @@ export async function getPrivateKeyAgs(m: string, type: boolean) {
 }
 
 const address = ckb.utils.pubkeyToAddress(
-  "0x4b63e58669d29857d6c5c22d1e74518a0c43b4673882936b9fc684cf8f00a05a",
+  "0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40",
   {
     prefix: ckb.utils.AddressPrefix.Testnet,
     type: ckb.utils.AddressType.HashIdx,
