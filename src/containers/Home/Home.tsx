@@ -184,8 +184,6 @@ const Component: React.FC = () => {
 						</Space>
 					</Radio.Group> : <Empty />
 				}
-
-
 			</div>
 			<div className='walletType'>
 				<Button className='createWallet' block type="primary" onClick={() => {

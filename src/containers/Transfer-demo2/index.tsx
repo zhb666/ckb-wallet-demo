@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
 import { notification, Spin, Button } from 'antd';
+import {
+  QuestionCircleOutlined
+} from '@ant-design/icons';
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate } from "../../utils/index"
 import { FinalDataObject } from "../../type"
@@ -126,7 +129,7 @@ export default function Secp256k1Transfer() {
           <li>CKB Address : {fromAddr}</li>
           <li>Total CKB : {Number(balance) / 100000000} </li>
         </ul>
-        <h3>Transfer to Address: </h3>
+        <h3>Send to Address</h3>
         <input
           id="to-address"
           type="text"
@@ -147,10 +150,14 @@ export default function Secp256k1Transfer() {
         {
           off ?
             <Button className='sendButton' type="primary" block onClick={send}>
-              Transfer
+              Send
             </Button> :
             <Button type="primary" block disabled>需要等上一笔上链成功才能发送交易</Button>
         }
+
+        <h5 className='tips'>
+          <QuestionCircleOutlined />  <span>温馨提示:数据需要等待节点同步完成，否则存在数据不存在的情况～</span>
+        </h5>
 
         <div className="Table">
           <Table item={txHash} off={off} />

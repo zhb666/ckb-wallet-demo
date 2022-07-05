@@ -17,7 +17,7 @@ const routes =
 	'/': () => <Home />,
 	'/about': () => <About />,
 	'/transfer-demo1': () => <Secp256k1Transfer />,
-	'/transfer-demo2': () => <TransferDemo2 />,
+	'/send': () => <TransferDemo2 />,
 	'/rpc-page': () => <RPCPAGE />,
 	'/dao': () => <Dao />,
 };
