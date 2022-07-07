@@ -81,7 +81,7 @@ const TransactionsTable: React.FC<Props> = ({
 	useEffect(() => {
 		if (item.hash) {
 			if (off) {
-				// 取缓存
+				// get localStorage
 				let finalData = JSON.parse(window.localStorage.getItem('finalData'))
 				setTableData(finalData);
 			} else {
@@ -188,10 +188,9 @@ const TransactionsTable: React.FC<Props> = ({
 	}
 
 
-
 	useEffect(() => {
 		getTableData()
-	}, [])
+	}, [UserStoreHox.myBalance])
 
 
 	return (

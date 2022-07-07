@@ -103,37 +103,6 @@ export const transfer = async (options: Options) => {
    */
   console.log(`Public key hash: ${publicKeyHash}`);
 
-  const addresses = {
-    mainnetAddress: ckb.utils.pubkeyToAddress(publicKey, {
-      prefix: ckb.utils.AddressPrefix.Mainnet
-    }),
-    testnetAddress: ckb.utils.pubkeyToAddress(publicKey, {
-      prefix: ckb.utils.AddressPrefix.Testnet
-    })
-  };
-
-  console.log(addresses, "addresses_____");
-
-  /**
-   * to see the addresses
-   */
-  // console.log(JSON.stringify(addresses, null, 2))
-
-  // return
-
-  // if (!ckb.config.secp256k1Dep) return;
-
-  // hash
-  // const fromScript = helpers.parseAddress(options.from, { config: RPC_NETWORK });
-
-  // const lock = {
-  //   // @ts-ignore
-  //   codeHash: ckb.config.secp256k1Dep.codeHash,
-  //   // @ts-ignore
-  //   hashType: ckb.config.secp256k1Dep.hashType,
-  //   args: publicKeyHash
-  // };
-
   const lock = {
     codeHash:
       "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
@@ -154,15 +123,6 @@ export const transfer = async (options: Options) => {
     depType: "depGroup"
   };
 
-  // return;
-
-  // const lock = {
-  //   codeHash: fromScript.code_hash,
-  //   hashType: fromScript.hash_type,
-  //   args: fromScript.args
-  // }
-
-  // console.log(lock,"lock_____")
   /**
    * load cells from lumos as `examples/sendTransactionWithLumosCollector.js` shows
    */
@@ -174,16 +134,6 @@ export const transfer = async (options: Options) => {
    * to see the unspent cells
    */
   console.log(unspentCells, "unspentCells____");
-
-  /**
-   * send transaction
-   */
-  const toAddress = ckb.utils.privateKeyToAddress(
-    "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-    {
-      prefix: ckb.utils.AddressPrefix.Testnet
-    }
-  );
 
   const rawTransaction = await ckb.generateRawTransaction({
     fromAddress: options.from,

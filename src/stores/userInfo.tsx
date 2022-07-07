@@ -32,24 +32,29 @@ function useCounter() {
   const [walletList, setWalletList] = useState<WalletListObject[]>(storageWalletList);
 
   const [script, setScript] = useState<WalletListObject>(myScript);
+  const [myBalance, setMyBalance] = useState<string>('');
 
   const userScript = (script: WalletListObject) => {
     setScript(script);
     window.localStorage.setItem("myScript", JSON.stringify(script))
   }
   const addWalletList = (obj: WalletListObject) => {
-
     const storageWalletList = JSON.parse(window.localStorage.getItem('walletList')) || [];
     storageWalletList.push(obj)
     setWalletList(storageWalletList);
     window.localStorage.setItem("walletList", JSON.stringify(storageWalletList))
+  }
+  const setMyBalanceFun = (balance: string) => {
+    setMyBalance(balance);
   }
 
   return {
     walletList,
     script,
     userScript,
-    addWalletList
+    addWalletList,
+    myBalance,
+    setMyBalanceFun
   };
 }
 

@@ -25,6 +25,7 @@ declare const window: {
   };
 };
 let timer: any = null
+let updateFromInfoTimer: any = null
 export default function Secp256k1Transfer() {
   const UserStoreHox = UserStore();
 
@@ -45,8 +46,8 @@ export default function Secp256k1Transfer() {
   const [loading, setLoading] = useState(false);
   const [off, setOff] = useState(true);//pending = false  success = true
 
-  const [toAddr, setToAddr] = useState("ckt1qyqw8c9g9vvemn4dk40zy0rwfw89z82h6fys07ens3");
-  const [amount, setAmount] = useState(88);
+  const [toAddr, setToAddr] = useState("");
+  const [amount, setAmount] = useState<any>("");
 
   const openNotificationWithIcon = (type: NotificationType) => {
     notification[type]({
@@ -58,8 +59,28 @@ export default function Secp256k1Transfer() {
 
   // send
   const send = (async () => {
+    console.log(toAddr, "toAddr");
+    console.log(amount, "amount");
+
+    let msg = ""
+    if (!toAddr) {
+      msg = "The receiving address is empty"
+    }
+
+    if (!amount) {
+      msg = "Send ckb cannot be 0"
+    }
+
+    if (msg) {
+      notification["error"]({
+        message: 'error',
+        description: msg
+      });
+      return
+    }
+
     setLoading(true)
-    const txhash = await transfer({ amount: amount * 100000000, from: fromAddr, to: toAddr, privKey });
+    const txhash = await transfer({ amount: parseFloat(amount || "0") * 100000000, from: fromAddr, to: toAddr, privKey });
     if (txhash) {
       setTxHash({
         timestamp: formatDate(new Date().getTime()),
@@ -119,6 +140,22 @@ export default function Secp256k1Transfer() {
     }
   }, [privKey]);
 
+  // Balance update triggers transaction data update
+  useEffect(() => {
+    UserStoreHox.setMyBalanceFun(balance)
+  }, [UserStoreHox.myBalance])
+
+  useEffect(() => {
+    //one minute update balance
+    if (privKey) {
+      updateFromInfoTimer = setInterval(() => {
+        updateFromInfo();
+      }, 60000)
+    }
+    return () => clearInterval(updateFromInfoTimer)
+  }, []);
+
+
   return (
     <Spin spinning={loading}>
       <div className='mian'>
@@ -131,14 +168,16 @@ export default function Secp256k1Transfer() {
         <input
           id="to-address"
           type="text"
+          placeholder='Please enter receiving address'
           value={toAddr}
-          onChange={(e) => setToAddr(e.target.value)}
+          onChange={(e) => setToAddr(e.target.value || '')}
         />
         <br />
-        <h3>Amount</h3>
+        <h3>Amount </h3>
         <input
           id="amount"
           type="text"
+          placeholder='Please enter the amount at least 61'
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
         />
