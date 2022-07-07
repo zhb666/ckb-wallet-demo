@@ -15,42 +15,44 @@ function Progress() {
 	const [scriptsHeight, setScriptsHeight] = useState<any>(0);
 	const [tipHeader, setTipHeader] = useState<any>(0);
 
+	const setProgress = async () => {
+		const scriptsRes = await getScripts()
+		const tipHeaderRes = await getTipHeader()
+
+		let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == script?.privateKeyAgs.lockScript.args);
+
+		let tipHeaderNum = parseInt(tipHeaderRes.number)
+
+		// 没有匹配上钱包需要处理
+		if (scriptsFilter && scriptsFilter[0]?.block_number) {
+			let scriptsNum = parseInt(scriptsFilter[0].block_number || 0)
+
+			let height = scriptsNum / tipHeaderNum * 100
+			setBlockHeight(Number(height.toFixed(2)))
+			setScriptsHeight(scriptsNum - 1)
+			setTipHeader(tipHeaderNum)
+		} else {
+			setBlockHeight(0)
+			setScriptsHeight(0)
+			setTipHeader(tipHeaderNum)
+		}
+	}
+
 	useEffect(() => {
 
 		if (!script.privateKey) return
 
+		setProgress();
+
 		clearInterval(timer)
 
 		timer = setInterval(async () => {
-			const scriptsRes = await getScripts()
-			const tipHeaderRes = await getTipHeader()
-
-			let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == script?.privateKeyAgs.lockScript.args);
-
-			let tipHeaderNum = parseInt(tipHeaderRes.number)
-
-			// 没有匹配上钱包需要处理
-			if (scriptsFilter && scriptsFilter[0]?.block_number) {
-				let scriptsNum = parseInt(scriptsFilter[0].block_number || 0)
-
-				let height = scriptsNum / tipHeaderNum * 100
-				setBlockHeight(Number(height.toFixed(2)))
-				setScriptsHeight(scriptsNum)
-				setTipHeader(tipHeaderNum)
-			} else {
-				setBlockHeight(100)
-				setScriptsHeight(0)
-				setTipHeader(tipHeaderNum)
-			}
-
-			// return () => {
-			// 	clearInterval(timer)
-			// }
-
+			setProgress()
 		}, 5000)
 
 
 	}, [UserStoreHox.script])
+
 
 	return (
 		<>
