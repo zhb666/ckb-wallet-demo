@@ -45,7 +45,7 @@ export const generateAccountFromPrivateKey = (privKey: string): Account => {
     args: args
   };
   // get address
-  const address = helpers.generateAddress(lockScript, { config: RPC_NETWORK });
+  const address = helpers.encodeToAddress(lockScript, { config: RPC_NETWORK });
   return {
     lockScript,
     address,

@@ -30,10 +30,10 @@ const Component: React.FC = () => {
 		setCells(cells);
 	}
 
-	async function getTransactions() {
-		let transactions = await get_transactions();
-		setTransactions(transactions);
-	}
+	// async function getTransactions() {
+	// 	let transactions = await get_transactions();
+	// 	setTransactions(transactions);
+	// }
 
 	return (
 		<main className="rpc">
@@ -48,10 +48,10 @@ const Component: React.FC = () => {
 				<button onClick={getCells}>get_cells </button>
 				<ReactJson theme={"tomorrow"} src={cells} />
 			</div>
-			<div>
+			{/* <div>
 				<button onClick={getTransactions}>get_transactions</button>
 				<ReactJson theme={"tomorrow"} src={transactions} />
-			</div>
+			</div> */}
 			<div>
 				<button onClick={async () => {
 					const res = await get_transaction("0x5303c55839f4ad0564334d046b77afc468338e9629d5ceadcd96f95ae0a66f71")

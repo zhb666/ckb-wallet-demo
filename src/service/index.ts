@@ -131,6 +131,7 @@ const request = async (
     throw new Error(`light client request failed with HTTP code ${res.status}`);
   }
   const data = await res.json();
+
   if (data.error !== undefined) {
     throw new Error(
       `light client request rpc failed with error: ${JSON.stringify(

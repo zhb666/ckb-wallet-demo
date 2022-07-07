@@ -146,35 +146,38 @@ export async function get_cells() {
   //   return res;
 }
 
-// 0x1e0 480
-const get_transactions_params = [
-  {
-    script,
-    script_type: "lock",
-    filter: script
-  },
-  "asc",
-  "0x16"
-];
-
 /**
  * @description: get_transactions
  */
-export async function get_transactions(lastCursor?: string) {
+export async function get_transactions(
+  script: ScriptObject,
+  lastCursor?: string
+) {
   let infos: IndexerTransaction[] = [];
   let cursor: string | undefined;
   const sizeLimit = 500;
-  const order = "asc";
+  const order = "desc"; //desc ｜ asc
+  // 0x1e0 480
+  const get_transactions_params: any = [
+    {
+      script,
+      script_type: "lock",
+      filter: script
+      // group_by_transaction: true
+    },
+    order,
+    "0x1e0"
+  ];
   if (lastCursor) {
-    get_transactions_params.push(lastCursor);
+    get_transactions_params.push({ after_cursor: lastCursor });
   }
+
   const res = await request(
     2,
     ckbLightClientRPC,
     "get_transactions",
     get_transactions_params
   );
-  console.log(res, "get_transactions");
   while (true) {
     const txs = res.objects;
     cursor = res.last_cursor as string;
@@ -183,7 +186,6 @@ export async function get_transactions(lastCursor?: string) {
       break;
     }
   }
-  console.log(infos, cursor);
   return {
     objects: infos,
     lastCursor: cursor

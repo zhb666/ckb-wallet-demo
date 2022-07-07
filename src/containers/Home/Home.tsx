@@ -5,6 +5,7 @@ import { Mnemonic, getPrivateKeyAgs } from "../../wallet/hd";
 import { NotificationType } from "../../common/ts/Types"
 import { WalletListObject } from "../../type"
 import { UserStore } from "../../stores";
+import { cutValue } from "../../utils/index"
 import {
 	setScripts,
 	getScripts,
@@ -177,7 +178,7 @@ const Component: React.FC = () => {
 							{
 								UserStoreHox.walletList.map((item, index) => {
 									return (
-										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>{item.privateKeyAgs.address}</Radio>
+										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>{cutValue(item.privateKeyAgs.address, 20, 20)}</Radio>
 									)
 								})
 							}

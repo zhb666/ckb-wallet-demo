@@ -3,9 +3,10 @@ import type { ColumnsType } from 'antd/lib/table';
 import { Space, Table, Button, message } from 'antd';
 import { IndexerTransaction } from "../../service/type"
 import { FinalDataObject, TransactionObject } from "../../type"
-import { cutValue, getCapacity, formatDate } from "../../utils/index"
+import { cutValue, getCapacity, formatDate, arrayToMap } from "../../utils/index"
 import { browserUrl } from "../../config/url"
 import { tableData as transactionsData } from "../../service/data"
+import { UserStore } from "../../stores";
 
 import {
 	get_transactions,
@@ -71,9 +72,9 @@ const TransactionsTable: React.FC<Props> = ({
 	item,
 	off
 }) => {
-
+	const UserStoreHox = UserStore();
 	const [tableData, setTableData] = useState<FinalDataObject[]>([])
-	const [lastCursor, setLastCursor] = useState<string>('')
+	const [lastCursor, setLastCursor] = useState<number>(0)
 
 
 	// Confirm status
@@ -99,30 +100,19 @@ const TransactionsTable: React.FC<Props> = ({
 	}, [tableData])
 
 
-
 	// get table data
 	const getTableData = async () => {
 		// Result data
 		const finalData: FinalDataObject[] = []
-		// const res = await get_transactions(lastCursor);
-		// console.log(res, "res____")
-		// if (res && res.objects.length == 0) {
-		// 	message.warning('The data is in the end');
-		// 	return
-		// } else {
+		const res = await get_transactions(UserStoreHox.script.privateKeyAgs.lockScript);
 
-		// 	setLastCursor(res.lastCursor)
-		// }
+		const filterRes = arrayToMap(res.objects);
 
-		console.log(transactionsData, "transactionsData___");
-
-
-		//TODO Change the data to the data obtained by the interface
-		for (let tabs of transactionsData) {
+		for (let tabs of filterRes) {
 			// output
-			let outputs = tabs.filter(item => item.io_type != "input");
+			let outputs = tabs.filter((item: { io_type: string; }) => item.io_type != "input");
 			// input
-			let inputs = tabs.filter(item => item.io_type != "output");
+			let inputs = tabs.filter((item: { io_type: string; }) => item.io_type != "output");
 			// income
 			if (inputs.length == 0) {
 				const res = await incomeFun(outputs);
@@ -157,7 +147,6 @@ const TransactionsTable: React.FC<Props> = ({
 		obj.blockHeight = parseInt(res.header.number)
 		// obj.money = (await getCapacity(res.transaction.outputs[0].capacity)).toString()
 		obj.amount = '+' + parseInt(res.transaction.outputs[0].capacity) / 100000000
-
 		return obj
 	}
 
@@ -187,9 +176,7 @@ const TransactionsTable: React.FC<Props> = ({
 
 			obj.amount += parseInt(res.transaction.outputs[since].capacity)
 		}
-
 		obj.amount = '-' + (obj.amount - parseInt(output[0].transaction.outputs[parseInt(output[0].io_index)].capacity)) / 100000000
-
 		return obj
 
 	}
@@ -197,7 +184,6 @@ const TransactionsTable: React.FC<Props> = ({
 	// get row open url
 	const getHash = async (transactionsInfo: FinalDataObject) => {
 		console.log(transactionsInfo);
-
 		window.open(`${browserUrl.test}/transaction/${transactionsInfo.hash}`)
 	}
 
@@ -205,7 +191,7 @@ const TransactionsTable: React.FC<Props> = ({
 
 	useEffect(() => {
 		getTableData()
-	}, [lastCursor])
+	}, [])
 
 
 	return (
@@ -214,8 +200,8 @@ const TransactionsTable: React.FC<Props> = ({
 				return {
 					onClick: event => { getHash(record) },
 				};
-			}} columns={columns} pagination={false} dataSource={tableData} />
-			<Button onClick={getTableData} className='button' type="primary">next</Button>
+			}} columns={columns} dataSource={tableData} />
+			{/* <Button onClick={getTableData} className='button' type="primary">next</Button> */}
 		</div>
 	)
 }

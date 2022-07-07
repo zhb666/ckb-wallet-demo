@@ -6,7 +6,7 @@ import {
   QuestionCircleOutlined
 } from '@ant-design/icons';
 import { NotificationType } from "../../common/ts/Types"
-import { formatDate } from "../../utils/index"
+import { formatDate, cutValue } from "../../utils/index"
 import { FinalDataObject } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/TransactionsTable'
@@ -85,13 +85,11 @@ export default function Secp256k1Transfer() {
         if (txTransaction) {
           // 如果是有交易信息了就关闭定时器，需要传值过去
           clearInterval(timer)
-          // 更新缓存
+          // Update localStorage
 
           let finalData = JSON.parse(window.localStorage.getItem('finalData'))
           // 找到当前的交易赋值
-          // finalData.forEach((item: FinalDataObject, index: number) => {
-          //   console.log(item, "finalData_____");
-          // });
+
           finalData[0].blockHeight = parseInt(txTransaction.header.number)
           finalData[0].timestamp = formatDate(parseInt(txTransaction.header.timestamp))
           finalData[0].state = "success"
@@ -126,7 +124,7 @@ export default function Secp256k1Transfer() {
       <div className='mian'>
         <h3>Account</h3>
         <ul className='address'>
-          <li>CKB Address : {fromAddr}</li>
+          <li>CKB Address : {cutValue(fromAddr, 20, 20)}</li>
           <li>Total CKB : {Number(balance) / 100000000} </li>
         </ul>
         <h3>Send to Address</h3>
