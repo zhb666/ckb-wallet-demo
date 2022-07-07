@@ -101,7 +101,6 @@ const Component: React.FC = () => {
 			return
 		}
 		const res: WalletListObject = await getPrivateKeyAgs(mnemonic, walletType);
-		console.log(res);
 		// set add Wallet
 		UserStoreHox.addWalletList(res)
 		// Set up your first account
@@ -179,8 +178,7 @@ const Component: React.FC = () => {
 								UserStoreHox.walletList.map((item, index) => {
 									return (
 										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>
-											{/* {cutValue(item.privateKeyAgs.address, 20, 20)} */}
-											{item.privateKeyAgs.address}
+											{cutValue(item.privateKeyAgs.address, 20, 20)}
 										</Radio>
 									)
 								})

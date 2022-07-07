@@ -16,6 +16,8 @@ main.home
 		float: left;
 		border-right: 1px solid rgba(234, 233, 233,0.5);
 		overflow: auto;
+		padding: 5px;
+		box-sizing: border-box;
 		.walletlistTitle{
 			font-size: 20px;
 			font-weight: bold;

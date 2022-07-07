@@ -7,6 +7,7 @@ import Home from '../Home/Home';
 import TransferDemo2 from '../Transfer-demo2/index';
 import RPCPAGE from '../RpcPage/index';
 import Dao from '../nervosDao/index';
+import Receive from '../Receive/index';
 
 import './App.scss';
 import 'antd/dist/antd.css';
@@ -18,6 +19,7 @@ const routes =
 	'/send': () => <TransferDemo2 />,
 	'/rpc-page': () => <RPCPAGE />,
 	'/dao': () => <Dao />,
+	'/receive': () => <Receive />,
 };
 
 function App() {
