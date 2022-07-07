@@ -178,7 +178,10 @@ const Component: React.FC = () => {
 							{
 								UserStoreHox.walletList.map((item, index) => {
 									return (
-										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>{cutValue(item.privateKeyAgs.address, 20, 20)}</Radio>
+										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>
+											{/* {cutValue(item.privateKeyAgs.address, 20, 20)} */}
+											{item.privateKeyAgs.address}
+										</Radio>
 									)
 								})
 							}
