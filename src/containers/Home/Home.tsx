@@ -173,7 +173,7 @@ const Component: React.FC = () => {
 			<div className='walletlist'>
 				<p className='walletlistTitle'>我的账户</p>
 				{
-					UserStoreHox.walletList ? <Radio.Group onChange={onChangeWallet} value={wallet}>
+					UserStoreHox.walletList.length > 0 ? <Radio.Group onChange={onChangeWallet} value={wallet}>
 						<Space direction="vertical">
 							{
 								UserStoreHox.walletList.map((item, index) => {

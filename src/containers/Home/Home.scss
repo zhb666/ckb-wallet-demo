@@ -3,7 +3,7 @@
 
 main.home
 {
-	width: 70%;
+	width: 80%;
 	margin: 0 auto;
 	height: 80%;
 	overflow: hidden;
@@ -11,9 +11,10 @@ main.home
 		margin: 10px 0;
 	}
 	.walletlist{
-		width: 100%;
+		width: 66%;
 		height: 600px;
-		// border-bottom: 1px solid rgba(234, 233, 233,0.5);
+		float: left;
+		border-right: 1px solid rgba(234, 233, 233,0.5);
 		overflow: auto;
 		.walletlistTitle{
 			font-size: 20px;
@@ -21,8 +22,10 @@ main.home
 		}
 	}
 	.walletType{
-		width: 100%;
+		width: 30%;
 		height: 200px;
+		float: right;
+		margin-top: 200px;
 		button{
 			margin: 10px 0;
 		}
