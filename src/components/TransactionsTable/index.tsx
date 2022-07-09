@@ -189,7 +189,9 @@ const TransactionsTable: React.FC<Props> = ({
 
 
 	useEffect(() => {
-		getTableData()
+		if (UserStoreHox.script.privateKeyAgs) {
+			getTableData()
+		}
 	}, [UserStoreHox.myBalance])
 
 

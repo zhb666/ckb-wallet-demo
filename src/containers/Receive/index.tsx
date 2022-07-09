@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, notification } from "antd"
+import { Button, notification, Empty } from "antd"
 import copy from 'copy-to-clipboard';
 import { UserStore } from "../../stores";
 import QRCode from 'qrcode.react';
@@ -20,18 +20,24 @@ const Receive: React.FC = () => {
 	return (
 		<div className='receive'>
 			<p className='ReceiveAddress'>收款地址</p>
-			<QRCode
-				className='QRCode'
-				value={UserStoreHox.script.privateKeyAgs.address}
-				size={280}
-				fgColor="#000000"
-			/>
-			<div className='address'>
-				{UserStoreHox.script.privateKeyAgs.address}
-			</div>
-			<Button className='copyButton' type="primary" onClick={() => copyFun(UserStoreHox.script.privateKeyAgs.address)}>
-				复制地址
-			</Button>
+			{
+				UserStoreHox.script.privateKeyAgs ? <div>
+					<QRCode
+						className='QRCode'
+						value={UserStoreHox.script.privateKeyAgs.address}
+						size={280}
+						fgColor="#000000"
+					/>
+					<div className='address'>
+						{UserStoreHox.script.privateKeyAgs.address}
+					</div>
+					<Button className='copyButton' type="primary" onClick={() => copyFun(UserStoreHox.script.privateKeyAgs.address)}>
+						复制地址
+					</Button>
+				</div> : <Empty />
+			}
+
+
 		</div>
 	)
 
