@@ -143,14 +143,14 @@ export default function Secp256k1Transfer() {
   // Balance update triggers transaction data update
   useEffect(() => {
     UserStoreHox.setMyBalanceFun(balance)
-  }, [UserStoreHox.myBalance])
+  }, [balance])
 
   useEffect(() => {
     //one minute update balance
     if (privKey) {
       updateFromInfoTimer = setInterval(() => {
         updateFromInfo();
-      }, 60000)
+      }, 20000)
     }
     return () => clearInterval(updateFromInfoTimer)
   }, []);

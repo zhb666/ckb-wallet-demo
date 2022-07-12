@@ -38,7 +38,13 @@ const Component: React.FC = () => {
 	return (
 		<main className="rpc">
 			<div>
-				{/* <button onClick={setScripts}>setScripts</button> */}
+				<button onClick={() => {
+					setScripts({
+						"code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+						"hash_type": "type",
+						"args": "0x030cd88b3c98ac5e9a71066bd90bed7502b4364d"
+					}, "0x0")
+				}}>setScripts</button>
 			</div>
 
 			<div>
