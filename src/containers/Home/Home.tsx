@@ -59,7 +59,8 @@ const Component: React.FC = () => {
 		// call setScript
 		if (getScriptRes.length !== 0) {
 			console.log(getScriptRes);
-			await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
+			// No need to set height
+			// await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
 		} else {
 			// 如果是导入的钱包，没有匹配到有同步的高度需要从0开始同步，如果是新建的钱包同步最高的区块即可
 			if (res[0].type === "create") {
