@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
-import { Space, Table, Button, message } from 'antd';
+import { Space, Table, Button, message, notification } from 'antd';
 import { IndexerTransaction } from "../../service/type"
 import { FinalDataObject, TransactionObject } from "../../type"
 import { cutValue, getCapacity, formatDate, arrayToMap } from "../../utils/index"

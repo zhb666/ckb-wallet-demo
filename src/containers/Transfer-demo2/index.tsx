@@ -177,7 +177,7 @@ export default function Secp256k1Transfer() {
         <input
           id="amount"
           type="text"
-          placeholder='Please enter the amount at least 61'
+          placeholder='Please enter the amount at least 61 CKB'
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
         />

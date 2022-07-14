@@ -59,8 +59,6 @@ export async function capacityOf(address: string): Promise<BI> {
     lock: helpers.parseAddress(address, { config: RPC_NETWORK })
   });
 
-  console.log(collector, "collector___");
-
   // Convert to bi object
   let balance = BI.from(0);
 

@@ -57,5 +57,3 @@ const address = ckb.utils.pubkeyToAddress(
 //   "ckt1qyqgt6utu8sgd33mm70au28j06cx69yu3ztsrvay9x",
 //   `m/44'/309'/0'/0/0`
 // );
-
-console.log(address, "address____");
