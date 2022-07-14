@@ -227,3 +227,11 @@ export async function get_transaction(hash: string) {
   const res = await request(1, ckbLightClientRPC, "get_transaction", [hash]);
   return res;
 }
+
+/**
+ * @description: get_peers
+ */
+export async function get_peers() {
+  const res = await request(1, ckbLightClientRPC, "get_peers", []);
+  return res;
+}

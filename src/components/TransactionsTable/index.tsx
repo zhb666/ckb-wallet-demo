@@ -5,7 +5,6 @@ import { IndexerTransaction } from "../../service/type"
 import { FinalDataObject, TransactionObject } from "../../type"
 import { cutValue, getCapacity, formatDate, arrayToMap } from "../../utils/index"
 import { browserUrl } from "../../config/url"
-import { tableData as transactionsData } from "../../service/data"
 import { UserStore } from "../../stores";
 
 import {
