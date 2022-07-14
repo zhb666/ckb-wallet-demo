@@ -29,7 +29,7 @@ function Progress() {
 
 			let height = scriptsNum / tipHeaderNum * 100
 			setBlockHeight(Number(height.toFixed(2)))
-			setScriptsHeight(scriptsNum - 1)
+			setScriptsHeight(scriptsNum)
 			setTipHeader(tipHeaderNum)
 		} else {
 			setBlockHeight(0)
