@@ -44,6 +44,10 @@ function useCounter() {
     setWalletList(storageWalletList);
     window.localStorage.setItem("walletList", JSON.stringify(storageWalletList))
   }
+  const DeleteWallet = (walletList: WalletListObject[]) => {
+    setWalletList(walletList);
+    window.localStorage.setItem("walletList", JSON.stringify(walletList))
+  }
   const setMyBalanceFun = (balance: string) => {
     setMyBalance(balance);
   }
@@ -54,6 +58,7 @@ function useCounter() {
     userScript,
     addWalletList,
     myBalance,
+    DeleteWallet,
     setMyBalanceFun
   };
 }
