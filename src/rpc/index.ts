@@ -31,7 +31,7 @@ const script = {
   code_hash:
     "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
   hash_type: "type",
-  args: "0x7c227c9bd36082f3cc36f4aca95192c582b5e5fa"
+  args: "0x2760d76d61cafcfc1a83d9d3d6b70c36fa9d4b1a"
 };
 
 interface ScriptObject {
@@ -108,7 +108,6 @@ export async function get_cells() {
     "get_cells",
     get_cells_params
   );
-  console.log(res, "get_cells");
 
   // 处理数据
   while (true) {
@@ -229,9 +228,25 @@ export async function get_transaction(hash: string) {
 }
 
 /**
+ * @description: get_header
+ */
+export async function get_header(hash: string) {
+  const res = await request(1, ckbLightClientRPC, "get_header", [hash]);
+  return res;
+}
+
+/**
  * @description: get_peers
  */
 export async function get_peers() {
   const res = await request(1, ckbLightClientRPC, "get_peers", []);
+  return res;
+}
+
+/**
+ * @description: send_transaction
+ */
+export async function send_transaction(tx: any) {
+  const res = await request(1, ckbLightClientRPC, "send_transaction", [tx]);
   return res;
 }

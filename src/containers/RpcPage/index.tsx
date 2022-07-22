@@ -7,7 +7,8 @@ import {
 	get_transactions,
 	get_cells_capacity,
 	getTipHeader,
-	get_transaction
+	get_transaction,
+	get_header
 } from "../../rpc";
 import { getCapacity } from "../../utils";
 import { div } from "../../utils/bigNumber";
@@ -42,7 +43,7 @@ const Component: React.FC = () => {
 					setScripts({
 						"code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
 						"hash_type": "type",
-						"args": "0x030cd88b3c98ac5e9a71066bd90bed7502b4364d"
+						"args": "0x2760d76d61cafcfc1a83d9d3d6b70c36fa9d4b1a"
 					}, "0x0")
 				}}>setScripts</button>
 			</div>
@@ -60,20 +61,25 @@ const Component: React.FC = () => {
 			</div> */}
 			<div>
 				<button onClick={async () => {
-					const res = await get_transaction("0x5303c55839f4ad0564334d046b77afc468338e9629d5ceadcd96f95ae0a66f71")
+					const res = await get_transaction("0xa2692a00465d619b00660f4907be5bd1175593c85b486b6e56f5c983884e11a1")
 					console.log(res);
 
 				}}>get_transaction</button>
 			</div>
 			<div>
 				<button onClick={() => {
-					get_transaction("0x8066ecb37a2fb3e990957a8ce7d51028a75c464715490b0a57ce8ea244991eb3")
+					get_transaction("0xa2692a00465d619b00660f4907be5bd1175593c85b486b6e56f5c983884e11a1")
 				}}>get_transaction</button>
 			</div>
 			<div>
 				<button onClick={() => {
 					get_transaction("0x9a89e7137f467c2df54d9ee03c8522ad4aa210f82a3114b7832acf3be30b6c4d")
 				}}>get_transaction</button>
+			</div>
+			<div>
+				<button onClick={() => {
+					get_header("0x1b4e1f981faff42a4145c941994cb1c53a4a3a314fb2f9deb8caafe775164d0e")
+				}}>get_header</button>
 			</div>
 			<div>
 				<button onClick={getCells}>get_cells </button>

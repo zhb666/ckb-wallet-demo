@@ -6,7 +6,6 @@ import {
 	logStartWithdrawingEpoch,
 	logCurrentEpoch,
 	withdraw,
-	getTest
 } from "../../wallet/dao";
 
 import "./index.scss";
@@ -33,9 +32,6 @@ const Component: React.FC = () => {
 			</div>
 			<div>
 				<button onClick={withdraw}>withdraw</button>
-			</div>
-			<div>
-				<button onClick={getTest}>getTest</button>
 			</div>
 		</main>
 	);

@@ -107,6 +107,9 @@ const TransactionsTable: React.FC<Props> = ({
 
 		const filterRes = arrayToMap(res.objects);
 
+		console.log(filterRes, "filterRes");
+
+
 		for (let tabs of filterRes) {
 			// output
 			let outputs = tabs.filter((item: { io_type: string; }) => item.io_type != "input");
