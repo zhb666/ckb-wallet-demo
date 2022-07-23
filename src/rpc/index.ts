@@ -87,27 +87,20 @@ export async function getScripts() {
   return res;
 }
 
-const get_cells_params = [
-  {
-    script,
-    script_type: "lock"
-  },
-  "asc",
-  "0x64"
-];
-
 /**
  * @description: get_cells
  */
-export async function get_cells() {
+export async function get_cells(script?: ScriptObject) {
   const infos: Cell[] = [];
   let cursor: string | undefined;
-  const res = await request(
-    2,
-    ckbLightClientRPC,
-    "get_cells",
-    get_cells_params
-  );
+  const res = await request(2, ckbLightClientRPC, "get_cells", [
+    {
+      script,
+      script_type: "lock"
+    },
+    "asc",
+    "0x64"
+  ]);
 
   // 处理数据
   while (true) {
