@@ -2,16 +2,16 @@ import { Indexer, CellCollector, config, helpers, hd } from "@ckb-lumos/lumos";
 import CKB from "@nervosnetwork/ckb-sdk-core";
 import { get_transaction, send_transaction, get_cells } from "../rpc";
 
-// const CKB_RPC_URL = "http://localhost:9000";
-// const CKB_INDEXER_URL = "http://localhost:9000/indexer";
+const CKB_RPC_URL = "http://localhost:9000";
+const CKB_INDEXER_URL = "http://localhost:9000/indexer";
 
 // According to this, switch the main network and test network
 export const { AGGRON4, LINA } = config.predefined;
 
 const RPC_NETWORK = AGGRON4;
 
-const CKB_RPC_URL = "https://testnet.ckb.dev";
-const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
+// const CKB_RPC_URL = "https://testnet.ckb.dev";
+// const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
 
 /**
  * lumos indexer
@@ -107,7 +107,7 @@ const deposit = async () => {
 
   const depositTx = ckb.generateDaoDepositTransaction({
     fromAddress: addr,
-    capacity: BigInt(58800000000),
+    capacity: BigInt(88800000000),
     fee: BigInt(100000)
     // cells
   });
