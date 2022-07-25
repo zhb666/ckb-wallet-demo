@@ -101,21 +101,25 @@ const loadCells = async () => {
   return loadCells;
 };
 
-const deposit = async () => {
+interface Options {
+  from: string;
+  amount: number;
+  privKey: string;
+}
+
+const deposit = async (options: Options) => {
   const cells = await loadCells();
   console.log(cells);
 
   const depositTx = ckb.generateDaoDepositTransaction({
-    fromAddress: addr,
-    capacity: BigInt(88800000000),
+    fromAddress: options.from,
+    capacity: BigInt(options.amount),
     fee: BigInt(100000)
     // cells
   });
   console.log(depositTx, "depositTx_____");
 
-  const signed = ckb.signTransaction(sk)(depositTx);
-
-  // return;
+  const signed = ckb.signTransaction(options.privKey)(depositTx);
 
   const txHash = await ckb.rpc.sendTransaction(signed);
   const depositOutPoint = {
@@ -123,6 +127,8 @@ const deposit = async () => {
     index: "0x0"
   };
   console.log(`const depositOutPoint = ${JSON.stringify(depositOutPoint)}`);
+
+  return txHash;
 };
 
 // 第一笔交易测试
