@@ -8,9 +8,9 @@ import {
 } from '@ant-design/icons';
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate, cutValue } from "../../utils/index"
-import { FinalDataObject } from "../../type"
+import { DaoDataObject } from "../../type"
 import { UserStore } from "../../stores";
-import Table from '../../components/TransactionsTable'
+import Table from '../../components/DaoTable'
 
 import {
 	get_transaction
@@ -36,13 +36,16 @@ export default function Secp256k1Transfer() {
 	const [fromAddr, setFromAddr] = useState("");
 	const [fromLock, setFromLock] = useState<Script>();
 	const [balance, setBalance] = useState("");
-	const [txHash, setTxHash] = useState<FinalDataObject>({
-		timestamp: "",
-		amount: "",
-		hash: "",
-		type: "",
-		blockHeight: "",
-		state: ""
+	const [txHash, setTxHash] = useState<DaoDataObject>({
+		timestamp: formatDate(new Date().getTime()),
+		amount: BigInt(0),
+		txHash: "",
+		type: "deposit",
+		state: "pending",
+		remainingEpochs: 0,
+		compensation: BigInt(0),
+		unlockable: false,
+		remainingCycleMinutes: 0
 	});
 	const [loading, setLoading] = useState(false);
 	const [off, setOff] = useState(true);//pending = false  success = true
@@ -78,11 +81,14 @@ export default function Secp256k1Transfer() {
 		if (txhash) {
 			setTxHash({
 				timestamp: formatDate(new Date().getTime()),
-				amount: "-" + amount,
-				hash: txhash,
-				type: "subtract",
-				blockHeight: "",
-				state: "pending"
+				amount: amount,
+				txHash: txhash,
+				type: "deposit",
+				state: "pending",
+				remainingEpochs: 0,
+				compensation: BigInt(0),
+				unlockable: false,
+				remainingCycleMinutes: 0
 			})
 			setOff(false)
 			openNotificationWithIcon("success")
@@ -92,9 +98,9 @@ export default function Secp256k1Transfer() {
 
 	// Judge whether the transaction is success
 	useEffect(() => {
-		if (txHash.hash) {
+		if (txHash.txHash) {
 			timer = setInterval(async () => {
-				const txTransaction = await get_transaction(txHash.hash);
+				const txTransaction = await get_transaction(txHash.txHash);
 				console.log(txTransaction, "txTransaction______");
 
 				if (txTransaction) {
@@ -117,7 +123,7 @@ export default function Secp256k1Transfer() {
 			}, 3000)
 		}
 		return () => clearInterval(timer)
-	}, [txHash.hash])
+	}, [txHash.txHash])
 
 
 	const updateFromInfo = async () => {
@@ -157,6 +163,7 @@ export default function Secp256k1Transfer() {
 				<ul className='address'>
 					<li>CKB Address : {cutValue(fromAddr, 20, 20)}</li>
 					<li>Total CKB : {Number(balance) / 100000000} </li>
+					<li>Nervos DAO 锁定金额 : {Number(balance) / 100000000} </li>
 				</ul>
 				<h3>Amount </h3>
 				<input
@@ -167,7 +174,7 @@ export default function Secp256k1Transfer() {
 					onChange={(e) => setAmount(Number(e.target.value))}
 				/>
 				<br />
-				{txHash.hash ? <p>txHash : {txHash.hash}</p> : null}
+				{txHash.txHash ? <p>txHash : {txHash.txHash}</p> : null}
 
 				{
 					off ?
@@ -185,9 +192,6 @@ export default function Secp256k1Transfer() {
 					<Table item={txHash} off={off} />
 				</div>
 			</div>
-
-
-
 		</Spin>
 	);
 }

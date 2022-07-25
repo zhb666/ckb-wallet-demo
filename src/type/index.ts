@@ -6,7 +6,6 @@ export interface FinalDataObject {
   state: string;
   blockHeight: number | string;
 }
-
 export interface TransactionObject {
   block_number: string;
   io_index: string;
@@ -76,4 +75,16 @@ interface LockScript {
   code_hash: string;
   hash_type: string;
   args: string;
+}
+
+export interface DaoDataObject {
+  amount: bigint;
+  timestamp?: string;
+  compensation: bigint;
+  remainingCycleMinutes: number;
+  remainingEpochs: number;
+  txHash: string;
+  type: string;
+  state?: string;
+  unlockable: boolean;
 }

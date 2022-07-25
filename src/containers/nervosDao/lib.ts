@@ -9,6 +9,8 @@ import {
 } from "../../rpc";
 
 export interface DAOUnlockableAmount {
+  state?: string;
+  timestamp?: string;
   type: "deposit" | "withdraw";
   amount: bigint;
   compensation: bigint;
@@ -271,16 +273,14 @@ export async function getUnlockableAmountsFromCells(
 
     if (isCellDeposit(filtCells[i])) {
       unlockableAmount.type = "deposit";
-      maxWithdraw = BigInt(66603419616);
-      // maxWithdraw = await getDepositCellMaximumWithdraw(filtCells[i]);
-      console.log(maxWithdraw, "maxWithdraw____");
+      // maxWithdraw = BigInt(66603419616);
+      maxWithdraw = await getDepositCellMaximumWithdraw(filtCells[i]);
 
       const sinceBI = await getDepositDaoEarliestSince(filtCells[i]);
       earliestSince = since.parseAbsoluteEpochSince(sinceBI.toString());
-      console.log(earliestSince, "earliestSince");
     } else {
-      maxWithdraw = BigInt(66603419616);
-      // maxWithdraw = await getWithdrawCellMaximumWithdraw(filtCells[i]);
+      // maxWithdraw = BigInt(66603419616);
+      maxWithdraw = await getWithdrawCellMaximumWithdraw(filtCells[i]);
 
       const sinceBI = await getWithdrawDaoEarliestSince(filtCells[i]);
       earliestSince = since.parseAbsoluteEpochSince(sinceBI.toString());
@@ -314,7 +314,6 @@ export async function getUnlockableAmountsFromCells(
       (currentEpoch.number === earliestSince.number &&
         currentEpoch.index >= earliestSince.index);
     unlockableAmounts.push(unlockableAmount);
-    console.log(1111222);
   }
 
   console.log(unlockableAmounts, "拿到结果了吗");
