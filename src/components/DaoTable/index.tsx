@@ -39,20 +39,20 @@ const columns: ColumnsType<DaoDataObject> = [
 		key: 'amount',
 		render: (_, record) => (
 			<Space size="middle">
-				<a>{Number(record.amount) / 100000000}</a>
+				{Number(record.amount) / 100000000}
 			</Space>
 		),
 	},
-	{
-		title: 'Compensation',
-		dataIndex: 'compensation',
-		key: 'compensation',
-		render: (_, record) => (
-			<Space size="middle">
-				<a>{Number(record.compensation) / 100000000}</a>
-			</Space>
-		),
-	},
+	// {
+	// 	title: 'Compensation',
+	// 	dataIndex: 'compensation',
+	// 	key: 'compensation',
+	// 	render: (_, record) => (
+	// 		<Space size="middle">
+	// 			{Number(record.compensation) / 100000000}
+	// 		</Space>
+	// 	),
+	// },
 	{
 		title: 'View Transaction',
 		key: 'tx_index',
@@ -91,8 +91,8 @@ const TransactionsTable: React.FC<Props> = ({
 		if (item.txHash) {
 			if (off) {
 				// get localStorage
-				let finalData = JSON.parse(window.localStorage.getItem('finalData'))
-				setTableData(finalData);
+				// let daoData = JSON.parse(window.localStorage.getItem('daoData'))
+				// setTableData(daoData);
 			} else {
 				setTableData([item, ...tableData]);
 			}
@@ -101,12 +101,12 @@ const TransactionsTable: React.FC<Props> = ({
 
 
 	// 如果tableData有变化就需要重新设置缓存
-	useEffect(() => {
-		// if (tableData) {
-		// 	window.localStorage.setItem("finalData", JSON.stringify(tableData))
-		// }
+	// useEffect(() => {
+	// 	if (tableData) {
+	// 		window.localStorage.setItem("daoData", JSON.stringify(tableData))
+	// 	}
 
-	}, [tableData])
+	// }, [tableData])
 
 
 	// get table data
@@ -119,11 +119,8 @@ const TransactionsTable: React.FC<Props> = ({
 			res[i].state = "success"
 			res[i].timestamp = formatDate(parseInt(transaction.header.timestamp))
 		}
-
-		console.log(res);
-
-
-		setTableData(res);
+		// window.localStorage.setItem("daoData", JSON.stringify(res))
+		setTableData(res.reverse());
 	};
 
 

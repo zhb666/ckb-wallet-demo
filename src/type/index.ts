@@ -78,7 +78,7 @@ interface LockScript {
 }
 
 export interface DaoDataObject {
-  amount: bigint;
+  amount: any;
   timestamp?: string;
   compensation: bigint;
   remainingCycleMinutes: number;

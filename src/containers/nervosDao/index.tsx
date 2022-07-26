@@ -3,6 +3,7 @@ import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey } from "../../wallet";
 import { deposit } from "../../wallet/dao";
 import { notification, Spin, Button } from 'antd';
+import { dao } from "@ckb-lumos/common-scripts";
 import {
 	QuestionCircleOutlined
 } from '@ant-design/icons';
@@ -63,6 +64,40 @@ export default function Secp256k1Transfer() {
 
 	// Deposit
 	const Deposit = (async () => {
+
+		// console.log(dao.calculateMaximumWithdraw(
+		// 	{
+		// 		cell_output: {
+		// 			capacity: "0x14ace47800",
+		// 			lock: {
+		// 				args: "0x2760d76d61cafcfc1a83d9d3d6b70c36fa9d4b1a",
+		// 				code_hash:
+		// 					"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+		// 				hash_type: "type"
+		// 			},
+		// 			type: {
+		// 				args: "0x",
+		// 				code_hash:
+		// 					"0x82d76d1b75fe2fd9a27dfbaa65a039221a380d76c926f378d3f81cf3e7e13f2e",
+		// 				hash_type: "type"
+		// 			}
+		// 		},
+		// 		data: "0x0000000000000000",
+		// 		out_point: {
+		// 			index: "0x0",
+		// 			tx_hash:
+		// 				"0xec36aab36f1a2598c16dc44266b110e25b43a703fe9f6a24917458635a5cd703"
+		// 		},
+		// 		block_number: "0x5d548c",
+		// 		block_hash:
+		// 			"0xf999b97f66a8f808294fcb84dcfd1232959b344af644c30d14bc03d4ff79dfb0"
+		// 	},
+		// 	"0xee6a4d83ca4a4d3f58d271ad8842260011c3f0aa59d07e030036897b61853508",
+		// 	"0xcf315ee27e3c593f89bfd792484426005d90a3fd7f5581030078149e56593608"
+		// ));
+
+		// return
+
 		let msg = ""
 		if (!amount) {
 			msg = "Deposit ckb cannot be 0"
@@ -81,7 +116,7 @@ export default function Secp256k1Transfer() {
 		if (txhash) {
 			setTxHash({
 				timestamp: formatDate(new Date().getTime()),
-				amount: amount,
+				amount: parseFloat(amount || "0") * 100000000,
 				txHash: txhash,
 				type: "deposit",
 				state: "pending",

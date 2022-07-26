@@ -5,12 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@ckb-lumos/lumos": "^0.18.0-rc6",
-    "@lay2/pw-core": "^0.4.0-alpha.12",
-    "@material-ui/core": "4.12.3",
-    "@material-ui/icons": "4.11.2",
-    "@material-ui/styles": "4.11.4",
-    "@material-ui/types": "5.1.0",
+    "@ckb-lumos/lumos": "^0.18",
     "@metamask/detect-provider": "^1.2.0",
     "@nervosnetwork/ckb-sdk-core": "^0.102.3",
     "@nervosnetwork/ckb-sdk-utils": "^0.101.0",
