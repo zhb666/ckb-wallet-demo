@@ -113,12 +113,15 @@ const TransactionsTable: React.FC<Props> = ({
 	const getTableData = async () => {
 		const cells = await get_cells(UserStoreHox.script.privateKeyAgs.lockScript)
 		const res = await getUnlockableAmountsFromCells(cells.objects)
+		let DaoBalance = 0
 
 		for (let i = 0; i < res.length; i++) {
 			const transaction = await get_transaction(res[i].txHash);
 			res[i].state = "success"
 			res[i].timestamp = formatDate(parseInt(transaction.header.timestamp))
+			DaoBalance += Number(res[i].amount)
 		}
+		UserStoreHox.setDaoBalanceFun(DaoBalance)
 		// window.localStorage.setItem("daoData", JSON.stringify(res))
 		setTableData(res.reverse());
 	};

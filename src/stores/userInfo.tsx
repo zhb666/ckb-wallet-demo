@@ -33,6 +33,7 @@ function useCounter() {
 
   const [script, setScript] = useState<WalletListObject>(myScript);
   const [myBalance, setMyBalance] = useState<string>('');
+  const [daoBalance, setDaoBalance] = useState<number>(0);
 
   const userScript = (script: WalletListObject) => {
     setScript(script);
@@ -52,6 +53,10 @@ function useCounter() {
     setMyBalance(balance);
   }
 
+  const setDaoBalanceFun = (balance: number) => {
+    setDaoBalance(balance);
+  }
+
   return {
     walletList,
     script,
@@ -59,7 +64,9 @@ function useCounter() {
     addWalletList,
     myBalance,
     DeleteWallet,
-    setMyBalanceFun
+    setMyBalanceFun,
+    daoBalance,
+    setDaoBalanceFun
   };
 }
 
