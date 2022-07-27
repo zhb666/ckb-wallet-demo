@@ -24,24 +24,23 @@ indexer.startForever();
  */
 const ckb = new CKB(CKB_RPC_URL);
 
-const sk = "0x65c7926b24d51ee53c15f7035fb584647423fe8dd1852a864542b5f25acfa78a";
-const pk = ckb.utils.privateKeyToPublicKey(sk);
+const loadCells = async (privKey: string) => {
+  const pk = ckb.utils.privateKeyToPublicKey(privKey);
 
-const pkh = `0x${ckb.utils.blake160(pk, "hex")}`;
+  const pkh = `0x${ckb.utils.blake160(pk, "hex")}`;
 
-const template = RPC_NETWORK.SCRIPTS["SECP256K1_BLAKE160"]!;
-const lockScript = {
-  code_hash: template.CODE_HASH,
-  hash_type: template.HASH_TYPE,
-  args: pkh
-};
+  const template = RPC_NETWORK.SCRIPTS["SECP256K1_BLAKE160"]!;
+  const lockScript = {
+    code_hash: template.CODE_HASH,
+    hash_type: template.HASH_TYPE,
+    args: pkh
+  };
 
-// get address
-const addr = helpers.encodeToAddress(lockScript, { config: RPC_NETWORK });
+  // get address
+  const addr = helpers.encodeToAddress(lockScript, { config: RPC_NETWORK });
 
-console.log(addr, "addr_____s");
+  console.log(addr, "addr_____s");
 
-const loadCells = async () => {
   // const loadDeps = await ckb.loadDeps();
   const loadDeps = {
     daoDep: {
@@ -108,7 +107,7 @@ interface Options {
 }
 
 const deposit = async (options: Options) => {
-  const cells = await loadCells();
+  const cells = await loadCells(options.privKey);
   console.log(cells);
 
   const depositTx = ckb.generateDaoDepositTransaction({
@@ -131,135 +130,135 @@ const deposit = async (options: Options) => {
   return txHash;
 };
 
-// 第一笔交易测试
-const depositOutPoint = {
-  txHash: "0xa2692a00465d619b00660f4907be5bd1175593c85b486b6e56f5c983884e11a1",
-  index: "0x0"
-};
+// // 第一笔交易测试
+// const depositOutPoint = {
+//   txHash: "0xa2692a00465d619b00660f4907be5bd1175593c85b486b6e56f5c983884e11a1",
+//   index: "0x0"
+// };
 
-const logDepositEpoch = async () => {
-  // await ckb.loadDeps();
-  const cells = await loadCells();
-  console.log(cells);
-  const tx = await ckb.rpc.getTransaction(depositOutPoint.txHash);
+// const logDepositEpoch = async () => {
+//   // await ckb.loadDeps();
+//   const cells = await loadCells();
+//   console.log(cells);
+//   const tx = await ckb.rpc.getTransaction(depositOutPoint.txHash);
 
-  // const tx = await get_transaction(depositOutPoint.txHash);
+//   // const tx = await get_transaction(depositOutPoint.txHash);
 
-  console.log(tx, "tx_________________");
-  if (tx.txStatus.blockHash) {
-    const b = await ckb.rpc.getBlock(tx.txStatus.blockHash);
-    console.log(b, "b_____");
-    const epoch = b.header.epoch;
-    console.log(
-      `const depositEpoch = ${JSON.stringify(
-        ckb.utils.parseEpoch(epoch),
-        null,
-        2
-      )}`
-    );
-  } else {
-    console.log("not committed");
-  }
-};
+//   console.log(tx, "tx_________________");
+//   if (tx.txStatus.blockHash) {
+//     const b = await ckb.rpc.getBlock(tx.txStatus.blockHash);
+//     console.log(b, "b_____");
+//     const epoch = b.header.epoch;
+//     console.log(
+//       `const depositEpoch = ${JSON.stringify(
+//         ckb.utils.parseEpoch(epoch),
+//         null,
+//         2
+//       )}`
+//     );
+//   } else {
+//     console.log("not committed");
+//   }
+// };
 
-// 第2笔交易测试118ckb
-const depositEpoch = {
-  length: "0x708",
-  index: "0x510",
-  number: "0x1155"
-};
+// // 第2笔交易测试118ckb
+// const depositEpoch = {
+//   length: "0x708",
+//   index: "0x510",
+//   number: "0x1155"
+// };
 
-const starWithdrawing = async () => {
-  const cells = await loadCells();
-  const tx = await ckb.generateDaoWithdrawStartTransaction({
-    outPoint: depositOutPoint,
-    fee: BigInt(10000000)
-  });
+// const starWithdrawing = async () => {
+//   const cells = await loadCells();
+//   const tx = await ckb.generateDaoWithdrawStartTransaction({
+//     outPoint: depositOutPoint,
+//     fee: BigInt(10000000)
+//   });
 
-  console.log(tx, "tx___");
+//   console.log(tx, "tx___");
 
-  const signed = ckb.signTransaction(sk)(tx);
-  console.log(`const signed = ${JSON.stringify(signed, null, 2)}`);
+//   const signed = ckb.signTransaction(sk)(tx);
+//   console.log(`const signed = ${JSON.stringify(signed, null, 2)}`);
 
-  // return;
+//   // return;
 
-  // const txHash = await send_transaction(signed);
+//   // const txHash = await send_transaction(signed);
 
-  const txHash = await ckb.rpc.sendTransaction(signed);
-  const outPoint = {
-    txHash,
-    index: "0x0"
-  };
-  console.log(
-    `const startWithDrawOutPoint = ${JSON.stringify(outPoint, null, 2)}`
-  );
-};
+//   const txHash = await ckb.rpc.sendTransaction(signed);
+//   const outPoint = {
+//     txHash,
+//     index: "0x0"
+//   };
+//   console.log(
+//     `const startWithDrawOutPoint = ${JSON.stringify(outPoint, null, 2)}`
+//   );
+// };
 
-const startWithDrawOutPoint = {
-  txHash: "0xd5271ca8302f155bdcc69e60e967aa9eb709eb8f559f46a8b79613955626bbcf",
-  index: "0x0"
-};
+// const startWithDrawOutPoint = {
+//   txHash: "0xd5271ca8302f155bdcc69e60e967aa9eb709eb8f559f46a8b79613955626bbcf",
+//   index: "0x0"
+// };
 
-const logStartWithdrawingEpoch = async () => {
-  await ckb.loadDeps();
-  const tx = await ckb.rpc.getTransaction(startWithDrawOutPoint.txHash);
-  if (tx.txStatus.blockHash) {
-    const b = await ckb.rpc.getBlock(tx.txStatus.blockHash);
-    const epoch = b.header.epoch;
-    console.log(
-      `const startWithdrawingEpoch = ${JSON.stringify(
-        ckb.utils.parseEpoch(epoch),
-        null,
-        2
-      )}`
-    );
-  } else {
-    console.log("not committed");
-  }
-};
+// const logStartWithdrawingEpoch = async () => {
+//   await ckb.loadDeps();
+//   const tx = await ckb.rpc.getTransaction(startWithDrawOutPoint.txHash);
+//   if (tx.txStatus.blockHash) {
+//     const b = await ckb.rpc.getBlock(tx.txStatus.blockHash);
+//     const epoch = b.header.epoch;
+//     console.log(
+//       `const startWithdrawingEpoch = ${JSON.stringify(
+//         ckb.utils.parseEpoch(epoch),
+//         null,
+//         2
+//       )}`
+//     );
+//   } else {
+//     console.log("not committed");
+//   }
+// };
 
-// 第一笔交易测试
-const startWithdrawingEpoch = {
-  length: "0x708",
-  index: "0x5bb",
-  number: "0x1155"
-};
+// // 第一笔交易测试
+// const startWithdrawingEpoch = {
+//   length: "0x708",
+//   index: "0x5bb",
+//   number: "0x1155"
+// };
 
-const logCurrentEpoch = async () => {
-  ckb.rpc.getTipHeader().then(h => console.log(ckb.utils.parseEpoch(h.epoch)));
-};
+// const logCurrentEpoch = async () => {
+//   ckb.rpc.getTipHeader().then(h => console.log(ckb.utils.parseEpoch(h.epoch)));
+// };
 
-const withdraw = async () => {
-  await ckb.loadDeps();
-  await loadCells();
-  const tx = await ckb.generateDaoWithdrawTransaction({
-    depositOutPoint,
-    withdrawOutPoint: startWithDrawOutPoint,
-    fee: BigInt(1000000)
-  });
-  console.log(tx, "tx_________");
-  const signed = ckb.signTransaction(sk)(tx);
-  console.log(signed, "signed______");
+// const withdraw = async () => {
+//   await ckb.loadDeps();
+//   await loadCells();
+//   const tx = await ckb.generateDaoWithdrawTransaction({
+//     depositOutPoint,
+//     withdrawOutPoint: startWithDrawOutPoint,
+//     fee: BigInt(1000000)
+//   });
+//   console.log(tx, "tx_________");
+//   const signed = ckb.signTransaction(sk)(tx);
+//   console.log(signed, "signed______");
 
-  const txHash = await ckb.rpc.sendTransaction(signed);
-  console.log(txHash, "txHash______");
-  const outPoint = {
-    txHash,
-    index: "0x0"
-  };
-  console.log(`const withdrawOutPoint = ${JSON.stringify(outPoint, null, 2)}`);
-};
+//   const txHash = await ckb.rpc.sendTransaction(signed);
+//   console.log(txHash, "txHash______");
+//   const outPoint = {
+//     txHash,
+//     index: "0x0"
+//   };
+//   console.log(`const withdrawOutPoint = ${JSON.stringify(outPoint, null, 2)}`);
+// };
 
-const withDrawOutPoint = {
-  txHash: "0xb1ee185a4e811247b1705a52df487c3ce839bfa2f72e4c7a74b6fc6b0ea4cfa7",
-  index: "0x0"
-};
+// const withDrawOutPoint = {
+//   txHash: "0xb1ee185a4e811247b1705a52df487c3ce839bfa2f72e4c7a74b6fc6b0ea4cfa7",
+//   index: "0x0"
+// };
 
 export {
-  deposit,
-  logDepositEpoch,
-  starWithdrawing,
-  logStartWithdrawingEpoch,
-  logCurrentEpoch,
-  withdraw
+  deposit
+  // logDepositEpoch,
+  // starWithdrawing,
+  // logStartWithdrawingEpoch,
+  // logCurrentEpoch,
+  // withdraw
 };

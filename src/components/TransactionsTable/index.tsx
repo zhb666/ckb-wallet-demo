@@ -4,7 +4,7 @@ import { Space, Table, Button, message, notification } from 'antd';
 import { IndexerTransaction } from "../../service/type"
 import { FinalDataObject, TransactionObject } from "../../type"
 import { cutValue, getCapacity, formatDate, arrayToMap } from "../../utils/index"
-import { browserUrl } from "../../config/url"
+import { browserUrl } from "../../config"
 import { UserStore } from "../../stores";
 
 import {

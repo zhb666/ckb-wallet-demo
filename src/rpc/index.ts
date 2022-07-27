@@ -7,8 +7,9 @@ import {
   SearchKeyFilter,
   Terminator
 } from "../service/type";
+import { CKB_RPC_URL } from "../config";
 
-const ckbLightClientRPC = "http://localhost:9000/";
+const ckbLightClientRPC = CKB_RPC_URL;
 const ckbIndexer = "http://localhost:8116/";
 
 const DefaultTerminator: Terminator = () => {

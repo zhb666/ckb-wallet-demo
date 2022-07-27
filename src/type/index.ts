@@ -88,3 +88,21 @@ export interface DaoDataObject {
   state?: string;
   unlockable: boolean;
 }
+
+export interface DAOUnlockableAmount {
+  state?: string;
+  timestamp?: string;
+  type: "deposit" | "withdraw";
+  amount: bigint;
+  compensation: bigint;
+  unlockable: boolean;
+  remainingCycleMinutes: number;
+  remainingEpochs: number;
+  txHash: string;
+}
+
+export enum FeeRate {
+  SLOW = 1000,
+  NORMAL = 100000,
+  FAST = 10000000
+}

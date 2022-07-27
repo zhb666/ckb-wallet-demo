@@ -1,6 +1,7 @@
 import { Cell, Script, Header, TransactionWithStatus } from "@ckb-lumos/base";
 import { since } from "@ckb-lumos/lumos";
 import { dao, common } from "@ckb-lumos/common-scripts";
+import { DAOUnlockableAmount } from "../../type";
 import {
   get_cells,
   getTipHeader,
@@ -42,25 +43,13 @@ import {
 //   "dao_sssd"
 // );
 
-export interface DAOUnlockableAmount {
-  state?: string;
-  timestamp?: string;
-  type: "deposit" | "withdraw";
-  amount: bigint;
-  compensation: bigint;
-  unlockable: boolean;
-  remainingCycleMinutes: number;
-  remainingEpochs: number;
-  txHash: string;
-}
-
 export enum DAOCellType {
   DEPOSIT = "deposit",
   WITHDRAW = "withdraw",
   ALL = "all"
 }
 
-const depositDaoData = "0x0000000000000000";
+export const depositDaoData = "0x0000000000000000";
 const blockHeaderHashMap = new Map<string, Header>();
 const blockHeaderNumberMap = new Map<string, Header>();
 const transactionMap = new Map<string, TransactionWithStatus>();
@@ -76,7 +65,7 @@ export async function getDAOUnlockableAmounts(): Promise<
   return getUnlockableAmountsFromCells(res.objects);
 }
 
-async function filterDAOCells(
+export async function filterDAOCells(
   cells: Cell[],
   cellType: DAOCellType = DAOCellType.ALL
 ): Promise<Cell[]> {
@@ -103,7 +92,7 @@ async function filterDAOCells(
   return filteredCells;
 }
 
-function isCellDeposit(cell: Cell): boolean {
+export function isCellDeposit(cell: Cell): boolean {
   return cell.data === depositDaoData;
 }
 
@@ -181,7 +170,9 @@ async function getDepositCellMaximumWithdraw(
 }
 
 // Gets a block header from its hash
-async function getBlockHeaderFromHash(blockHash: string): Promise<Header> {
+export async function getBlockHeaderFromHash(
+  blockHash: string
+): Promise<Header> {
   if (!blockHeaderHashMap.has(blockHash)) {
     const header = await get_header(blockHash);
     setBlockHeaderMaps(header);
@@ -195,7 +186,9 @@ function setBlockHeaderMaps(header: Header): void {
   blockHeaderNumberMap.set(header.number, header);
 }
 
-async function getDepositDaoEarliestSince(depositCell: Cell): Promise<bigint> {
+export async function getDepositDaoEarliestSince(
+  depositCell: Cell
+): Promise<bigint> {
   const depositBlockHeader = await getBlockHeaderFromHash(
     depositCell.block_hash as string
   );
@@ -238,7 +231,7 @@ async function getWithdrawCellMaximumWithdraw(
   // );
 }
 
-async function findCorrectInputFromWithdrawCell(
+export async function findCorrectInputFromWithdrawCell(
   withdrawCell: Cell
 ): Promise<{ index: string; txHash: string }> {
   const transaction = await getTransactionFromHash(
@@ -277,7 +270,7 @@ async function findCorrectInputFromWithdrawCell(
 // Gets a transaction with status from a hash
 // Useful for when the transaction is still not committed
 // For transactions that fave not finished you should set useMap = false to not receive the same!
-async function getTransactionFromHash(
+export async function getTransactionFromHash(
   transactionHash: string,
   useMap = true
 ): Promise<any> {
@@ -288,7 +281,7 @@ async function getTransactionFromHash(
   return transactionMap.get(transactionHash);
 }
 
-async function getWithdrawDaoEarliestSince(
+export async function getWithdrawDaoEarliestSince(
   withdrawCell: Cell
 ): Promise<bigint> {
   const withdrawBlockHeader = await getBlockHeaderFromHash(
@@ -391,7 +384,7 @@ export async function getUnlockableAmountsFromCells(
 }
 
 // Gets latest block header in the blockchain
-async function getCurrentBlockHeader(): Promise<Header> {
+export async function getCurrentBlockHeader(): Promise<Header> {
   const lastBlockHeader = await getTipHeader();
   return lastBlockHeader;
 }

@@ -4,10 +4,10 @@ import { Space, Table, Button, message, notification } from 'antd';
 import { IndexerTransaction } from "../../service/type"
 import { DaoDataObject, TransactionObject } from "../../type"
 import { cutValue, getCapacity, formatDate, arrayToMap } from "../../utils/index"
-import { browserUrl } from "../../config/url"
+import { browserUrl } from "../../config"
 import { UserStore } from "../../stores";
 import { get_cells } from "../../rpc"
-import { getUnlockableAmountsFromCells } from "../../containers/nervosDao/lib"
+import { getUnlockableAmountsFromCells } from "../../wallet/dao/index"
 
 import {
 	get_transactions,
@@ -122,6 +122,8 @@ const TransactionsTable: React.FC<Props> = ({
 			DaoBalance += Number(res[i].amount)
 		}
 		UserStoreHox.setDaoBalanceFun(DaoBalance)
+		console.log(res);
+
 		// window.localStorage.setItem("daoData", JSON.stringify(res))
 		setTableData(res.reverse());
 	};

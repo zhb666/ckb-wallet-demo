@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, generateAccountFromPrivateKey } from "../../wallet";
 import { deposit } from "../../wallet/dao";
+import { withdrawOrUnlock } from "../../wallet/dao/index";
 import { notification, Spin, Button } from 'antd';
-import { dao } from "@ckb-lumos/common-scripts";
 import {
 	QuestionCircleOutlined
 } from '@ant-design/icons';
@@ -29,11 +29,12 @@ declare const window: {
 let timer: any = null
 let updateFromInfoTimer: any = null
 export default function Secp256k1Transfer() {
-	const UserStoreHox = UserStore();
+	const userStoreHox = UserStore();
+	const { privateKey, privateKeyAgs } = userStoreHox.script
 
 	// 0x9acbab8217e1692799b85e3d784b9132603d816944a17d39b101daf4ff89efd1
 	// 0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40
-	const [privKey, setPrivKey] = useState(UserStoreHox.script.privateKey);
+	const [privKey, setPrivKey] = useState(privateKey);
 	const [fromAddr, setFromAddr] = useState("");
 	const [fromLock, setFromLock] = useState<Script>();
 	const [balance, setBalance] = useState("");
@@ -51,7 +52,6 @@ export default function Secp256k1Transfer() {
 	const [loading, setLoading] = useState(false);
 	const [off, setOff] = useState(true);//pending = false  success = true
 
-	const [toAddr, setToAddr] = useState("");
 	const [amount, setAmount] = useState<any>("");
 
 	const openNotificationWithIcon = (type: NotificationType) => {
@@ -65,38 +65,26 @@ export default function Secp256k1Transfer() {
 	// Deposit
 	const Deposit = (async () => {
 
-		// console.log(dao.calculateMaximumWithdraw(
-		// 	{
-		// 		cell_output: {
-		// 			capacity: "0x14ace47800",
-		// 			lock: {
-		// 				args: "0x2760d76d61cafcfc1a83d9d3d6b70c36fa9d4b1a",
-		// 				code_hash:
-		// 					"0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-		// 				hash_type: "type"
-		// 			},
-		// 			type: {
-		// 				args: "0x",
-		// 				code_hash:
-		// 					"0x82d76d1b75fe2fd9a27dfbaa65a039221a380d76c926f378d3f81cf3e7e13f2e",
-		// 				hash_type: "type"
-		// 			}
-		// 		},
-		// 		data: "0x0000000000000000",
-		// 		out_point: {
-		// 			index: "0x0",
-		// 			tx_hash:
-		// 				"0xec36aab36f1a2598c16dc44266b110e25b43a703fe9f6a24917458635a5cd703"
-		// 		},
-		// 		block_number: "0x5d548c",
-		// 		block_hash:
-		// 			"0xf999b97f66a8f808294fcb84dcfd1232959b344af644c30d14bc03d4ff79dfb0"
-		// 	},
-		// 	"0xee6a4d83ca4a4d3f58d271ad8842260011c3f0aa59d07e030036897b61853508",
-		// 	"0xcf315ee27e3c593f89bfd792484426005d90a3fd7f5581030078149e56593608"
-		// ));
 
-		// return
+		const unlockableAmounts = [
+			{
+				amount: BigInt(188800000000),
+				compensation: BigInt(1888000000),
+				unlockable: false,
+				remainingCycleMinutes: 37561.875,
+				type: 'deposit',
+				txHash: '0xcb834189c29ecf0de419f6fa2483376f1e1910900ec32d512176808ac2ba54b7',
+				remainingEpochs: 167
+			}
+		];
+
+		// @ts-ignore
+		const unlockHash = await withdrawOrUnlock(unlockableAmounts[0], privateKeyAgs.address, privateKey, privateKeyAgs.lockScript);
+
+		console.log(unlockHash, "unlockHash");
+
+
+		return
 
 		let msg = ""
 		if (!amount) {
@@ -177,7 +165,7 @@ export default function Secp256k1Transfer() {
 
 	// Balance update triggers transaction data update
 	useEffect(() => {
-		UserStoreHox.setMyBalanceFun(balance)
+		userStoreHox.setMyBalanceFun(balance)
 	}, [balance])
 
 	useEffect(() => {
@@ -197,8 +185,8 @@ export default function Secp256k1Transfer() {
 				<h3>Account</h3>
 				<ul className='address'>
 					<li>CKB Address : {cutValue(fromAddr, 20, 20)}</li>
-					<li>Total CKB : {Number(balance) / 100000000 - UserStoreHox.daoBalance / 100000000} </li>
-					<li>Nervos DAO 锁定金额 : {UserStoreHox.daoBalance / 100000000} </li>
+					<li>Total CKB : {Number(balance) / 100000000 - userStoreHox.daoBalance / 100000000} </li>
+					<li>Nervos DAO 锁定金额 : {userStoreHox.daoBalance / 100000000} </li>
 				</ul>
 				<h3>Amount </h3>
 				<input
