@@ -293,12 +293,6 @@ export async function getWithdrawDaoEarliestSince(
   //   depositTransaction.tx_status.block_hash as string
   // );
 
-  console.log(
-    depositTransaction.header.epoch,
-    withdrawBlockHeader.epoch,
-    "epoch____"
-  );
-
   return dao.calculateDaoEarliestSince(
     depositTransaction.header.epoch,
     withdrawBlockHeader.epoch

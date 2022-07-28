@@ -122,7 +122,7 @@ const TransactionsTable: React.FC<Props> = ({
 			DaoBalance += Number(res[i].amount)
 		}
 		UserStoreHox.setDaoBalanceFun(DaoBalance)
-		console.log(res);
+		// console.log(res);
 
 		// window.localStorage.setItem("daoData", JSON.stringify(res))
 		setTableData(res.reverse());
