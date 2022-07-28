@@ -66,25 +66,25 @@ export default function Secp256k1Transfer() {
 	const Deposit = (async () => {
 
 
-		const unlockableAmounts = [
-			{
-				amount: BigInt(188800000000),
-				compensation: BigInt(1888000000),
-				unlockable: false,
-				remainingCycleMinutes: 37561.875,
-				type: 'deposit',
-				txHash: '0xcb834189c29ecf0de419f6fa2483376f1e1910900ec32d512176808ac2ba54b7',
-				remainingEpochs: 167
-			}
-		];
+		// const unlockableAmounts = [
+		// 	{
+		// 		amount: BigInt(188800000000),
+		// 		compensation: BigInt(1888000000),
+		// 		unlockable: false,
+		// 		remainingCycleMinutes: 37561.875,
+		// 		type: 'deposit',
+		// 		txHash: '0xcb834189c29ecf0de419f6fa2483376f1e1910900ec32d512176808ac2ba54b7',
+		// 		remainingEpochs: 167
+		// 	}
+		// ];
 
-		// @ts-ignore
-		const unlockHash = await withdrawOrUnlock(unlockableAmounts[0], privateKeyAgs.address, privateKey, privateKeyAgs.lockScript);
+		// // @ts-ignore
+		// const unlockHash = await withdrawOrUnlock(unlockableAmounts[0], privateKeyAgs.address, privateKey, privateKeyAgs.lockScript);
 
-		console.log(unlockHash, "unlockHash");
+		// console.log(unlockHash, "unlockHash");
 
 
-		return
+		// return
 
 		let msg = ""
 		if (!amount) {
