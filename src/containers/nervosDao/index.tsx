@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate, cutValue } from "../../utils/index"
+import { minus } from "../../utils/bigNumber"
 import { DaoDataObject } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/DaoTable'
@@ -163,7 +164,8 @@ export default function Secp256k1Transfer() {
 				<h3>Account</h3>
 				<ul className='address'>
 					<li>CKB Address : {cutValue(fromAddr, 20, 20)}</li>
-					<li>Total CKB : {Number(balance) / 100000000 - userStoreHox.daoBalance / 100000000} </li>
+					<li>Total CKB : {Number(balance) / 100000000} </li>
+					<li>Available : {minus(Number(balance) / 100000000, userStoreHox.daoBalance / 100000000)} </li>
 					<li>Nervos DAO 锁定金额 : {userStoreHox.daoBalance / 100000000} </li>
 				</ul>
 				<h3>Amount </h3>
