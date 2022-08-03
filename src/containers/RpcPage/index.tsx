@@ -27,7 +27,13 @@ const Component: React.FC = () => {
 	}
 
 	async function getCells() {
-		let cells = await get_cells();
+		let cells = await get_cells({
+			"code_hash": "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
+			"hash_type": "type",
+			"args": "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
+		});
+		console.log(cells);
+
 		setCells(cells);
 	}
 
@@ -61,14 +67,15 @@ const Component: React.FC = () => {
 			</div> */}
 			<div>
 				<button onClick={async () => {
-					const res = await get_transaction("0xa2692a00465d619b00660f4907be5bd1175593c85b486b6e56f5c983884e11a1")
+					const res = await get_transaction("0xa9e8c480d7745cf42069413587b80ab296d63b5a0767e6471bdbeab5680e7641")
 					console.log(res);
 
 				}}>get_transaction</button>
 			</div>
 			<div>
-				<button onClick={() => {
-					get_transaction("0xa2692a00465d619b00660f4907be5bd1175593c85b486b6e56f5c983884e11a1")
+				<button onClick={async () => {
+					const res = await get_transaction("0x93111556ef6275ce96356cdfe9228a9d6c10eb5c560d54478a50ad7cfe80eeb6")
+					console.log(res);
 				}}>get_transaction</button>
 			</div>
 			<div>

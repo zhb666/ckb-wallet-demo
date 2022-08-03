@@ -20,7 +20,7 @@ import {
   signTransaction
 } from "./index";
 import { DAOUnlockableAmount, FeeRate } from "../../type";
-import { get_cells } from "../../rpc";
+import { get_cells, get_transaction } from "../../rpc";
 import { indexer } from "../../config/index";
 
 // AGGRON4 for test, LINA for main
@@ -156,7 +156,6 @@ async function withdraw(
     null,
     { config: NETWORK }
   );
-  console.log(txSkeleton, "这里会走吗2");
   console.log(txSkeleton, feeAddresses, feeRate, undefined, {
     config: NETWORK
   });
@@ -169,7 +168,6 @@ async function withdraw(
     null,
     { config: NETWORK }
   );
-  console.log(txSkeleton, "这里会走吗3");
 
   const signingPrivKeys = extractPrivateKeys(
     txSkeleton,
@@ -180,8 +178,6 @@ async function withdraw(
     privateKey,
     ...signingPrivKeys.filter(pkey => pkey !== privateKey)
   ];
-
-  console.log(txSkeleton, "txSkeleton55555");
 
   return signTransaction(txSkeleton, sortedSignPKeys);
 }
@@ -198,6 +194,9 @@ async function unlock(
   let txSkeleton = TransactionSkeleton({ cellProvider: indexer });
 
   const depositCell = await getDepositCellFromWithdrawCell(withdrawCell);
+  console.log(depositCell);
+  console.log(withdrawCell);
+  console.log(txSkeleton, to, from);
 
   if (!(await isCellUnlockable(withdrawCell))) {
     throw new Error("Cell can not be unlocked. Minimum time is 30 days.");
@@ -211,6 +210,8 @@ async function unlock(
     from,
     { config: NETWORK }
   );
+  console.log(txSkeleton, "111___-");
+
   txSkeleton = await common.payFeeByFeeRate(
     txSkeleton,
     feeAddresses,
@@ -239,8 +240,9 @@ async function getDepositCellFromWithdrawCell(
     withdrawCell
   );
   const depositTransaction = await getTransactionFromHash(txHash);
+
   const depositBlockHeader = await getBlockHeaderFromHash(
-    depositTransaction.tx_status.block_hash
+    depositTransaction.header.hash
   );
 
   return {

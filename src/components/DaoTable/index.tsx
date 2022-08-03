@@ -96,7 +96,9 @@ const TransactionsTable: React.FC<Props> = ({
 				<div>
 					{record.type == "deposit" ? <Button className='actionButton' disabled={record.state == "pending"} onClick={() => {
 						withdraw(record)
-					}}>withdraw</Button> : <Button className='actionButton' disabled={!record.unlockable}>unlock</Button>}
+					}}>withdraw</Button> : <Button className='actionButton' onClick={() => {
+						withdraw(record)
+					}} disabled={!record.unlockable} >unlock</Button>}
 				</div>
 			),
 		},
@@ -176,7 +178,6 @@ const TransactionsTable: React.FC<Props> = ({
 			DaoBalance += Number(res[i].amount)
 		}
 		UserStoreHox.setDaoBalanceFun(DaoBalance)
-		console.log(res);
 
 		// window.localStorage.setItem("daoData", JSON.stringify(res))
 		setTableData(res.reverse());
