@@ -228,37 +228,54 @@ const deposit = async (options: Options) => {
 //   ckb.rpc.getTipHeader().then(h => console.log(ckb.utils.parseEpoch(h.epoch)));
 // };
 
-// const withdraw = async () => {
-//   await ckb.loadDeps();
-//   await loadCells();
-//   const tx = await ckb.generateDaoWithdrawTransaction({
-//     depositOutPoint,
-//     withdrawOutPoint: startWithDrawOutPoint,
-//     fee: BigInt(1000000)
-//   });
-//   console.log(tx, "tx_________");
-//   const signed = ckb.signTransaction(sk)(tx);
-//   console.log(signed, "signed______");
+const ckbUnlock = async (
+  depositHash: string,
+  withdrawHash: string,
+  privateKeys: string
+) => {
+  const depositOutPoint = {
+    txHash: depositHash,
+    index: "0x0"
+  };
 
-//   const txHash = await ckb.rpc.sendTransaction(signed);
-//   console.log(txHash, "txHash______");
-//   const outPoint = {
-//     txHash,
-//     index: "0x0"
-//   };
-//   console.log(`const withdrawOutPoint = ${JSON.stringify(outPoint, null, 2)}`);
-// };
+  const startWithDrawOutPoint = {
+    txHash: withdrawHash,
+    index: "0x0"
+  };
 
-// const withDrawOutPoint = {
-//   txHash: "0xb1ee185a4e811247b1705a52df487c3ce839bfa2f72e4c7a74b6fc6b0ea4cfa7",
-//   index: "0x0"
-// };
+  await ckb.loadDeps();
+  await loadCells(privateKeys);
+  const tx = await ckb.generateDaoWithdrawTransaction({
+    depositOutPoint,
+    withdrawOutPoint: startWithDrawOutPoint,
+    fee: BigInt(1000000)
+  });
+
+  console.log(tx);
+
+  // console.log(tx, "tx_________");
+  // const signed = ckb.signTransaction(sk)(tx);
+  // console.log(signed, "signed______");
+
+  // const txHash = await ckb.rpc.sendTransaction(signed);
+  // console.log(txHash, "txHash______");
+  // const outPoint = {
+  //   txHash,
+  //   index: "0x0"
+  // };
+  // console.log(`const withdrawOutPoint = ${JSON.stringify(outPoint, null, 2)}`);
+};
+
+const withDrawOutPoint = {
+  txHash: "0xb1ee185a4e811247b1705a52df487c3ce839bfa2f72e4c7a74b6fc6b0ea4cfa7",
+  index: "0x0"
+};
 
 export {
-  deposit
+  deposit,
   // logDepositEpoch,
   // starWithdrawing,
   // logStartWithdrawingEpoch,
   // logCurrentEpoch,
-  // withdraw
+  ckbUnlock
 };

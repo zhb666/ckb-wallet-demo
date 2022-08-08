@@ -35,6 +35,8 @@ export async function signTransaction(
 
   console.log(JSON.stringify(tx, null, 2), "tx");
 
+  // return "";
+
   const hash = await send_transaction(tx);
 
   return hash;

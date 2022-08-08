@@ -1,7 +1,8 @@
 import { Cell, Script } from "@ckb-lumos/base";
-import { since, config, helpers } from "@ckb-lumos/lumos";
+import { since, config, helpers, HexString, Indexer } from "@ckb-lumos/lumos";
 import { dao, common } from "@ckb-lumos/common-scripts";
 import { values } from "@ckb-lumos/base";
+import { ckbUnlock } from "../dao";
 import {
   TransactionSkeleton,
   TransactionSkeletonType
@@ -191,9 +192,22 @@ async function unlock(
   privateKeys: string[],
   feeRate: FeeRate = FeeRate.NORMAL
 ): Promise<string> {
+  const CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
+  const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
+  const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
+
   let txSkeleton = TransactionSkeleton({ cellProvider: indexer });
 
   const depositCell = await getDepositCellFromWithdrawCell(withdrawCell);
+
+  // ckbUnlock(
+  //   depositCell.out_point?.tx_hash as string,
+  //   withdrawCell.out_point?.tx_hash as string,
+  //   privateKeys[0]
+  // );
+
+  // return "";
+
   console.log(depositCell);
   console.log(withdrawCell);
   console.log(txSkeleton, to, from);
@@ -208,8 +222,12 @@ async function unlock(
     withdrawCell,
     to,
     from,
-    { config: NETWORK }
+    {
+      config: NETWORK
+      // RpcClient: RpcMocker as any
+    }
   );
+
   console.log(txSkeleton, "111___-");
 
   txSkeleton = await common.payFeeByFeeRate(

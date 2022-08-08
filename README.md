@@ -44,6 +44,7 @@ You will also need to delete the following file due to a problem in the NPM pack
 
 ```sh
 rm -f node_modules/hookrouter/dist/index.d.ts
+rm -rf node_modules/_buffer@4.9.2@buffer
 ```
 
 ### Start the Development Server
