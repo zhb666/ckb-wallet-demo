@@ -59,16 +59,16 @@ const TransactionsTable: React.FC<Props> = ({
 				</Space>
 			),
 		},
-		// {
-		// 	title: 'Compensation',
-		// 	dataIndex: 'compensation',
-		// 	key: 'compensation',
-		// 	render: (_, record) => (
-		// 		<Space size="middle">
-		// 			{Number(record.compensation) / 100000000}
-		// 		</Space>
-		// 	),
-		// },
+		{
+			title: 'Income',
+			dataIndex: 'compensation',
+			key: 'compensation',
+			render: (_, record) => (
+				<Space size="middle">
+					{Number(record.compensation) / 100000000}
+				</Space>
+			),
+		},
 		{
 			title: 'View Transaction',
 			key: 'tx_index',
@@ -172,14 +172,19 @@ const TransactionsTable: React.FC<Props> = ({
 		const cells = await get_cells(UserStoreHox.script.privateKeyAgs.lockScript)
 		const res = await getUnlockableAmountsFromCells(cells.objects)
 		let DaoBalance = 0
+		let Income = 0
 
 		for (let i = 0; i < res.length; i++) {
 			const transaction = await get_transaction(res[i].txHash);
 			res[i].state = "success"
 			res[i].timestamp = formatDate(parseInt(transaction.header.timestamp))
 			DaoBalance += Number(res[i].amount)
+			Income += Number(res[i].compensation)
 		}
-		UserStoreHox.setDaoBalanceFun(DaoBalance)
+		UserStoreHox.setDaoDataFun({
+			luck: DaoBalance,
+			Income
+		})
 
 		console.log(res);
 

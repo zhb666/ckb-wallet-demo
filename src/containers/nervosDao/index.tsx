@@ -163,10 +163,11 @@ export default function Secp256k1Transfer() {
 			<div className='mian'>
 				<h3>Account</h3>
 				<ul className='address'>
-					<li>CKB Address : {cutValue(fromAddr, 20, 20)}</li>
-					<li>Total CKB : {Number(balance) / 100000000} </li>
-					<li>Available CKB : {minus(Number(balance) / 100000000, userStoreHox.daoBalance / 100000000)} </li>
-					<li>Nervos DAO 锁定金额 : {userStoreHox.daoBalance / 100000000} </li>
+					<li>Address : {cutValue(fromAddr, 20, 20)}</li>
+					<li>Total CKB : {Number(balance) / 100000000}</li>
+					<li>Available CKB : {minus(Number(balance) / 100000000, userStoreHox.daoData.luck / 100000000)} </li>
+					<li>Nervos DAO 锁定金额 : {userStoreHox.daoData.luck / 100000000} CKB</li>
+					<li>Nervos DAO 收益 : {userStoreHox.daoData.Income / 100000000} CKB</li>
 				</ul>
 				<h3>Amount </h3>
 				<input

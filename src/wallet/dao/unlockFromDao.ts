@@ -2,7 +2,6 @@ import { Cell, Script } from "@ckb-lumos/base";
 import { since, config, helpers, HexString, Indexer } from "@ckb-lumos/lumos";
 import { dao, common } from "@ckb-lumos/common-scripts";
 import { values } from "@ckb-lumos/base";
-import { ckbUnlock } from "../dao";
 import {
   TransactionSkeleton,
   TransactionSkeletonType
@@ -22,7 +21,7 @@ import {
 } from "./index";
 import { DAOUnlockableAmount, FeeRate } from "../../type";
 import { get_cells, get_transaction } from "../../rpc";
-import { indexer } from "../../config/index";
+import { indexer, test_indexer } from "../../config/index";
 
 // AGGRON4 for test, LINA for main
 const { AGGRON4, LINA } = config.predefined;
@@ -192,11 +191,7 @@ async function unlock(
   privateKeys: string[],
   feeRate: FeeRate = FeeRate.NORMAL
 ): Promise<string> {
-  const CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
-  const CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
-  const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
-
-  let txSkeleton = TransactionSkeleton({ cellProvider: indexer });
+  let txSkeleton = TransactionSkeleton({ cellProvider: test_indexer });
 
   const depositCell = await getDepositCellFromWithdrawCell(withdrawCell);
 

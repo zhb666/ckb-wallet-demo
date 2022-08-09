@@ -13,6 +13,11 @@ declare const window: {
   };
 };
 
+interface DaoData {
+  luck: number,
+  Income: number
+}
+
 
 const storageWalletList = JSON.parse(window.localStorage.getItem('walletList')) || []
 // myWallet
@@ -33,7 +38,10 @@ function useCounter() {
 
   const [script, setScript] = useState<WalletListObject>(myScript);
   const [myBalance, setMyBalance] = useState<string>('');
-  const [daoBalance, setDaoBalance] = useState<number>(0);
+  const [daoData, setDaoData] = useState<DaoData>({
+    luck: 0,
+    Income: 0
+  });
 
   const userScript = (script: WalletListObject) => {
     setScript(script);
@@ -53,8 +61,8 @@ function useCounter() {
     setMyBalance(balance);
   }
 
-  const setDaoBalanceFun = (balance: number) => {
-    setDaoBalance(balance);
+  const setDaoDataFun = (obj: DaoData) => {
+    setDaoData(obj);
   }
 
   return {
@@ -65,8 +73,8 @@ function useCounter() {
     myBalance,
     DeleteWallet,
     setMyBalanceFun,
-    daoBalance,
-    setDaoBalanceFun
+    daoData,
+    setDaoDataFun
   };
 }
 
