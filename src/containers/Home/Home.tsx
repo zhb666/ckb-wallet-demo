@@ -242,6 +242,12 @@ const Component: React.FC = () => {
 				}}>
 					导入助记词
 				</Button>
+				{/* <br />
+				<Button className='mnemonic' block type="primary" onClick={() => {
+					showModal(false)
+				}}>
+					导入私钥
+				</Button> */}
 			</div>
 		</main>
 	);
