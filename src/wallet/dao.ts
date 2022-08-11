@@ -9,11 +9,6 @@ export const { AGGRON4, LINA } = config.predefined;
 const RPC_NETWORK = AGGRON4;
 
 /**
- * lumos indexer
- */
-// indexer.startForever();
-
-/**
  * sdk
  */
 const ckb = new CKB(CKB_RPC_URL);
