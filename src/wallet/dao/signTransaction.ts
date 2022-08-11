@@ -13,8 +13,6 @@ export async function signTransaction(
     config: NETWORK
   });
 
-  console.log(txSkeletonWEntries, "666");
-
   // 这里是判断多个钱包还是单个钱包
   if (privateKeys.length !== txSkeletonWEntries.get("signingEntries").count()) {
     console.log("Invalid private keys length");

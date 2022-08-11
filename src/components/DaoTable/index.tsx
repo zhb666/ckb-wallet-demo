@@ -65,7 +65,7 @@ const TransactionsTable: React.FC<Props> = ({
 			key: 'compensation',
 			render: (_, record) => (
 				<Space size="middle">
-					{Number(record.compensation) / 100000000}
+					{Number(record.compensation) < 99.9 ? 0 : Number(record.compensation) / 100000000}
 				</Space>
 			),
 		},
@@ -109,7 +109,6 @@ const TransactionsTable: React.FC<Props> = ({
 		window.open(`${browserUrl.test}/transaction/${txHash}`)
 	}
 
-
 	const withdraw = async (daoData: DaoDataObject) => {
 
 		console.log(daoData);
@@ -130,7 +129,13 @@ const TransactionsTable: React.FC<Props> = ({
 		console.log(hash);
 	}
 
-
+	const compensation = (num: number) => {
+		if (num > 99.9) {
+			return num / 100000000
+		} else {
+			return 0
+		}
+	}
 
 	// Judge whether the transaction is success
 	useEffect(() => {
@@ -187,8 +192,6 @@ const TransactionsTable: React.FC<Props> = ({
 		})
 
 		console.log(res);
-
-
 		// window.localStorage.setItem("daoData", JSON.stringify(res))
 		setTableData(res.reverse());
 	};

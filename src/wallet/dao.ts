@@ -11,7 +11,7 @@ const RPC_NETWORK = AGGRON4;
 /**
  * lumos indexer
  */
-indexer.startForever();
+// indexer.startForever();
 
 /**
  * sdk
@@ -78,6 +78,7 @@ const loadCells = async (privKey: string) => {
   /**
    * load cells from lumos as `examples/sendTransactionWithLumosCollector.js` shows
    */
+
   const loadCells = await ckb.loadCells({
     indexer,
     CellCollector,
@@ -123,29 +124,29 @@ const deposit = async (options: Options) => {
   return txHash;
 };
 
-const ckbUnlock = async (
-  depositHash: string,
-  withdrawHash: string,
-  privateKeys: string
-) => {
-  const depositOutPoint = {
-    txHash: depositHash,
-    index: "0x0"
-  };
+// const ckbUnlock = async (
+//   depositHash: string,
+//   withdrawHash: string,
+//   privateKeys: string
+// ) => {
+//   const depositOutPoint = {
+//     txHash: depositHash,
+//     index: "0x0"
+//   };
 
-  const startWithDrawOutPoint = {
-    txHash: withdrawHash,
-    index: "0x0"
-  };
+//   const startWithDrawOutPoint = {
+//     txHash: withdrawHash,
+//     index: "0x0"
+//   };
 
-  await ckb.loadDeps();
-  await loadCells(privateKeys);
-  const tx = await ckb.generateDaoWithdrawTransaction({
-    depositOutPoint,
-    withdrawOutPoint: startWithDrawOutPoint,
-    fee: BigInt(1000000)
-  });
-  console.log(tx);
-};
+//   await ckb.loadDeps();
+//   await loadCells(privateKeys);
+//   const tx = await ckb.generateDaoWithdrawTransaction({
+//     depositOutPoint,
+//     withdrawOutPoint: startWithDrawOutPoint,
+//     fee: BigInt(1000000)
+//   });
+//   console.log(tx);
+// };
 
-export { deposit, ckbUnlock };
+export { deposit };

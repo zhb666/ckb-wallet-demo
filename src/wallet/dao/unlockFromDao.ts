@@ -147,8 +147,6 @@ async function withdraw(
 ): Promise<string> {
   let txSkeleton = TransactionSkeleton({ cellProvider: indexer });
 
-  console.log(txSkeleton, "这里会走吗1");
-
   txSkeleton = await dao.withdraw(
     txSkeleton,
     inputCell,
@@ -194,14 +192,6 @@ async function unlock(
   let txSkeleton = TransactionSkeleton({ cellProvider: test_indexer });
 
   const depositCell = await getDepositCellFromWithdrawCell(withdrawCell);
-
-  // ckbUnlock(
-  //   depositCell.out_point?.tx_hash as string,
-  //   withdrawCell.out_point?.tx_hash as string,
-  //   privateKeys[0]
-  // );
-
-  // return "";
 
   console.log(depositCell);
   console.log(withdrawCell);

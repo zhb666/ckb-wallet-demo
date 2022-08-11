@@ -16,18 +16,6 @@ const DefaultTerminator: Terminator = () => {
   return { stop: false, push: true };
 };
 
-// const a = [
-//   {
-//     script: {
-//       code_hash:
-//         "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
-//       hash_type: "type",
-//       args: "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
-//     },
-//     script_type: "lock"
-//   }
-// ];
-// 0xf498b54dde9043354a2efe68c65ef8365f255a4a
 const script = {
   code_hash:
     "0x9bd7e06f3ecf4be0f2fcd2188b23f1b9fcc88e5d4b65a8637b17723bbda3cce8",
@@ -40,15 +28,6 @@ interface ScriptObject {
   hash_type: string;
   args: string;
 }
-
-const set_scripts_params = [
-  [
-    {
-      script,
-      block_number: "0x0"
-    }
-  ]
-];
 
 /**
  * @description: set_scripts

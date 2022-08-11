@@ -10,7 +10,7 @@ export const browserUrl: BrowserUrl = {
 };
 
 export const CKB_RPC_URL = "http://localhost:9000";
-export const CKB_INDEXER_URL = "http://localhost:9000/indexer";
+export const CKB_INDEXER_URL = "http://localhost:9000";
 export const indexer = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
 
 export const TEST_CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
