@@ -1,21 +1,18 @@
 import { sealTransaction, TransactionSkeletonType } from "@ckb-lumos/helpers";
-import { commons, config, hd } from "@ckb-lumos/lumos";
-import { send_transaction } from "../../rpc";
-// AGGRON4 for test, LINA for main
-const { AGGRON4, LINA } = config.predefined;
-const NETWORK = AGGRON4;
+import { commons, hd } from "@ckb-lumos/lumos";
+import { RPC_NETWORK } from "../../config";
+import { sendTransaction } from "../index";
 
 export async function signTransaction(
   txSkeleton: TransactionSkeletonType,
   privateKeys: string[]
 ): Promise<string> {
   const txSkeletonWEntries = commons.common.prepareSigningEntries(txSkeleton, {
-    config: NETWORK
+    config: RPC_NETWORK
   });
 
-  // 这里是判断多个钱包还是单个钱包
+  // Multiple wallets or a single wallet
   if (privateKeys.length !== txSkeletonWEntries.get("signingEntries").count()) {
-    console.log("Invalid private keys length");
     throw new Error("Invalid private keys length");
   }
 
@@ -25,17 +22,8 @@ export async function signTransaction(
     // @ts-ignore
     signatures.push(hd.key.signRecoverable(entry.message, privateKeys[i]));
   }
-  console.log(signatures, "signatures___");
 
   const tx = sealTransaction(txSkeletonWEntries, signatures);
 
-  console.log(tx, "tx_______");
-
-  console.log(JSON.stringify(tx, null, 2), "tx");
-
-  // return "";
-
-  const hash = await send_transaction(tx);
-
-  return hash;
+  return sendTransaction(tx);
 }

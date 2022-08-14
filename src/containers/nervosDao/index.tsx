@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Script } from "@ckb-lumos/lumos";
-import { capacityOf, generateAccountFromPrivateKey } from "../../wallet";
-import { deposit } from "../../wallet/dao";
+import { capacityOf } from "../../wallet";
+import { deposit } from "../../wallet/dao/depositDao";
 import { notification, Spin, Button } from 'antd';
 import {
 	QuestionCircleOutlined
@@ -9,14 +9,13 @@ import {
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate, cutValue } from "../../utils/index"
 import { minus } from "../../utils/bigNumber"
-import { DaoDataObject } from "../../type"
+import { DaoDataObject, FeeRate } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/DaoTable'
-
+import { generateAccountFromPrivateKey } from '../../wallet/hd';
 import {
 	get_transaction
 } from "../../rpc";
-
 
 import "./index.scss"
 
@@ -30,10 +29,8 @@ let timer: any = null
 let updateFromInfoTimer: any = null
 export default function Secp256k1Transfer() {
 	const userStoreHox = UserStore();
-	const { privateKey, privateKeyAgs } = userStoreHox.script
+	const { privateKey } = userStoreHox.script
 
-	// 0x9acbab8217e1692799b85e3d784b9132603d816944a17d39b101daf4ff89efd1
-	// 0x913a1d234419e401db40a8821ac4ba9f4d54f99e977f7857e8768887e4eccd40
 	const [privKey, setPrivKey] = useState(privateKey);
 	const [fromAddr, setFromAddr] = useState("");
 	const [fromLock, setFromLock] = useState<Script>();
@@ -79,7 +76,7 @@ export default function Secp256k1Transfer() {
 		}
 
 		setLoading(true)
-		const txhash = await deposit({ amount: parseFloat(amount || "0") * 100000000, from: fromAddr, privKey });
+		const txhash = await deposit(BigInt(amount * 10 ** 8), fromAddr, fromAddr, privKey, FeeRate.NORMAL);
 		if (txhash) {
 			setTxHash({
 				timestamp: formatDate(new Date().getTime()),
@@ -103,15 +100,14 @@ export default function Secp256k1Transfer() {
 		if (txHash.txHash) {
 			timer = setInterval(async () => {
 				const txTransaction = await get_transaction(txHash.txHash);
-				console.log(txTransaction, "txTransaction______");
 
 				if (txTransaction) {
-					// 如果是有交易信息了就关闭定时器，需要传值过去
+					// Close the timer when the transaction information is available, and the value needs to be transferred
 					clearInterval(timer)
 					// Update localStorage
 
 					let finalData = JSON.parse(window.localStorage.getItem('finalData'))
-					// 找到当前的交易赋值
+					// Find the current transaction assignment
 
 					finalData[0].blockHeight = parseInt(txTransaction.header.number)
 					finalData[0].timestamp = formatDate(parseInt(txTransaction.header.timestamp))
@@ -130,7 +126,7 @@ export default function Secp256k1Transfer() {
 
 	const updateFromInfo = async () => {
 		const { lockScript, address } = generateAccountFromPrivateKey(privKey);
-		const capacity = await capacityOf(address);
+		const capacity = await capacityOf(lockScript);
 		setFromAddr(address);
 		setFromLock(lockScript);
 		setBalance(capacity.toString());

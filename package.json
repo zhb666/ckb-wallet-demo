@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@ckb-lumos/lumos": "^0.18",
+    "@ckb-lumos/lumos": "^0.18.0-rc6",
     "@metamask/detect-provider": "^1.2.0",
     "@nervosnetwork/ckb-sdk-core": "^0.102.3",
     "@nervosnetwork/ckb-sdk-utils": "^0.101.0",

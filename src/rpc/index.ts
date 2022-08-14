@@ -1,16 +1,9 @@
 import { Cell } from "@ckb-lumos/base";
-import { request, requestBatch } from "../service/index";
-import {
-  GetLiveCellsResult,
-  IndexerTransaction,
-  SearchKey,
-  SearchKeyFilter,
-  Terminator
-} from "../service/type";
+import { request } from "../service/index";
+import { IndexerTransaction, Terminator } from "../service/type";
 import { CKB_RPC_URL } from "../config";
 
 const ckbLightClientRPC = CKB_RPC_URL;
-const ckbIndexer = "http://localhost:8116/";
 
 const DefaultTerminator: Terminator = () => {
   return { stop: false, push: true };
@@ -79,7 +72,7 @@ export async function get_cells(script?: ScriptObject) {
       script_type: "lock"
     },
     "asc",
-    "0x64"
+    "0x640"
   ]);
 
   // 处理数据
@@ -181,16 +174,8 @@ export async function get_cells_capacity() {
     "get_cells_capacity",
     get_cells_capacity_params
   );
-  console.log(res, "get_cells_capacity");
   return res;
 }
-
-const get_transaction_params = [
-  {
-    script,
-    script_type: "lock"
-  }
-];
 
 /**
  * @description: get_transaction

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactJson from "react-json-view";
 import {
 	setScripts,
-	getScripts,
 	get_cells,
-	get_transactions,
 	get_cells_capacity,
 	getTipHeader,
 	get_transaction,
@@ -18,7 +16,6 @@ import "./index.scss";
 const Component: React.FC = () => {
 	const [balance, setBalance] = useState<any>(0);
 	const [cells, setCells] = useState<any>({});
-	const [transactions, setTransactions] = useState<any>({});
 
 	async function getBalance() {
 		let capacity = await get_cells_capacity();
@@ -32,8 +29,6 @@ const Component: React.FC = () => {
 			"hash_type": "type",
 			"args": "0x58700e3b7fb4e4a24dc39e871920471dee5d3477"
 		});
-		console.log(cells);
-
 		setCells(cells);
 	}
 
@@ -61,21 +56,9 @@ const Component: React.FC = () => {
 				<button onClick={getCells}>get_cells </button>
 				<ReactJson theme={"tomorrow"} src={cells} />
 			</div>
-			{/* <div>
-				<button onClick={getTransactions}>get_transactions</button>
-				<ReactJson theme={"tomorrow"} src={transactions} />
-			</div> */}
-			<div>
-				<button onClick={async () => {
-					const res = await get_transaction("0xe38ab541cd817b4c227ca33f40241577502a3e57ec8420253b95489ec6810420")
-					console.log(res);
-
-				}}>get_transaction</button>
-			</div>
 			<div>
 				<button onClick={async () => {
 					const res = await get_transaction("0x93111556ef6275ce96356cdfe9228a9d6c10eb5c560d54478a50ad7cfe80eeb6")
-					console.log(res);
 				}}>get_transaction</button>
 			</div>
 			<div>
@@ -98,19 +81,6 @@ const Component: React.FC = () => {
 			<div>
 				<button onClick={async () => {
 					const num = await (await getCapacity("0x2186f9360")).toString();
-					console.log(num)
-				}}>BI.from</button>
-			</div>
-			<div>
-				<button onClick={async () => {
-					const num = await (await getCapacity("0x2540a5d60")).toString();
-					console.log(num)
-				}}>BI.from</button>
-			</div>
-			<div>
-				<button onClick={async () => {
-					const num = await (await getCapacity("0xa54f4ab560")).toString();
-					console.log(num)
 				}}>BI.from</button>
 			</div>
 		</main>

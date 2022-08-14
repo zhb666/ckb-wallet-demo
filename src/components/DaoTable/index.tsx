@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/lib/table';
-import { Space, Table, Button, message, notification, Spin } from 'antd';
+import { Space, Table, Button, notification, Spin } from 'antd';
 import { DaoDataObject } from "../../type"
 import { cutValue, formatDate } from "../../utils/index"
 import { browserUrl } from "../../config"
@@ -9,7 +9,6 @@ import { get_cells } from "../../rpc"
 import { getUnlockableAmountsFromCells, withdrawOrUnlock } from "../../wallet/dao/index"
 
 import {
-	get_transactions,
 	get_transaction
 } from "../../rpc";
 import './index.scss';
@@ -40,10 +39,6 @@ const TransactionsTable: React.FC<Props> = ({
 	const [txHash, setTxHash] = useState<string>("");//pending = false  success = true
 
 	const columns: ColumnsType<DaoDataObject> = [
-		// {
-		// 	title: 'ID',
-		// 	render: (text, record, index) => `${index + 1}`,
-		// },
 		{
 			title: 'Date',
 			dataIndex: 'timestamp',
@@ -94,7 +89,7 @@ const TransactionsTable: React.FC<Props> = ({
 			title: 'Action',
 			render: (_, record) => (
 				<div>
-					{record.type == "deposit" ? <Button className='actionButton' disabled={record.state == "pending"} onClick={() => {
+					{record.type === "deposit" ? <Button className='actionButton' disabled={record.state == "pending"} onClick={() => {
 						withdraw(record)
 					}}>withdraw</Button> : <Button className='actionButton' onClick={() => {
 						withdraw(record)
@@ -111,7 +106,6 @@ const TransactionsTable: React.FC<Props> = ({
 
 	const withdraw = async (daoData: DaoDataObject) => {
 
-		console.log(daoData);
 		// @ts-ignore
 		const hash = await withdrawOrUnlock(daoData, privateKeyAgs.address, privateKey, privateKeyAgs.lockScript);
 
@@ -119,31 +113,19 @@ const TransactionsTable: React.FC<Props> = ({
 			notification["success"]({
 				message: 'success',
 				description:
-					"successful transaction",
+					"success transaction",
 			});
 		};
 
 		setTxHash(hash)
 		setLoading(true)
-
-		console.log(hash);
-	}
-
-	const compensation = (num: number) => {
-		if (num > 99.9) {
-			return num / 100000000
-		} else {
-			return 0
-		}
 	}
 
 	// Judge whether the transaction is success
 	useEffect(() => {
-
 		if (txHash) {
 			timer = setInterval(async () => {
 				const txTransaction = await get_transaction(txHash);
-				console.log(txTransaction, "txTransaction______");
 
 				if (txTransaction) {
 					clearInterval(timer)
@@ -191,7 +173,6 @@ const TransactionsTable: React.FC<Props> = ({
 			Income
 		})
 
-		console.log(res);
 		// window.localStorage.setItem("daoData", JSON.stringify(res))
 		setTableData(res.reverse());
 	};

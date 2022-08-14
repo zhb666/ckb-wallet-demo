@@ -156,7 +156,6 @@ const Component: React.FC = () => {
 
 		// call setScript
 		if (getScriptRes.length !== 0) {
-			console.log(getScriptRes);
 			// No need to set height
 			// await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
 		} else {

@@ -2,22 +2,8 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 // const isDev = require("electron-is-dev");
-
 // const Store = require("electron-store");
 // const store = new Store();
-
-// console.log(store, "store____");
-
-// store.set("unicorn", "这是需要存储的内容");
-// store.set("unicorn111", "这是需要存储的内容1111");
-// store.set("unicorn222", "这是需要存储的内容222");
-// console.log(store.get("unicorn")); //=> '这是需要存储的内容'
-
-// // Use dot-notation to access nested properties
-// store.set("foo.bar", true);
-// console.log(store.get("foo")); //=> {bar: true}
-
-// console.log(app.getPath("userData"), "userData____");
 
 function createWindow() {
   // Create the browser window.

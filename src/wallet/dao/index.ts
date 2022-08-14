@@ -7,10 +7,9 @@ import {
   getWithdrawDaoEarliestSince,
   findCorrectInputFromWithdrawCell,
   getTransactionFromHash,
-  getBlockHeaderFromHash,
-  depositDaoData
+  getBlockHeaderFromHash
 } from "./getUnlockableAmounts";
-import { signTransaction } from "./signTransaction";
+
 import { withdrawOrUnlock } from "./unlockFromDao";
 
 export {
@@ -23,7 +22,5 @@ export {
   findCorrectInputFromWithdrawCell,
   getTransactionFromHash,
   getBlockHeaderFromHash,
-  depositDaoData,
-  signTransaction,
   withdrawOrUnlock
 };

@@ -1,6 +1,6 @@
 import { Cell, Script, Header, TransactionWithStatus } from "@ckb-lumos/base";
 import { since } from "@ckb-lumos/lumos";
-import { dao, common } from "@ckb-lumos/common-scripts";
+import { dao } from "@ckb-lumos/common-scripts";
 import { DAOUnlockableAmount } from "../../type";
 import {
   get_cells,
@@ -8,6 +8,7 @@ import {
   get_transaction,
   get_header
 } from "../../rpc";
+import { DEPOSITDAODATA } from "../../config";
 
 export enum DAOCellType {
   DEPOSIT = "deposit",
@@ -15,7 +16,6 @@ export enum DAOCellType {
   ALL = "all"
 }
 
-export const depositDaoData = "0x0000000000000000";
 const blockHeaderHashMap = new Map<string, Header>();
 const blockHeaderNumberMap = new Map<string, Header>();
 const transactionMap = new Map<string, TransactionWithStatus>();
@@ -59,7 +59,7 @@ export async function filterDAOCells(
 }
 
 export function isCellDeposit(cell: Cell): boolean {
-  return cell.data === depositDaoData;
+  return cell.data === DEPOSITDAODATA;
 }
 
 function isCellDAO(cell: Cell): boolean {

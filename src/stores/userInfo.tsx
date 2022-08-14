@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { createModel } from "hox";
-import { ScriptObject, WalletListObject } from "../type"
+import { WalletListObject } from "../type"
 
 declare const window: {
   localStorage: {
@@ -23,7 +23,7 @@ const storageWalletList = JSON.parse(window.localStorage.getItem('walletList')) 
 // myWallet
 let myScript = JSON.parse(window.localStorage.getItem('myScript')) || {}
 
-if (storageWalletList.length == 0) {
+if (storageWalletList.length === 0) {
   myScript = {}
 } else {
   if (!myScript) {

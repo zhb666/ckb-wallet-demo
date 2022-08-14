@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Script } from "@ckb-lumos/lumos";
-import { capacityOf, generateAccountFromPrivateKey, transfer } from "./lib";
+import { capacityOf, } from "../../wallet/index";
 import { notification, Spin, Button } from 'antd';
 import {
   QuestionCircleOutlined
@@ -17,6 +17,8 @@ import {
 
 
 import "./index.scss"
+import { transfer } from '../../wallet';
+import { generateAccountFromPrivateKey } from '../../wallet/hd';
 
 declare const window: {
   localStorage: {
@@ -51,15 +53,12 @@ export default function Secp256k1Transfer() {
     notification[type]({
       message: 'success',
       description:
-        "successful transaction",
+        "success transaction",
     });
   };
 
   // send
   const send = (async () => {
-    console.log(toAddr, "toAddr");
-    console.log(amount, "amount");
-
     let msg = ""
     if (!toAddr) {
       msg = "The receiving address is empty"
@@ -78,7 +77,7 @@ export default function Secp256k1Transfer() {
     }
 
     setLoading(true)
-    const txhash = await transfer({ amount: parseFloat(amount || "0") * 100000000, from: fromAddr, to: toAddr, privKey });
+    const txhash = await transfer(BigInt(amount * 10 ** 8), fromAddr, toAddr, privKey);
     if (txhash) {
       setTxHash({
         timestamp: formatDate(new Date().getTime()),
@@ -99,15 +98,12 @@ export default function Secp256k1Transfer() {
     if (txHash.hash) {
       timer = setInterval(async () => {
         const txTransaction = await get_transaction(txHash.hash);
-        console.log(txTransaction, "txTransaction______");
 
         if (txTransaction) {
-          // 如果是有交易信息了就关闭定时器，需要传值过去
           clearInterval(timer)
           // Update localStorage
 
           let finalData = JSON.parse(window.localStorage.getItem('finalData'))
-          // 找到当前的交易赋值
 
           finalData[0].blockHeight = parseInt(txTransaction.header.number)
           finalData[0].timestamp = formatDate(parseInt(txTransaction.header.timestamp))
@@ -123,10 +119,9 @@ export default function Secp256k1Transfer() {
     return () => clearInterval(timer)
   }, [txHash.hash])
 
-
   const updateFromInfo = async () => {
     const { lockScript, address } = generateAccountFromPrivateKey(privKey);
-    const capacity = await capacityOf(address);
+    const capacity = await capacityOf(lockScript);
     setFromAddr(address);
     setFromLock(lockScript);
     setBalance(capacity.toString());
@@ -198,8 +193,6 @@ export default function Secp256k1Transfer() {
           <Table item={txHash} off={off} />
         </div>
       </div>
-
-
 
     </Spin>
   );
