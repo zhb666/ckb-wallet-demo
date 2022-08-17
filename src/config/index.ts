@@ -11,8 +11,7 @@ const browserUrl: BrowserUrl = {
 };
 
 const CKB_RPC_URL = "http://localhost:9000";
-const CKB_INDEXER_URL = "http://localhost:9000";
-const INDEXER = new Indexer(CKB_INDEXER_URL, CKB_RPC_URL);
+const INDEXER = new Indexer(CKB_RPC_URL, CKB_RPC_URL);
 
 const TEST_CKB_RPC_URL = "https://testnet.ckb.dev/rpc";
 const TEST_CKB_INDEXER_URL = "https://testnet.ckb.dev/indexer";
@@ -29,7 +28,6 @@ const DEPOSITDAODATA = "0x0000000000000000";
 export {
   browserUrl,
   CKB_RPC_URL,
-  CKB_INDEXER_URL,
   INDEXER,
   TEST_CKB_RPC_URL,
   TEST_CKB_INDEXER_URL,
