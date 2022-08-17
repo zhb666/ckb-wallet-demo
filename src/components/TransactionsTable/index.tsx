@@ -5,11 +5,11 @@ import { FinalDataObject } from "../../type"
 import { cutValue, arrayToMap } from "../../utils/index"
 import { browserUrl } from "../../config"
 import { UserStore } from "../../stores";
+import { transactionData } from '../../wallet';
 import {
 	get_transactions,
 } from "../../rpc";
 import './index.scss';
-import { transactionData } from '../../wallet';
 
 declare const window: {
 	localStorage: {
