@@ -1,9 +1,8 @@
-import { TransactionSkeleton } from "@ckb-lumos/helpers";
 import { dao, common } from "@ckb-lumos/common-scripts";
 import { DAOCELLSIZE, RPC_NETWORK } from "../../config";
 import { FeeRate } from "../../type";
 import { signTransaction } from "../index";
-import { getEmptyCellProvider } from "../customCellProvider";
+import { getTransactionSkeleton } from "../customCellProvider";
 
 export async function deposit(
   amount: bigint,
@@ -16,9 +15,7 @@ export async function deposit(
     throw new Error("Minimum deposit value is 102 CKB");
   }
 
-  let txSkeleton = TransactionSkeleton({
-    cellProvider: getEmptyCellProvider()
-  });
+  let txSkeleton = getTransactionSkeleton();
 
   txSkeleton = await dao.deposit(txSkeleton, from, to, amount, {
     config: RPC_NETWORK

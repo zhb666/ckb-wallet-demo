@@ -1,9 +1,8 @@
-import { TransactionSkeleton } from "@ckb-lumos/helpers";
 import { common } from "@ckb-lumos/common-scripts";
 import { RPC_NETWORK, TRANSFERCELLSIZE } from "../../config/index";
 import { FeeRate } from "../../type";
 import { signTransaction } from "../index";
-import { getEmptyCellProvider } from "../customCellProvider";
+import { getTransactionSkeleton } from "../customCellProvider";
 
 export async function transfer(
   amount: bigint,
@@ -16,9 +15,7 @@ export async function transfer(
     throw new Error("Minimum transfer (cell) value is 61 CKB");
   }
 
-  let txSkeleton = TransactionSkeleton({
-    cellProvider: getEmptyCellProvider()
-  });
+  let txSkeleton = getTransactionSkeleton();
 
   txSkeleton = await common.transfer(
     txSkeleton,

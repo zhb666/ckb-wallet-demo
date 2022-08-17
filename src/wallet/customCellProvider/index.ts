@@ -4,6 +4,7 @@ import {
   CellCollector,
   QueryOptions
 } from "@ckb-lumos/base";
+import { TransactionSkeleton } from "@ckb-lumos/helpers";
 import { INDEXER } from "../../config";
 
 class CustomCellProvider implements CellProvider {
@@ -29,4 +30,10 @@ function getEmptyCellProvider(queryOptions: QueryOptions = {}): CellProvider {
   return getCellProvider({ ...queryOptions, type: "empty" });
 }
 
-export { getEmptyCellProvider };
+function getTransactionSkeleton() {
+  return TransactionSkeleton({
+    cellProvider: getEmptyCellProvider()
+  });
+}
+
+export { getEmptyCellProvider, getTransactionSkeleton };

@@ -208,19 +208,11 @@ export async function getWithdrawDaoEarliestSince(
   );
   const { txHash } = await findCorrectInputFromWithdrawCell(withdrawCell);
   const depositTransaction = await getTransactionFromHash(txHash);
-  // const depositBlockHeader = await getBlockHeaderFromHash(
-  //   depositTransaction.tx_status.block_hash as string
-  // );
 
   return dao.calculateDaoEarliestSince(
     depositTransaction.header.epoch,
     withdrawBlockHeader.epoch
   );
-
-  // return dao.calculateDaoEarliestSince(
-  //   depositBlockHeader.epoch,
-  //   withdrawBlockHeader.epoch
-  // );
 }
 
 export async function getUnlockableAmountsFromCells(

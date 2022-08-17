@@ -21,7 +21,7 @@ import { signTransaction } from "../index";
 import { DAOUnlockableAmount, FeeRate } from "../../type";
 import { get_cells } from "../../rpc";
 import { DEPOSITDAODATA, RPC_NETWORK, TEST_INDEXER } from "../../config/index";
-import { getEmptyCellProvider } from "../customCellProvider";
+import { getTransactionSkeleton } from "../customCellProvider";
 
 const { ScriptValue } = values;
 
@@ -134,9 +134,7 @@ async function withdraw(
   privateKeys: string[],
   feeRate: FeeRate = FeeRate.NORMAL
 ): Promise<string> {
-  let txSkeleton = TransactionSkeleton({
-    cellProvider: getEmptyCellProvider()
-  });
+  let txSkeleton = getTransactionSkeleton();
 
   txSkeleton = await dao.withdraw(
     txSkeleton,

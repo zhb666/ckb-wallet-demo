@@ -22,7 +22,6 @@ export async function signTransaction(
     // @ts-ignore
     signatures.push(hd.key.signRecoverable(entry.message, privateKeys[i]));
   }
-
   const tx = sealTransaction(txSkeletonWEntries, signatures);
 
   return sendTransaction(tx);
