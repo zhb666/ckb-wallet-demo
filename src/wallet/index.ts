@@ -2,6 +2,13 @@ import { BI } from "@ckb-lumos/lumos";
 import { signTransaction } from "./signTransaction";
 import { transfer, transactionData } from "./transaction";
 import { sendTransaction } from "./sendTransaction";
+import {
+  deposit,
+  getUnlockableAmountsFromCells,
+  withdrawOrUnlock
+} from "./dao";
+import { generateAccountFromPrivateKey } from "./hd";
+
 import { ScriptObject } from "../type";
 import { get_cells } from "../rpc";
 
@@ -22,5 +29,9 @@ export {
   transfer,
   capacityOf,
   sendTransaction,
-  transactionData
+  transactionData,
+  deposit,
+  generateAccountFromPrivateKey,
+  getUnlockableAmountsFromCells,
+  withdrawOrUnlock
 };

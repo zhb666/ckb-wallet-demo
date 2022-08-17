@@ -6,7 +6,7 @@ import { cutValue, formatDate } from "../../utils/index"
 import { browserUrl } from "../../config"
 import { UserStore } from "../../stores";
 import { get_cells } from "../../rpc"
-import { getUnlockableAmountsFromCells, withdrawOrUnlock } from "../../wallet/dao/index"
+import { getUnlockableAmountsFromCells, withdrawOrUnlock } from "../../wallet"
 
 import {
 	get_transaction

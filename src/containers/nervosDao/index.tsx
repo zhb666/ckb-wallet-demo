@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Script } from "@ckb-lumos/lumos";
-import { capacityOf } from "../../wallet";
-import { deposit } from "../../wallet/dao/depositDao";
 import { notification, Spin, Button } from 'antd';
 import {
 	QuestionCircleOutlined
 } from '@ant-design/icons';
+
+import { Script } from "@ckb-lumos/lumos";
+import { capacityOf, deposit, generateAccountFromPrivateKey } from "../../wallet";
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate, cutValue } from "../../utils/index"
 import { minus } from "../../utils/bigNumber"
 import { DaoDataObject, FeeRate } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/DaoTable'
-import { generateAccountFromPrivateKey } from '../../wallet/hd';
 import {
 	get_transaction
 } from "../../rpc";
+
 
 import "./index.scss"
 
