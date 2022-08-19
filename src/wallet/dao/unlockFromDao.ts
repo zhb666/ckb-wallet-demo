@@ -136,20 +136,15 @@ async function withdraw(
 ): Promise<string> {
   let txSkeleton = getTransactionSkeleton();
 
-  txSkeleton = await dao.withdraw(
-    txSkeleton,
-    inputCell,
-    // @ts-ignore
-    null,
-    { config: RPC_NETWORK }
-  );
+  txSkeleton = await dao.withdraw(txSkeleton, inputCell, undefined, {
+    config: RPC_NETWORK
+  });
 
   txSkeleton = await common.payFeeByFeeRate(
     txSkeleton,
     feeAddresses,
     feeRate,
-    // @ts-ignore
-    null,
+    undefined,
     { config: RPC_NETWORK }
   );
 
@@ -199,8 +194,7 @@ async function unlock(
     txSkeleton,
     feeAddresses,
     feeRate,
-    // @ts-ignore
-    null,
+    undefined,
     { config: RPC_NETWORK }
   );
   const signingPrivKeys = extractPrivateKeys(

@@ -75,7 +75,6 @@ export async function get_cells(script?: ScriptObject) {
     "0x640"
   ]);
 
-  // 处理数据
   while (true) {
     const liveCells = res.objects;
     cursor = res.last_cursor;

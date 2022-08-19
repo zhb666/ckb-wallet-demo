@@ -25,8 +25,7 @@ export async function deposit(
     txSkeleton,
     [from],
     feeRate,
-    // @ts-ignore
-    null,
+    undefined,
     { config: RPC_NETWORK }
   );
 

@@ -45,7 +45,6 @@ const incomeFun = async (output: TransactionObject[]) => {
   obj.type = "add";
   obj.state = "success";
   obj.blockHeight = parseInt(res.header.number);
-  // obj.money = (await getCapacity(res.transaction.outputs[0].capacity)).toString()
   obj.amount = "+" + parseInt(res.transaction.outputs[0].capacity) / 100000000;
   return obj;
 };

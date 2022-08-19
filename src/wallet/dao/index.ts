@@ -9,7 +9,6 @@ import {
   getTransactionFromHash,
   getBlockHeaderFromHash
 } from "./getUnlockableAmounts";
-
 import { withdrawOrUnlock } from "./unlockFromDao";
 import { deposit } from "./depositDao";
 

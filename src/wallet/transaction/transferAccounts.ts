@@ -22,9 +22,8 @@ export async function transfer(
     [from],
     to,
     amount,
-    // @ts-ignore
-    null,
-    null,
+    undefined,
+    undefined,
     { config: RPC_NETWORK }
   );
 
@@ -32,8 +31,7 @@ export async function transfer(
     txSkeleton,
     [from],
     feeRate,
-    // @ts-ignore
-    null,
+    undefined,
     { config: RPC_NETWORK }
   );
 
