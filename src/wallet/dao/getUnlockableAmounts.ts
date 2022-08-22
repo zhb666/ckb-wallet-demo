@@ -78,7 +78,6 @@ function isCellDAO(cell: Cell): boolean {
 
 function getDAOScript(): Script {
   // const daoConfig = getConfig().SCRIPTS.DAO;
-
   return {
     code_hash:
       "0x82d76d1b75fe2fd9a27dfbaa65a039221a380d76c926f378d3f81cf3e7e13f2e",

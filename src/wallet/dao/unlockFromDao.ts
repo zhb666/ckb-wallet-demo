@@ -6,7 +6,6 @@ import {
   TransactionSkeleton,
   TransactionSkeletonType
 } from "@ckb-lumos/helpers";
-
 import {
   filterDAOCells,
   isCellDeposit,
@@ -88,8 +87,6 @@ async function withdrawOrUnlockFromCell(
   const to = feeAddresses[0];
 
   if (!isCellDeposit(cell)) {
-    console.log("Unlocking withdraw cell");
-
     // Check real unlockability
     if (!(await isCellUnlockable(cell))) {
       throw new Error("Cell can not yet be unlocked.");
