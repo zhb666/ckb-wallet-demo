@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import type { RadioChangeEvent } from 'antd';
 import { notification, Radio, Space, Button, Modal, Input, Empty } from 'antd';
 import {
-	CloseCircleOutlined
+	CloseCircleOutlined, CopyFilled
 } from '@ant-design/icons';
+import copy from 'copy-to-clipboard';
 import { Mnemonic, getPrivateKeyAgs } from "../../wallet/hd";
 import { NotificationType } from "../../common/ts/Types"
 import { WalletListObject } from "../../type"
@@ -19,13 +20,13 @@ import "./Home.scss";
 
 const { TextArea } = Input;
 
-declare const window: {
-	location: any;
-	localStorage: {
-		getItem: Function;
-		setItem: Function;
-	};
-};
+// declare const window: {
+// 	location: any;
+// 	localStorage: {
+// 		getItem: Function;
+// 		setItem: Function;
+// 	};
+// };
 
 const Component: React.FC = () => {
 	const UserStoreHox = UserStore();
@@ -129,6 +130,13 @@ const Component: React.FC = () => {
 		setMnemonic(e.target.value)
 	};
 
+	const copyFun = (value: string) => {
+		copy(value);
+		notification["success"]({
+			message: 'Copy success',
+		});
+	}
+
 	/**
 	 * @description: 
 	 * @param {*}
@@ -141,14 +149,14 @@ const Component: React.FC = () => {
 
 	const changeWallet = async () => {
 		if (!walletList) return
-		// 判断当前选中的钱包
+		// Determine the currently selected wallet
 		let res: WalletListObject[] = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == wallet
 		)
 
 		UserStoreHox.userScript(res[0])
 
-		// 先获取之前同步高度，如果没有从零开始，有的话取出来传值
+		// First get the previous synchronization height, if it does not start from zero, take it out and pass the value
 		const getScript = await getScripts();
 		const getScriptRes = getScript.filter((item: { script: { args: any; }; }) =>
 			item.script.args == wallet
@@ -159,7 +167,7 @@ const Component: React.FC = () => {
 			// No need to set height
 			// await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
 		} else {
-			// 如果是导入的钱包，没有匹配到有同步的高度需要从0开始同步，如果是新建的钱包同步最高的区块即可
+			// If it is an imported wallet, if it does not match the height of synchronization, it needs to start synchronization from 0. If it is a newly created wallet, it can synchronize the highest block.
 			if (res[0].type === "create") {
 				// create
 				const tipHeaderRes = await getTipHeader()
@@ -213,11 +221,13 @@ const Component: React.FC = () => {
 									return (
 										<Radio key={index} value={item.privateKeyAgs.lockScript.args}>
 											{cutValue(item.privateKeyAgs.address, 20, 20)}
+											<CopyFilled className='copy' onClick={() => copyFun(item.privateKeyAgs.address)} />
 											{
 												wallet == item.privateKeyAgs.lockScript.args ? <CloseCircleOutlined className='deleteAddress' onClick={() => {
 													onDeleteAddress(item.privateKeyAgs.lockScript.args)
 												}} /> : null
 											}
+
 											{/* <CloseCircleOutlined className='deleteAddress' onClick={() => {
 												onDeleteAddress(item.privateKeyAgs.lockScript.args)
 											}} /> */}
