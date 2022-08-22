@@ -19,19 +19,26 @@ export async function Mnemonic() {
 }
 
 // PrivateKey ags
-export async function getPrivateKeyAgs(m: string, type: boolean) {
-  const seed = mnemonic.mnemonicToSeedSync(m);
-  const extendedPrivateKey = ExtendedPrivateKey.fromSeed(seed);
+export async function getPrivateKeyAgs(m: string, type: number) {
+  let privateKeyAgs, extendedPrivateKey;
+  // import PrivateKey
+  if (type !== 3) {
+    const seed = mnemonic.mnemonicToSeedSync(m);
+    extendedPrivateKey = ExtendedPrivateKey.fromSeed(seed);
 
-  const privateKeyAgs = generateAccountFromPrivateKey(
-    extendedPrivateKey.privateKey
-  );
+    privateKeyAgs = generateAccountFromPrivateKey(
+      extendedPrivateKey.privateKey
+    );
+  } else {
+    privateKeyAgs = generateAccountFromPrivateKey(m);
+  }
 
   return {
-    m,
-    privateKey: extendedPrivateKey.privateKey,
+    m: type !== 3 ? m : "import privateKey",
+    // @ts-ignore
+    privateKey: type !== 3 ? extendedPrivateKey.privateKey : m,
     privateKeyAgs,
-    type: type ? "create" : "import"
+    type: type == 1 ? "create" : "import"
   };
 }
 

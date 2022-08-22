@@ -80,13 +80,20 @@ const transferFun = async (
 
     obj.amount += parseInt(res.transaction.outputs[since].capacity);
   }
-  obj.amount =
-    "-" +
-    (obj.amount -
-      parseInt(
-        output[0].transaction.outputs[parseInt(output[0].io_index)].capacity
-      )) /
-      100000000;
+
+  // TODO output[0] undefined
+  if (output[0] !== undefined) {
+    obj.amount =
+      "-" +
+      (obj.amount -
+        parseInt(
+          output[0].transaction.outputs[parseInt(output[0].io_index)].capacity
+        )) /
+        100000000;
+  } else {
+    obj.amount = "--";
+  }
+
   return obj;
 };
 

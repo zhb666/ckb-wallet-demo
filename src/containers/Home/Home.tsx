@@ -35,8 +35,8 @@ const Component: React.FC = () => {
 
 	// modal
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	// is import or create
-	const [walletType, setWalletType] = useState(true);
+	// 1 create 2 importMnemonic 3 importPrivatekey
+	const [walletType, setWalletType] = useState(1);
 	// walletList
 	// const [walletList, setWalletList] = useState<WalletListObject>(UserStoreHox.walletList);
 
@@ -48,40 +48,27 @@ const Component: React.FC = () => {
 	};
 
 	const onDeleteAddress = (args: string) => {
-
 		let res = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args !== args
 		)
-
-		// const res: any = []
-
-		// for (let index = 0; index < walletList.length; index++) {
-		// 	if (walletList[index].privateKeyAgs.lockScript.args !== args) {
-		// 		res.push(walletList[index])
-		// 	}
-		// }
 
 		// set walletList
 		DeleteWallet(res)
 
 		if (res.length == 0) return
 		setWallet(res[0].privateKeyAgs.lockScript.args);
-
-
 	}
 
 	const openNotificationWithIcon = (type: NotificationType) => {
 		notification[type]({
-			message: 'success',
-			// description:
-			// 	"Created success",
+			message: 'success'
 		});
 	};
 
-	const showModal = (boolean: boolean) => {
+	const showModal = (type: number) => {
 		// judge type
-		setWalletType(boolean)
-		if (boolean) {
+		setWalletType(type)
+		if (type === 1) {
 			getHD();
 		}
 		setIsModalVisible(true);
@@ -117,7 +104,6 @@ const Component: React.FC = () => {
 		}
 		setIsModalVisible(false);
 		openNotificationWithIcon("success")
-
 	};
 
 	const handleCancel = () => {
@@ -200,12 +186,12 @@ const Component: React.FC = () => {
 		<main className="home">
 
 			{/* modal */}
-			<Modal title={walletType ? "新建钱包" : "导入助记词"} visible={isModalVisible} onOk={handleOk} okText="确认"
+			<Modal title={walletType === 1 ? "新建钱包" : "导入钱包"} visible={isModalVisible} onOk={handleOk} okText="确认"
 				cancelText="取消" closable={false} onCancel={handleCancel}>
-				{walletType ? <div>
+				{walletType === 1 ? <div>
 					已生成新的助记词<TextArea value={mnemonic} onChange={onMnemonicChange} rows={2} />
 				</div> : <div>
-					请输入你的助记词<TextArea value={mnemonic} onChange={onMnemonicChange} rows={2} />
+					{walletType === 2 ? "请输入你的助记词" : "请输入你的私钥"}<TextArea value={mnemonic} onChange={onMnemonicChange} rows={2} />
 				</div>}
 
 
@@ -241,22 +227,20 @@ const Component: React.FC = () => {
 			</div>
 			<div className='walletType'>
 				<Button className='createWallet' block type="primary" onClick={() => {
-					showModal(true)
+					showModal(1)
 				}}>
 					新建钱包
 				</Button>
-				<br />
 				<Button className='mnemonic' block type="primary" onClick={() => {
-					showModal(false)
+					showModal(2)
 				}}>
 					导入助记词
 				</Button>
-				{/* <br />
 				<Button className='mnemonic' block type="primary" onClick={() => {
-					showModal(false)
+					showModal(3)
 				}}>
 					导入私钥
-				</Button> */}
+				</Button>
 			</div>
 		</main>
 	);
