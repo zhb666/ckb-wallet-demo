@@ -26,13 +26,9 @@
 
 ### Create wallet mnemonics and private keys on the home page
 
-### transfer-demo1
+### transfer
 
 - uses @nervosnetwork/ckb-lumos transfer
-
-### transfer-demo2
-
-- uses @nervosnetwork/ckb-sdk-core transfer
 
 ### Install Dependencies
 
