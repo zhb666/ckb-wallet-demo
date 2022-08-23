@@ -30,11 +30,12 @@ const { TextArea } = Input;
 
 const Component: React.FC = () => {
 	const UserStoreHox = UserStore();
-
 	const { walletList, script, DeleteWallet } = UserStoreHox
 
 	// modal
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [deleteAdressModal, setDeleteAdressModal] = useState(false);
+	const [deleteAdressArgs, setDeleteAdressArgs] = useState("");
 	// 1 create 2 importMnemonic 3 importPrivatekey
 	const [walletType, setWalletType] = useState(1);
 	// walletList
@@ -47,17 +48,23 @@ const Component: React.FC = () => {
 		setWallet(e.target.value);
 	};
 
-	const onDeleteAddress = (args: string) => {
-		let res = walletList.filter(item =>
-			item.privateKeyAgs.lockScript.args !== args
-		)
+	const onOpenDeleteModel = (args: string) => {
+		setDeleteAdressModal(true)
+		setDeleteAdressArgs(args)
+	}
 
+	const onDeleteAddress = () => {
+		let res = walletList.filter(item =>
+			item.privateKeyAgs.lockScript.args !== deleteAdressArgs
+		)
 		// set walletList
 		DeleteWallet(res)
-
 		if (res.length == 0) return
 		setWallet(res[0].privateKeyAgs.lockScript.args);
+		setDeleteAdressArgs("")
+		setDeleteAdressModal(false)
 	}
+
 
 	const openNotificationWithIcon = (type: NotificationType) => {
 		notification[type]({
@@ -91,7 +98,6 @@ const Component: React.FC = () => {
 		if (walletList && walletList.length == 0) {
 			UserStoreHox.userScript(res)
 			setWallet(res.privateKeyAgs.lockScript.args)
-
 			if (res.type === "create") {
 				// create
 				const tipHeaderRes = await getTipHeader()
@@ -139,9 +145,7 @@ const Component: React.FC = () => {
 		let res: WalletListObject[] = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == wallet
 		)
-
 		UserStoreHox.userScript(res[0])
-
 		// First get the previous synchronization height, if it does not start from zero, take it out and pass the value
 		const getScript = await getScripts();
 		const getScriptRes = getScript.filter((item: { script: { args: any; }; }) =>
@@ -165,6 +169,7 @@ const Component: React.FC = () => {
 		}
 	}
 
+
 	// Public method of wallet change
 	useEffect(() => {
 		if (!wallet) return
@@ -173,9 +178,7 @@ const Component: React.FC = () => {
 
 	useEffect(() => {
 		// Set the initially selected account
-
 		if (walletList && walletList.length == 0) return
-
 		let res = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args == script.privateKeyAgs.lockScript.args
 		)
@@ -193,8 +196,13 @@ const Component: React.FC = () => {
 				</div> : <div>
 					{walletType === 2 ? "请输入你的助记词" : "请输入你的私钥"}<TextArea value={mnemonic} onChange={onMnemonicChange} rows={2} />
 				</div>}
+			</Modal>
 
-
+			<Modal title="确认删除钱包？" visible={deleteAdressModal} onOk={onDeleteAddress} okText="确认"
+				cancelText="取消" closable={false} onCancel={() => {
+					setDeleteAdressModal(false)
+				}}>
+				删除当前钱包
 			</Modal>
 
 			<div className='walletlist'>
@@ -210,7 +218,7 @@ const Component: React.FC = () => {
 											<CopyFilled className='copy' onClick={() => copyFun(item.privateKeyAgs.address)} />
 											{
 												wallet == item.privateKeyAgs.lockScript.args ? <CloseCircleOutlined className='deleteAddress' onClick={() => {
-													onDeleteAddress(item.privateKeyAgs.lockScript.args)
+													onOpenDeleteModel(item.privateKeyAgs.lockScript.args)
 												}} /> : null
 											}
 
