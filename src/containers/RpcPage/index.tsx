@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import ReactJson from "react-json-view";
 import {
 	setScripts,
-	get_cells,
-	get_cells_capacity,
+	getCells as get_cells,
+	getCellsCapacity,
 	getTipHeader,
-	get_transaction,
-	get_header
+	getTransaction,
+	getHeader
 } from "../../rpc";
 import { getCapacity } from "../../utils";
 import { div } from "../../utils/bigNumber";
@@ -18,7 +18,7 @@ const Component: React.FC = () => {
 	const [cells, setCells] = useState<any>({});
 
 	async function getBalance() {
-		let capacity = await get_cells_capacity();
+		let capacity = await getCellsCapacity();
 		let balance = div(await getCapacity(capacity), 8);
 		setBalance(balance.toString());
 	}
@@ -58,17 +58,17 @@ const Component: React.FC = () => {
 			</div>
 			<div>
 				<button onClick={async () => {
-					const res = await get_transaction("0x93111556ef6275ce96356cdfe9228a9d6c10eb5c560d54478a50ad7cfe80eeb6")
+					const res = await getTransaction("0x93111556ef6275ce96356cdfe9228a9d6c10eb5c560d54478a50ad7cfe80eeb6")
 				}}>get_transaction</button>
 			</div>
 			<div>
 				<button onClick={() => {
-					get_transaction("0x9a89e7137f467c2df54d9ee03c8522ad4aa210f82a3114b7832acf3be30b6c4d")
+					getTransaction("0x9a89e7137f467c2df54d9ee03c8522ad4aa210f82a3114b7832acf3be30b6c4d")
 				}}>get_transaction</button>
 			</div>
 			<div>
 				<button onClick={() => {
-					get_header("0x1b4e1f981faff42a4145c941994cb1c53a4a3a314fb2f9deb8caafe775164d0e")
+					getHeader("0x1b4e1f981faff42a4145c941994cb1c53a4a3a314fb2f9deb8caafe775164d0e")
 				}}>get_header</button>
 			</div>
 			<div>

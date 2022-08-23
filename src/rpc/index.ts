@@ -63,7 +63,7 @@ export async function getScripts() {
 /**
  * @description: get_cells
  */
-export async function get_cells(script?: ScriptObject) {
+export async function getCells(script?: ScriptObject) {
   const infos: Cell[] = [];
   let cursor: string | undefined;
   const res = await request(2, ckbLightClientRPC, "get_cells", [
@@ -113,7 +113,7 @@ export async function get_cells(script?: ScriptObject) {
 /**
  * @description: get_transactions
  */
-export async function get_transactions(
+export async function getTransactions(
   script: ScriptObject,
   lastCursor?: string
 ) {
@@ -166,7 +166,7 @@ const get_cells_capacity_params = [
 /**
  * @description: get_cells_capacity
  */
-export async function get_cells_capacity() {
+export async function getCellsCapacity() {
   const res = await request(
     2,
     ckbLightClientRPC,
@@ -179,7 +179,7 @@ export async function get_cells_capacity() {
 /**
  * @description: get_transaction
  */
-export async function get_transaction(hash: string) {
+export async function getTransaction(hash: string) {
   const res = await request(1, ckbLightClientRPC, "get_transaction", [hash]);
   return res;
 }
@@ -187,7 +187,7 @@ export async function get_transaction(hash: string) {
 /**
  * @description: get_header
  */
-export async function get_header(hash: string) {
+export async function getHeader(hash: string) {
   const res = await request(1, ckbLightClientRPC, "get_header", [hash]);
   return res;
 }
@@ -195,7 +195,7 @@ export async function get_header(hash: string) {
 /**
  * @description: get_peers
  */
-export async function get_peers() {
+export async function getPeers() {
   const res = await request(1, ckbLightClientRPC, "get_peers", []);
   return res;
 }
@@ -203,7 +203,7 @@ export async function get_peers() {
 /**
  * @description: send_transaction
  */
-export async function send_transaction(tx: any) {
+export async function sendTransaction(tx: any) {
   const res = await request(1, ckbLightClientRPC, "send_transaction", [tx]);
   return res;
 }

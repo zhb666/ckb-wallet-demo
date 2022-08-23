@@ -18,7 +18,7 @@ export async function Mnemonic() {
   };
 }
 
-// PrivateKey ags
+// PrivateKey args
 export async function getPrivateKeyAgs(m: string, type: number) {
   let privateKeyAgs, extendedPrivateKey;
   // import PrivateKey

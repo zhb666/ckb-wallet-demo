@@ -7,7 +7,7 @@ import { browserUrl } from "../../config"
 import { UserStore } from "../../stores";
 import { transactionData } from '../../wallet';
 import {
-	get_transactions,
+	getTransactions,
 } from "../../rpc";
 import './index.scss';
 
@@ -85,7 +85,7 @@ const TransactionsTable: React.FC<Props> = ({
 
 	// get table data
 	const getTableData = async () => {
-		const res = await get_transactions(UserStoreHox.script.privateKeyAgs.lockScript);
+		const res = await getTransactions(UserStoreHox.script.privateKeyAgs.lockScript);
 		const filterRes = arrayToMap(res.objects);
 		// Result data
 		let finalData: FinalDataObject[] = []

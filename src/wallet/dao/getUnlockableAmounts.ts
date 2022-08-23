@@ -2,12 +2,7 @@ import { Cell, Script, Header, TransactionWithStatus } from "@ckb-lumos/base";
 import { since } from "@ckb-lumos/lumos";
 import { dao } from "@ckb-lumos/common-scripts";
 import { DAOUnlockableAmount } from "../../type";
-import {
-  get_cells,
-  getTipHeader,
-  get_transaction,
-  get_header
-} from "../../rpc";
+import { getCells, getTipHeader, getTransaction, getHeader } from "../../rpc";
 import { DEPOSITDAODATA } from "../../config";
 
 export enum DAOCellType {
@@ -26,8 +21,7 @@ const blockTime = 8.02;
 export async function getDAOUnlockableAmounts(): Promise<
   DAOUnlockableAmount[]
 > {
-  const res = await get_cells();
-
+  const res = await getCells();
   return getUnlockableAmountsFromCells(res.objects);
 }
 
@@ -46,7 +40,7 @@ export async function filterDAOCells(
       }
 
       if (!cell.block_hash && cell.block_number && cell.out_point) {
-        const header = await get_transaction(cell.out_point.tx_hash);
+        const header = await getTransaction(cell.out_point.tx_hash);
 
         filteredCells.push({ ...cell, block_hash: header.header.hash });
       } else {
@@ -107,7 +101,7 @@ export async function getBlockHeaderFromHash(
   blockHash: string
 ): Promise<Header> {
   if (!blockHeaderHashMap.has(blockHash)) {
-    const header = await get_header(blockHash);
+    const header = await getHeader(blockHash);
     setBlockHeaderMaps(header);
   }
 
@@ -193,7 +187,7 @@ export async function getTransactionFromHash(
   useMap = true
 ): Promise<any> {
   if (!useMap || !transactionMap.has(transactionHash)) {
-    const transaction = await get_transaction(transactionHash);
+    const transaction = await getTransaction(transactionHash);
     transactionMap.set(transactionHash, transaction);
   }
   return transactionMap.get(transactionHash);

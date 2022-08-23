@@ -12,7 +12,7 @@ import { UserStore } from "../../stores";
 import Table from '../../components/TransactionsTable'
 
 import {
-  get_transaction
+  getTransaction
 } from "../../rpc";
 
 
@@ -97,7 +97,7 @@ export default function Secp256k1Transfer() {
   useEffect(() => {
     if (txHash.hash) {
       timer = setInterval(async () => {
-        const txTransaction = await get_transaction(txHash.hash);
+        const txTransaction = await getTransaction(txHash.hash);
 
         if (txTransaction) {
           clearInterval(timer)

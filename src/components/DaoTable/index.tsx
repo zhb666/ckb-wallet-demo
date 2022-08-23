@@ -5,11 +5,11 @@ import { DaoDataObject } from "../../type"
 import { cutValue, formatDate } from "../../utils/index"
 import { browserUrl } from "../../config"
 import { UserStore } from "../../stores";
-import { get_cells } from "../../rpc"
+import { getCells } from "../../rpc"
 import { getUnlockableAmountsFromCells, withdrawOrUnlock } from "../../wallet"
 
 import {
-	get_transaction
+	getTransaction
 } from "../../rpc";
 import './index.scss';
 
@@ -125,7 +125,7 @@ const TransactionsTable: React.FC<Props> = ({
 	useEffect(() => {
 		if (txHash) {
 			timer = setInterval(async () => {
-				const txTransaction = await get_transaction(txHash);
+				const txTransaction = await getTransaction(txHash);
 
 				if (txTransaction) {
 					clearInterval(timer)
@@ -156,13 +156,13 @@ const TransactionsTable: React.FC<Props> = ({
 
 	// get table data
 	const getTableData = async () => {
-		const cells = await get_cells(UserStoreHox.script.privateKeyAgs.lockScript)
+		const cells = await getCells(UserStoreHox.script.privateKeyAgs.lockScript)
 		const res = await getUnlockableAmountsFromCells(cells.objects)
 		let DaoBalance = 0
 		let Income = 0
 
 		for (let i = 0; i < res.length; i++) {
-			const transaction = await get_transaction(res[i].txHash);
+			const transaction = await getTransaction(res[i].txHash);
 			res[i].state = "success"
 			res[i].timestamp = formatDate(parseInt(transaction.header.timestamp))
 			DaoBalance += Number(res[i].amount)

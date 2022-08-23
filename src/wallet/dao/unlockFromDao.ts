@@ -18,7 +18,7 @@ import {
 } from "./index";
 import { signTransaction } from "../index";
 import { DAOUnlockableAmount, FeeRate } from "../../type";
-import { get_cells } from "../../rpc";
+import { getCells } from "../../rpc";
 import { DEPOSITDAODATA, RPC_NETWORK, TEST_INDEXER } from "../../config/index";
 import { getTransactionSkeleton } from "../customCellProvider";
 
@@ -37,7 +37,7 @@ export async function withdrawOrUnlock(
   script: Script,
   feeRate: FeeRate = FeeRate.NORMAL
 ): Promise<string> {
-  const res = await get_cells(script);
+  const res = await getCells(script);
   const cells = await filterDAOCells(res.objects);
 
   const cell = await findCellFromUnlockableAmountAndCells(

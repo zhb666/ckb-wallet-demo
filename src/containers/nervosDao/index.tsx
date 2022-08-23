@@ -13,7 +13,7 @@ import { DaoDataObject, FeeRate } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/DaoTable'
 import {
-	get_transaction
+	getTransaction
 } from "../../rpc";
 
 
@@ -99,7 +99,7 @@ export default function Secp256k1Transfer() {
 	useEffect(() => {
 		if (txHash.txHash) {
 			timer = setInterval(async () => {
-				const txTransaction = await get_transaction(txHash.txHash);
+				const txTransaction = await getTransaction(txHash.txHash);
 
 				if (txTransaction) {
 					// Close the timer when the transaction information is available, and the value needs to be transferred

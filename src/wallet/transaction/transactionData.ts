@@ -1,4 +1,4 @@
-import { get_transaction } from "../../rpc";
+import { getTransaction } from "../../rpc";
 import { FinalDataObject, TransactionObject } from "../../type";
 import { formatDate } from "../../utils";
 
@@ -39,7 +39,7 @@ const incomeFun = async (output: TransactionObject[]) => {
     blockHeight: 0,
     state: ""
   };
-  const res = await get_transaction(output[0].transaction.hash);
+  const res = await getTransaction(output[0].transaction.hash);
   obj.timestamp = formatDate(parseInt(res.header.timestamp));
   obj.hash = res.transaction.hash;
   obj.type = "add";
@@ -64,7 +64,7 @@ const transferFun = async (
   };
 
   // Make a separate request and get the header information
-  const res = await get_transaction(inputs[0].transaction.hash);
+  const res = await getTransaction(inputs[0].transaction.hash);
   obj.timestamp = formatDate(parseInt(res.header.timestamp));
   obj.hash = res.transaction.hash;
   obj.type = "subtract";
@@ -74,7 +74,7 @@ const transferFun = async (
   // previous_output
   for (let i = 0; i < inputs.length; i++) {
     let since = parseInt(inputs[i].transaction.inputs[i].previous_output.index);
-    const res = await get_transaction(
+    const res = await getTransaction(
       inputs[i].transaction.inputs[i].previous_output.tx_hash
     );
 

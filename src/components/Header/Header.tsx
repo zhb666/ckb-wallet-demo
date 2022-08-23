@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Navigation from '../Navigation/Navigation';
 import { notification } from 'antd';
 import './Header.scss';
-import { get_peers } from "../../rpc/index"
+import { getPeers as get_peers } from "../../rpc/index"
 
 function Component() {
 
