@@ -18,6 +18,7 @@ import {
 
 
 import "./index.scss"
+import { DAOCELLSIZE } from '../../config';
 
 declare const window: {
 	localStorage: {
@@ -61,10 +62,13 @@ export default function Secp256k1Transfer() {
 
 	// Deposit
 	const Deposit = (async () => {
-
 		let msg = ""
 		if (!amount) {
 			msg = "Deposit ckb cannot be 0"
+		}
+
+		if (BigInt(amount * 10 ** 8) < DAOCELLSIZE) {
+			msg = "Minimum cannot be less than 102 CKB"
 		}
 
 		if (msg) {

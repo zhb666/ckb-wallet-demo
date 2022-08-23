@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Script } from "@ckb-lumos/lumos";
+import { Script, helpers } from "@ckb-lumos/lumos";
 import { capacityOf, } from "../../wallet/index";
 import { notification, Spin, Button } from 'antd';
 import {
@@ -19,6 +19,7 @@ import {
 import "./index.scss"
 import { transfer } from '../../wallet';
 import { generateAccountFromPrivateKey } from '../../wallet/hd';
+import { RPC_NETWORK, TRANSFERCELLSIZE } from '../../config';
 
 declare const window: {
   localStorage: {
@@ -60,12 +61,29 @@ export default function Secp256k1Transfer() {
   // send
   const send = (async () => {
     let msg = ""
+
+    try {
+      if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) {
+      }
+    } catch {
+      msg = "Address error"
+      notification["error"]({
+        message: 'error',
+        description: msg
+      });
+      return
+    }
+
     if (!toAddr) {
       msg = "The receiving address is empty"
     }
 
     if (!amount) {
       msg = "Send ckb cannot be 0"
+    }
+
+    if (BigInt(amount * 10 ** 8) < TRANSFERCELLSIZE) {
+      msg = "Minimum cannot be less than 61 CKB"
     }
 
     if (msg) {
