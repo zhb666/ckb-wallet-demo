@@ -3,7 +3,7 @@ import { notification, Spin, Button } from 'antd';
 import {
 	QuestionCircleOutlined
 } from '@ant-design/icons';
-
+import { DAOCELLSIZE } from '../../config';
 import { Script } from "@ckb-lumos/lumos";
 import { capacityOf, deposit, generateAccountFromPrivateKey } from "../../wallet";
 import { NotificationType } from "../../common/ts/Types"
@@ -16,9 +16,7 @@ import {
 	getTransaction
 } from "../../rpc";
 
-
 import "./index.scss"
-import { DAOCELLSIZE } from '../../config';
 
 declare const window: {
 	localStorage: {

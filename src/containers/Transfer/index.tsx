@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Script, helpers } from "@ckb-lumos/lumos";
-import { capacityOf, } from "../../wallet/index";
+import { capacityOf, cell_occupied_bytes } from "../../wallet/index";
 import { notification, Spin, Button } from 'antd';
 import {
   QuestionCircleOutlined
 } from '@ant-design/icons';
 import { NotificationType } from "../../common/ts/Types"
 import { formatDate, cutValue } from "../../utils/index"
-import { FinalDataObject } from "../../type"
+import { FinalDataObject, ScriptObject } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/TransactionsTable'
 
@@ -19,7 +19,7 @@ import {
 import "./index.scss"
 import { transfer } from '../../wallet';
 import { generateAccountFromPrivateKey } from '../../wallet/hd';
-import { RPC_NETWORK, TRANSFERCELLSIZE } from '../../config';
+import { RPC_NETWORK } from '../../config';
 
 declare const window: {
   localStorage: {
@@ -46,9 +46,9 @@ export default function Secp256k1Transfer() {
   });
   const [loading, setLoading] = useState(false);
   const [off, setOff] = useState(true);//pending = false  success = true
-
   const [toAddr, setToAddr] = useState("");
   const [amount, setAmount] = useState<any>("");
+  const [minimumCkb, setMinimumCkb] = useState<number>(61);
 
   const openNotificationWithIcon = (type: NotificationType) => {
     notification[type]({
@@ -82,8 +82,8 @@ export default function Secp256k1Transfer() {
       msg = "Send ckb cannot be 0"
     }
 
-    if (BigInt(amount * 10 ** 8) < TRANSFERCELLSIZE) {
-      msg = "Minimum cannot be less than 61 CKB"
+    if (amount < minimumCkb) {
+      msg = `Please enter the amount at least ${minimumCkb} CKB`
     }
 
     if (msg) {
@@ -156,6 +156,25 @@ export default function Secp256k1Transfer() {
     UserStoreHox.setMyBalanceFun(balance)
   }, [balance])
 
+  // Calculate the minimum sending CKB
+  useEffect(() => {
+    if (toAddr == "") return
+    try {
+      if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) {
+      }
+    } catch {
+      notification["error"]({
+        message: 'error',
+        description: "Address error"
+      });
+      return
+    }
+
+    const lockScript: ScriptObject = helpers.addressToScript(toAddr, { config: RPC_NETWORK })
+    const ckbSize = cell_occupied_bytes(lockScript)
+    setMinimumCkb(ckbSize)
+  }, [toAddr])
+
   useEffect(() => {
     //one minute update balance
     if (privKey) {
@@ -188,7 +207,7 @@ export default function Secp256k1Transfer() {
         <input
           id="amount"
           type="text"
-          placeholder='Please enter the amount at least 61 CKB'
+          placeholder={`Please enter the amount at least ${minimumCkb} CKB`}
           value={amount}
           onChange={(e) => setAmount(Number(e.target.value))}
         />
