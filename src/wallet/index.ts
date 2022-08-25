@@ -24,20 +24,20 @@ async function capacityOf(lockScript: ScriptObject): Promise<BI> {
   return balance;
 }
 
-function hex_data_occupied_bytes(hex_string: string) {
+function hexDataOccupiedBytes(hex_string: string) {
   // Exclude 0x prefix, and every 2 hex digits are one byte
   return (hex_string.length - 2) / 2;
 }
 
-function script_occupied_bytes(script: ScriptObject) {
+function scriptOccupiedBytes(script: ScriptObject) {
   if (script !== undefined && script !== null) {
-    return hex_data_occupied_bytes(script.args);
+    return hexDataOccupiedBytes(script.args);
   }
   return 0;
 }
 
-function cell_occupied_bytes(script: ScriptObject) {
-  return 8 + 32 + 1 + 0 + 0 + script_occupied_bytes(script);
+function cellOccupiedBytes(script: ScriptObject) {
+  return 8 + 32 + 1 + 0 + 0 + scriptOccupiedBytes(script);
 }
 
 export {
@@ -50,5 +50,5 @@ export {
   generateAccountFromPrivateKey,
   getUnlockableAmountsFromCells,
   withdrawOrUnlock,
-  cell_occupied_bytes
+  cellOccupiedBytes
 };

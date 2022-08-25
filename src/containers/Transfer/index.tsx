@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Script, helpers } from "@ckb-lumos/lumos";
-import { capacityOf, cell_occupied_bytes } from "../../wallet/index";
+import { capacityOf, cellOccupiedBytes } from "../../wallet/index";
 import { notification, Spin, Button } from 'antd';
 import {
   QuestionCircleOutlined
@@ -10,16 +10,13 @@ import { formatDate, cutValue } from "../../utils/index"
 import { FinalDataObject, ScriptObject } from "../../type"
 import { UserStore } from "../../stores";
 import Table from '../../components/TransactionsTable'
-
 import {
   getTransaction
 } from "../../rpc";
-
-
-import "./index.scss"
 import { transfer } from '../../wallet';
 import { generateAccountFromPrivateKey } from '../../wallet/hd';
 import { RPC_NETWORK } from '../../config';
+import "./index.scss"
 
 declare const window: {
   localStorage: {
@@ -63,8 +60,7 @@ export default function Secp256k1Transfer() {
     let msg = ""
 
     try {
-      if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) {
-      }
+      if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) return
     } catch {
       msg = "Address error"
       notification["error"]({
@@ -160,8 +156,7 @@ export default function Secp256k1Transfer() {
   useEffect(() => {
     if (toAddr == "") return
     try {
-      if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) {
-      }
+      if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) return
     } catch {
       notification["error"]({
         message: 'error',
@@ -171,7 +166,7 @@ export default function Secp256k1Transfer() {
     }
 
     const lockScript: ScriptObject = helpers.addressToScript(toAddr, { config: RPC_NETWORK })
-    const ckbSize = cell_occupied_bytes(lockScript)
+    const ckbSize = cellOccupiedBytes(lockScript)
     setMinimumCkb(ckbSize)
   }, [toAddr])
 
