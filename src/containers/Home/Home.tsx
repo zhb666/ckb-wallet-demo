@@ -95,19 +95,19 @@ const Component: React.FC = () => {
 		// set add Wallet
 		UserStoreHox.addWalletList(res)
 		// Set up your first account
-		if (walletList && walletList.length == 0) {
-			UserStoreHox.userScript(res)
-			setWallet(res.privateKeyAgs.lockScript.args)
-			if (res.type === "create") {
-				// create
-				const tipHeaderRes = await getTipHeader()
-				await setScripts(res.privateKeyAgs.lockScript, tipHeaderRes.number)
-			} else {
-				// import
-				await setScripts(res.privateKeyAgs.lockScript, "0x0")
-			}
-
+		// if (walletList && walletList.length == 0) {
+		UserStoreHox.userScript(res)
+		setWallet(res.privateKeyAgs.lockScript.args)
+		if (res.type === "create") {
+			// create
+			const tipHeaderRes = await getTipHeader()
+			await setScripts(res.privateKeyAgs.lockScript, tipHeaderRes.number)
+		} else {
+			// import
+			await setScripts(res.privateKeyAgs.lockScript, "0x0")
 		}
+
+		// }
 		setIsModalVisible(false);
 		openNotificationWithIcon("success")
 	};
