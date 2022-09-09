@@ -1,7 +1,9 @@
+import { ScriptType } from "./../service/type";
 import { Cell } from "@ckb-lumos/base";
 import { request } from "../service/index";
 import { IndexerTransaction, Terminator } from "../service/type";
 import { CKB_RPC_URL } from "../config";
+import { ScriptList, ScriptObject } from "../type";
 
 const ckbLightClientRPC = CKB_RPC_URL;
 
@@ -16,27 +18,13 @@ const script = {
   args: "0x2760d76d61cafcfc1a83d9d3d6b70c36fa9d4b1a"
 };
 
-interface ScriptObject {
-  code_hash: string;
-  hash_type: string;
-  args: string;
-}
-
 /**
  * @description: set_scripts
- * @param {script{code_hash,hash_type,args}}
  * @return {any}
  */
 
-export async function setScripts(script: ScriptObject, block_number: string) {
-  const res = await request(1, ckbLightClientRPC, "set_scripts", [
-    [
-      {
-        script,
-        block_number
-      }
-    ]
-  ]);
+export async function setScripts(script: ScriptList[]) {
+  const res = await request(1, ckbLightClientRPC, "set_scripts", [script]);
   return res;
 }
 

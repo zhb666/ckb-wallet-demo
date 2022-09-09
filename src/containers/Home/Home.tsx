@@ -7,7 +7,7 @@ import {
 import copy from 'copy-to-clipboard';
 import { Mnemonic, getPrivateKeyAgs } from "../../wallet/hd";
 import { NotificationType } from "../../common/ts/Types"
-import { WalletListObject } from "../../type"
+import { ScriptList, WalletListObject } from "../../type"
 import { UserStore } from "../../stores";
 import { cutValue } from "../../utils/index"
 import {
@@ -53,13 +53,20 @@ const Component: React.FC = () => {
 		setDeleteAdressArgs(args)
 	}
 
-	const onDeleteAddress = () => {
+	const onDeleteAddress = async () => {
 		let res = walletList.filter(item =>
 			item.privateKeyAgs.lockScript.args !== deleteAdressArgs
 		)
 		// set walletList
 		DeleteWallet(res)
 		if (res.length == 0) return
+
+		// rpc Delete
+		const getScript = await getScripts();
+		const getScriptRes = getScript.filter((item: { script: { args: any; }; }) =>
+			item.script.args !== deleteAdressArgs
+		)
+		await setScripts(getScriptRes)
 		setWallet(res[0].privateKeyAgs.lockScript.args);
 		setDeleteAdressArgs("")
 		setDeleteAdressModal(false)
@@ -98,17 +105,22 @@ const Component: React.FC = () => {
 		// if (walletList && walletList.length == 0) {
 		UserStoreHox.userScript(res)
 		setWallet(res.privateKeyAgs.lockScript.args)
-		if (res.type === "create") {
-			// create
-			const tipHeaderRes = await getTipHeader()
-			await setScripts(res.privateKeyAgs.lockScript, tipHeaderRes.number)
-		} else {
-			// import
-			await setScripts(res.privateKeyAgs.lockScript, "0x0")
-		}
 
+		const getScript = await getScripts();
+		// if (res.type === "create") {
+		// 	// create
+		// 	const tipHeaderRes = await getTipHeader()
+		// 	console.log([...getScript, { script: res.privateKeyAgs.lockScript, block_number: tipHeaderRes.number }]);
+		// 	// await setScripts(res.privateKeyAgs.lockScript, tipHeaderRes.number)
+		// 	await setScripts([...getScript, { script: res.privateKeyAgs.lockScript, block_number: tipHeaderRes.number }])
+		// } else {
+		// 	// import
+		// 	await setScripts([...getScript, { script: res.privateKeyAgs.lockScript, block_number: "0x0" }])
+		// }
+		setScriptFun(getScript, res)
 		// }
 		setIsModalVisible(false);
+		setMnemonic("")
 		openNotificationWithIcon("success")
 	};
 
@@ -156,16 +168,29 @@ const Component: React.FC = () => {
 		if (getScriptRes.length !== 0) {
 			// No need to set height
 			// await setScripts(res[0].privateKeyAgs.lockScript, getScriptRes[0].block_number || 0)
-		} else {
+		}
+		else {
 			// If it is an imported wallet, if it does not match the height of synchronization, it needs to start synchronization from 0. If it is a newly created wallet, it can synchronize the highest block.
-			if (res[0].type === "create") {
-				// create
-				const tipHeaderRes = await getTipHeader()
-				await setScripts(res[0].privateKeyAgs.lockScript, tipHeaderRes.number)
-			} else {
-				// import
-				await setScripts(res[0].privateKeyAgs.lockScript, "0x0")
-			}
+			// if (res[0].type === "create") {
+			// 	// create
+			// 	const tipHeaderRes = await getTipHeader()
+			// 	await setScripts([...getScript, { script: res[0].privateKeyAgs.lockScript, block_number: tipHeaderRes.number }])
+			// } else {
+			// 	// import
+			// 	await setScripts([...getScript, { script: res[0].privateKeyAgs.lockScript, block_number: "0x0" }])
+			// }
+			setScriptFun(getScript, res[0])
+		}
+	}
+
+	const setScriptFun = async (scriptList: ScriptList[], res: WalletListObject) => {
+		if (res.type === "create") {
+			// create
+			const tipHeaderRes = await getTipHeader()
+			await setScripts([...scriptList, { script: res.privateKeyAgs.lockScript, block_number: tipHeaderRes.number }])
+		} else {
+			// import
+			await setScripts([...scriptList, { script: res.privateKeyAgs.lockScript, block_number: "0x0" }])
 		}
 	}
 

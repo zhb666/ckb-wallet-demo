@@ -77,6 +77,11 @@ interface LockScript {
   args: string;
 }
 
+export interface ScriptList {
+  script: ScriptObject;
+  block_number: string;
+}
+
 export interface DaoDataObject {
   amount: any;
   timestamp?: string;
