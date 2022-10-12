@@ -79,6 +79,7 @@ interface LockScript {
 
 export interface ScriptList {
   script: ScriptObject;
+  script_type: string;
   block_number: string;
 }
 

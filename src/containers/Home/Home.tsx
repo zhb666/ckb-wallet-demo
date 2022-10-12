@@ -187,10 +187,10 @@ const Component: React.FC = () => {
 		if (res.type === "create") {
 			// create
 			const tipHeaderRes = await getTipHeader()
-			await setScripts([...scriptList, { script: res.privateKeyAgs.lockScript, block_number: tipHeaderRes.number }])
+			await setScripts([...scriptList, { script: res.privateKeyAgs.lockScript, script_type: "lock", block_number: tipHeaderRes.number }])
 		} else {
 			// import
-			await setScripts([...scriptList, { script: res.privateKeyAgs.lockScript, block_number: "0x0" }])
+			await setScripts([...scriptList, { script: res.privateKeyAgs.lockScript, script_type: "lock", block_number: "0x0" }])
 		}
 	}
 
