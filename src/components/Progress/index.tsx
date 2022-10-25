@@ -23,7 +23,7 @@ function Progress() {
 
 		let tipHeaderNum = parseInt(tipHeaderRes.number)
 
-		// 没有匹配上钱包需要处理
+		// No matching wallet needs to be handled
 		if (scriptsFilter && scriptsFilter[0]?.block_number) {
 			let scriptsNum = parseInt(scriptsFilter[0].block_number || 0)
 

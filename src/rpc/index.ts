@@ -1,4 +1,3 @@
-import { ScriptType } from "./../service/type";
 import { Cell } from "@ckb-lumos/base";
 import { request } from "../service/index";
 import { IndexerTransaction, Terminator } from "../service/type";

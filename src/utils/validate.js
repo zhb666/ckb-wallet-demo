@@ -80,7 +80,7 @@ export function isExist(str) {
     return false;
   }
 }
-/** 对象是否为空
+/** Whether the object is empty
  * @param {Object} obj
  * @returns {Boolean}
  */
@@ -89,7 +89,7 @@ export function isEmptyObj(obj) {
   for (t in obj) return false;
   return true;
 }
-// 过滤XSS攻击
+// Filtering XSS attacks
 export function filterXSS(str) {
   var REGEXP1 = /&/g;
   var REGEXP2 = /</g;
@@ -106,34 +106,6 @@ export function filterXSS(str) {
   str = str.replace(REGEXP6, "");
   return str;
 }
-
-// 浏览器平台判断
-export const platform = (function () {
-  var platform = {};
-  if (process.browser) {
-    var u = navigator.userAgent.toLowerCase();
-    platform = {
-      mobile: !!u.match(/applewebKit.*Mobile.*/gi), // 是否为移动终端
-      ios: !!u.match(/\(i[^;]+;( u;)? cpu.+mac os x/), // ios终端
-      android: !!u.match(/android/gi), // android终端
-      uc: !!u.match(/linux/gi), // uc浏览器
-      iPhone: !!u.match(/iphone/gi), // 是否为iPhone或者QQHD浏览器
-      iPad: !!u.match(/ipad/gi), // 是否iPad
-      wx: !!u.match(/micromessenger/gi), // 微信
-      weibo: !!u.match(/WeiBo/gi), // 微博客户端
-      QQ: !!u.match(/\sQQ/i), // qq
-      // safari:!!u.match(/safari/gi),//Safari,chrome的ua中也会有Safari字段
-      safari: !!/iPhone|iPad|iPod\/([\w.]+).*(safari).*/i.test(u), // Safari，
-      ie: u.indexOf("trident") > -1, // IE内核
-      opera: u.indexOf("presto") > -1, // opera内核
-      webKit: u.indexOf("appleWebKit") > -1, // 苹果、谷歌内核
-      webApp: u.indexOf("safari") == -1, // 是否web应该程序，没有头部与底部
-      gecko: u.indexOf("gecko") > -1 && u.indexOf("KHTML") == -1, // 火狐内核
-      firefox: u.indexOf("gecko") > -1 && u.indexOf("firefox") > -1 // 火狐浏览器
-    };
-  }
-  return platform;
-})();
 
 /**
  * @param {Array} arg

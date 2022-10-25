@@ -1,7 +1,5 @@
 # ckb-wallet-demo
 
-## Developing
-
 ## Technology stack
 
 - JavaScript
@@ -22,13 +20,9 @@
 
 ### light-client RPC
 
-- [githup](https://github.com/yangby-cryptape/ckb-light-client/tree/develop#how-to-connect-testnet)
+- [github](https://github.com/nervosnetwork/ckb-light-client)
 
-### Create wallet mnemonics and private keys on the home page
-
-### transfer
-
-- uses @nervosnetwork/ckb-lumos transfer
+<!-- ### Create wallet mnemonics and private keys on the home page -->
 
 ### Install Dependencies
 
@@ -37,6 +31,8 @@ npm i --force
 ```
 
 You will also need to delete the following file due to a problem in the NPM package.
+The hookrouter is missing files and needs to be deleted manually
+There are several versions of buffer. Version 4.9.2 is obsolete and needs to be deleted manually
 
 ```sh
 rm -f node_modules/hookrouter/dist/index.d.ts
@@ -61,6 +57,7 @@ Build the project, then copy the complete contents of the `build` directory to t
 
 ## Plans
 
+- [x] Create imported wallet
 - [x] An error will be reported in the main network transfer
 - [x] Integrated test environment
 - [x] Integrated e2e cypress environment

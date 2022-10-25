@@ -1,9 +1,9 @@
-// 关于大数据以及浮点数的处理
+// Processing of big data and floating point numbers
 import BigNumber from "bignumber.js";
 import { isArray } from "./validate";
 
 export function Add(number, initialValue, key) {
-  // 可以传入数组也可以传字符串
+  // You can pass in an array or a string
   if (isArray(number)) {
     return number
       .reduce((total, currentValue) => {
@@ -28,46 +28,46 @@ export function minus(numbera, numberb) {
   return toBigNumber(numbera).minus(toBigNumber(numberb)).toString();
 }
 export function toPercent(value, decimalsToAppear) {
-  // 转化为百分比
+  // Convert to Percent
   return `${toBigNumber(value)
     .multipliedBy(toBigNumber(100))
     .toFixed(decimalsToAppear || 2)}%`;
 }
 
 export function div(value, decimals = 18) {
-  // 除法
+  // division
   return toBigNumber(value).dividedBy(new BigNumber(10).pow(decimals));
 }
 
 export function decimals(value, decimalsToAppear) {
-  //默认为6位
+  //The default is 6 bits
   return divbyDecimals(value, 0, decimalsToAppear);
 }
 
 export function divbyDecimals(value, decimals = 0, decimalsToAppear = 6) {
   if (!value.toString()) return toBigNumber(0);
-  // 根据精度格式化数据
+  // Format data according to precision
   return toFixed(
     toBigNumber(value).dividedBy(new BigNumber(10).pow(decimals)),
     decimalsToAppear
   );
 }
 export function multiplie(value, value1, decimalsToAppear = 6) {
-  // 乘法
+  // multiplication
   return toFixed(
     toBigNumber(value).multipliedBy(toBigNumber(value1)),
     decimalsToAppear
   );
 }
-// 精度换算
+// Precision conversion
 export function multiply(value, decimals) {
-  // 根据精度格式化数据
+  // Format data according to precision
   return toBigNumber(value)
     .multipliedBy(new BigNumber(10).pow(decimals))
     .toFixed();
 }
 export function multipliebyDecimals(value, decimals, decimalsToAppear = 6) {
-  // 根据精度格式化数据
+  // Format data according to precision
   return toFixed(
     toBigNumber(value).multipliedBy(new BigNumber(10).pow(decimals)),
     decimalsToAppear
@@ -78,12 +78,12 @@ export function toBigNumber(val) {
 }
 
 export function lt(one, two) {
-  // 比较两个数字的大小
+  // Compare the size of two numbers
   return toBigNumber(one).isLessThan(toBigNumber(two));
 }
 
 export function lte(one, two) {
-  // 比较两个数字的大小
+  // Compare the size of two numbers
   return toBigNumber(one).isLessThanOrEqualTo(toBigNumber(two));
 }
 
@@ -91,9 +91,8 @@ export function isZero(value, decimals, decimalsToAppear) {
   return toBigNumber(divbyDecimals(value, decimals, decimalsToAppear)).isZero();
 }
 
-// 两数相乘
+// Multiply two numbers
 export function multiplyByTwoValue(one, two, decimalsToAppear) {
-  // 根据精度格式化数据
   return toFixed(
     toBigNumber(one).multipliedBy(toBigNumber(two)),
     decimalsToAppear || 2
@@ -106,10 +105,10 @@ export function toFixed(bigNumber, decimalsToAppear) {
   }
   bigNumber = bigNumber.toString();
   const reg = new RegExp("\\d*.\\d{0," + decimalsToAppear + "}", "g");
-  // 处理次幂数据，js中返回页面显示不会有e+xx方式，所以拼接处理
+  // Processing power data, the returned page in js will not display in e+xx mode, so splicing processing
   const integerArr = bigNumber.split(/(e\+\d+)/),
     floatArr = bigNumber.split(/(e\-\d+)/);
-  // 小数点指定位数后面截断，不使用四舍五入
+  // Truncate after the specified number of decimal places without rounding
   if (floatArr.length > 1) {
     let e = floatArr[1].replace("e-", "");
     if (e < decimalsToAppear) {

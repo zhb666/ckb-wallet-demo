@@ -15,18 +15,9 @@ import {
 	getScripts,
 	getTipHeader
 } from "../../rpc";
-
 import "./Home.scss";
 
 const { TextArea } = Input;
-
-// declare const window: {
-// 	location: any;
-// 	localStorage: {
-// 		getItem: Function;
-// 		setItem: Function;
-// 	};
-// };
 
 const Component: React.FC = () => {
 	const UserStoreHox = UserStore();

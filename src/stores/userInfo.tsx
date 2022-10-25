@@ -31,11 +31,8 @@ if (storageWalletList.length === 0) {
   }
 }
 
-
 function useCounter() {
-
   const [walletList, setWalletList] = useState<WalletListObject[]>(storageWalletList);
-
   const [script, setScript] = useState<WalletListObject>(myScript);
   const [myBalance, setMyBalance] = useState<string>('');
   const [daoData, setDaoData] = useState<DaoData>({
