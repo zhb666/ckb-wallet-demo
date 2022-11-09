@@ -2,7 +2,6 @@
   "name": "ckb-wallet-demo",
   "version": "0.8.13",
   "private": true,
-  "main": "main.js",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ckb-lumos/lumos": "^0.18.0-rc6",
@@ -22,8 +21,6 @@
     "clipboard": "^2.0.8",
     "copy-to-clipboard": "^3.3.1",
     "cross-fetch": "^3.1.5",
-    "electron": "^19.0.6",
-    "electron-store": "^8.0.2",
     "ethereumjs-wallet": "^1.0.2",
     "hookrouter": "^1.2.5",
     "hox": "^1.1.2",
@@ -52,15 +49,13 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"cross-env BROWSER=none npm run start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest **/*.test.ts --timeout=20m",
     "test:ava": "ava **/*.test.ts --timeout=2m",
     "e2e": "cypress open",
     "eject": "react-scripts eject",
-    "bump": "npm --no-git-tag-version version patch",
-    "electron": "electron ."
+    "bump": "npm --no-git-tag-version version patch"
   },
   "eslintConfig": {
     "extends": [

@@ -7,18 +7,19 @@
 
 ## Install, run, build, format code
 
-- `npm i`
+- `npm i --force or cnpm i`
 - `npm run start`
 - `npm run e2e`
 - `npm run test`
 - `npm build`
-- `npm format`
 
 ### Prerequisites
 
 - [Node.js 14+](https://nodejs.org/en/)
 
 ### light-client RPC
+
+The wallet of this project depends on the light node. It is recommended to start ckb-light-client according to the tutorial first, with a link
 
 - [github](https://github.com/nervosnetwork/ckb-light-client)
 
