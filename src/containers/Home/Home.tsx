@@ -50,7 +50,7 @@ const Component: React.FC = () => {
 		)
 		// set walletList
 		DeleteWallet(res)
-		if (res.length == 0) return
+		if (res.length === 0) return
 
 		// rpc Delete
 		const getScript = await getScripts();
@@ -146,13 +146,13 @@ const Component: React.FC = () => {
 		if (!walletList) return
 		// Determine the currently selected wallet
 		let res: WalletListObject[] = walletList.filter(item =>
-			item.privateKeyAgs.lockScript.args == wallet
+			item.privateKeyAgs.lockScript.args === wallet
 		)
 		UserStoreHox.userScript(res[0])
 		// First get the previous synchronization height, if it does not start from zero, take it out and pass the value
 		const getScript = await getScripts();
 		const getScriptRes = getScript.filter((item: { script: { args: any; }; }) =>
-			item.script.args == wallet
+			item.script.args === wallet
 		)
 
 		// call setScript
@@ -194,9 +194,9 @@ const Component: React.FC = () => {
 
 	useEffect(() => {
 		// Set the initially selected account
-		if (walletList && walletList.length == 0) return
+		if (walletList && walletList.length === 0) return
 		let res = walletList.filter(item =>
-			item.privateKeyAgs.lockScript.args == script.privateKeyAgs.lockScript.args
+			item.privateKeyAgs.lockScript.args === script.privateKeyAgs.lockScript.args
 		)
 		setWallet(res[0].privateKeyAgs.lockScript.args)
 	}, [])
@@ -233,7 +233,7 @@ const Component: React.FC = () => {
 											{cutValue(item.privateKeyAgs.address, 20, 20)}
 											<CopyFilled className='copy' onClick={() => copyFun(item.privateKeyAgs.address)} />
 											{
-												wallet == item.privateKeyAgs.lockScript.args ? <CloseCircleOutlined className='deleteAddress' onClick={() => {
+												wallet === item.privateKeyAgs.lockScript.args ? <CloseCircleOutlined className='deleteAddress' onClick={() => {
 													onOpenDeleteModel(item.privateKeyAgs.lockScript.args)
 												}} /> : null
 											}

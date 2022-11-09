@@ -38,7 +38,7 @@ export async function getPrivateKeyAgs(m: string, type: number) {
     // @ts-ignore
     privateKey: type !== 3 ? extendedPrivateKey.privateKey : m,
     privateKeyAgs,
-    type: type == 1 ? "create" : "import"
+    type: type === 1 ? "create" : "import"
   };
 }
 

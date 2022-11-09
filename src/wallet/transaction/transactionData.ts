@@ -8,14 +8,14 @@ async function transactionData(filterRes: any) {
   for (let tabs of filterRes) {
     // output
     let outputs = tabs.filter(
-      (item: { io_type: string }) => item.io_type != "input"
+      (item: { io_type: string }) => item.io_type !== "input"
     );
     // input
     let inputs = tabs.filter(
-      (item: { io_type: string }) => item.io_type != "output"
+      (item: { io_type: string }) => item.io_type !== "output"
     );
     // income
-    if (inputs.length == 0) {
+    if (inputs.length === 0) {
       const res = await incomeFun(outputs);
       finalData.push(res);
     }

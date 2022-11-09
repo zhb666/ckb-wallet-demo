@@ -100,7 +100,7 @@ export function multiplyByTwoValue(one, two, decimalsToAppear) {
 }
 
 export function toFixed(bigNumber, decimalsToAppear) {
-  if (decimalsToAppear == 0) {
+  if (decimalsToAppear === 0) {
     return bigNumber.toFixed(0);
   }
   bigNumber = bigNumber.toString();

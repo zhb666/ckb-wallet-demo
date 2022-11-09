@@ -19,7 +19,7 @@ function Progress() {
 		const scriptsRes = await getScripts()
 		const tipHeaderRes = await getTipHeader()
 
-		let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args == script?.privateKeyAgs.lockScript.args);
+		let scriptsFilter = scriptsRes.filter((item: { script: { args: string; }; }) => item.script.args === script?.privateKeyAgs.lockScript.args);
 
 		let tipHeaderNum = parseInt(tipHeaderRes.number)
 

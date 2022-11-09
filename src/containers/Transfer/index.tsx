@@ -154,7 +154,7 @@ export default function Secp256k1Transfer() {
 
   // Calculate the minimum sending CKB
   useEffect(() => {
-    if (toAddr == "") return
+    if (toAddr === "") return
     try {
       if (!helpers.addressToScript(toAddr, { config: RPC_NETWORK })) return
     } catch {

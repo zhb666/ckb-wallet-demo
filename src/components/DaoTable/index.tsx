@@ -89,7 +89,7 @@ const TransactionsTable: React.FC<Props> = ({
 			title: 'Action',
 			render: (_, record) => (
 				<div>
-					{record.type === "deposit" ? <Button className='actionButton' disabled={record.state == "pending"} onClick={() => {
+					{record.type === "deposit" ? <Button className='actionButton' disabled={record.state === "pending"} onClick={() => {
 						withdraw(record)
 					}}>withdraw</Button> : <Button className='actionButton' onClick={() => {
 						withdraw(record)

@@ -37,7 +37,7 @@ export function formatDate(timeStamp: number = new Date().getTime()) {
 //First record with map structure
 export function arrayToMap(data: TransactionObject[]) {
   //No processing for non array or data length of 0
-  if (data.length == 0) {
+  if (data.length === 0) {
     return [];
   }
   let map: any = {};
@@ -47,8 +47,8 @@ export function arrayToMap(data: TransactionObject[]) {
     }
 
     let name = data[i].block_number;
-    if (name != undefined) {
-      if (map[name] == undefined) {
+    if (name !== undefined) {
+      if (map[name] === undefined) {
         map[name] = [];
       }
       map[name].push(data[i]);
@@ -60,7 +60,7 @@ export function arrayToMap(data: TransactionObject[]) {
 
 //Convert map to array
 export function mapToArray(data: any) {
-  if (data == undefined) {
+  if (data === undefined) {
     return [];
   }
   let array = [];
